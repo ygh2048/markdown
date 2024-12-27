@@ -35,6 +35,11 @@ endmodule
 
 ' 和 进制之间，数值之间不允许出现空格  
 
+8'b1000_xxxx //x表示不定值
+8'b1000_zzzz //z表示高阻
+
+位宽 二进制下数的宽度
+
 ---
 
 #### __实数__
@@ -48,6 +53,10 @@ endmodule
 用于仿真显示    
 双引号内的字符序列  
 例如："safhqafh"  
+
+#### 参数
+使用parameter来定义符号常量 
+parameter 参数名=表达式;
 
 ### 变量数据类型
 #### 物理数据类型
@@ -67,14 +76,81 @@ __寄存器类型__
 
 
 #### 抽象数据类型
-__整型__
-__实型__
-__时间型__
+__整型__    
+__实型__    
+__时间型__  
 
 
+
+#### 运算符
+```
+& 与    
+~& 与非
+| 或
+~| 或非
+^ 异或
+^~  同或
+>> 右移 a>>n;//a右移n位，零补齐 
+<< 左移 
+x ? a : b 条件运算符 x则a，！x则b
+{} 位拼接运算符
+```
 ### 补充
 建议不要对同一个变量进行多次赋值（简称多重驱动），以避免出现多个信号同时驱动一个输出变量的情况  
 
+
+
+
 ### 模块列举
-'''
-module h_adder
+```
+module h_adder(A,B,SO,CO);
+    input A,B;
+    output SO,CO;
+    assign SO = A ^ B;//将A,B异或后赋值给SO
+    assign CO = A & B;//j将AB与后赋值给CO
+endmodule
+半加器
+```
+---
+```
+module MUX41a(a, b, c, d, s1, s0, y);  
+    // 输入端口声明  
+    input a, b, c, d;  // 4 个数据输入  
+    input s1, s0;      // 2 个选择信号，用于选择输入  
+    output y;          // 输出端口  
+    reg y;             // 声明 y 为 reg 类型，以便在 always 块中赋值  
+
+    // 组合逻辑部分，根据选择信号更新 y 的值  
+    always @(a or b or c or d or s1 or s0) // 监听输入 a, b, c, d 和选择信号 s1, s0 的变化  
+        begin   : MUX41 // 块语句开始，命名为 MUX41  
+            case({s1, s0}) // 将选择信号组合成一个 2 位向量  
+                2'b00: y <= a; // 当 s1s0 为 00 时，输出选择 a  
+                2'b01: y <= b; // 当 s1s0 为 01 时，输出选择 b  
+                2'b10: y <= c; // 当 s1s0 为 10 时，输出选择 c  
+                2'b11: y <= d; // 当 s1s0 为 11 时，输出选择 d  
+            endcase  
+        end  
+endmodule
+四选一
+
+```
+
+```
+module count(out,data,load,reset,clk);
+    output[7:0] out;
+    input[7:0] data;
+    input load,clk,reset;
+    reg[7:0] out;
+    always @(posedge clk)
+    begin
+    if(!reset) out=8'h00;
+
+
+
+
+```
+---
+always@(敏感信号列表)
+    功能描述语句
+
+
