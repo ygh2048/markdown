@@ -258,9 +258,65 @@ always语句中`@(敏感语句列表)`是可选项目
 
 
 
+## 时序逻辑
+```
+module DFF(CLK, D, Q, RST, EN)  // 定义模块 DFF，输入为 CLK、D、RST 和 EN，输出为 Q  
+    output Q;                   // 声明 Q 为模块的输出  
+    input CLK, D, RST, EN;      // 声明 CLK、D、RST 和 EN 为模块的输入  
+    reg Q;                      // 声明 Q 为寄存器类型，在模块中用于保存状态  
+
+    always @(posedge CLK or posedge RST) // 当 CLK 的上升沿或 RST 的上升沿到来时，执行以下代码块  
+    begin                           // 代码块开始  
+        if (!RST)                   // 如果 RST 为低（复位）  
+            Q <= 0;                // 将输出 Q 设为 0  
+        else if (EN)               // 如果 EN 为高（使能）  
+            Q <= D;                // 将输入 D 的值赋给输出 Q  
+    end                            // 代码块结束  
+endmodule                          // 结束模块定义
 
 
 
+
+```
+## 状态机
+```
+module SCHK(input CLK, DIN, RST, output SOUT); // 定义模块 SCHK，输入为 CLK、DIN、RST，输出为 SOUT  
+
+    parameter s0 = 40, s1 = 41, s2 = 42, s3 = 43, s4 = 44, s5 = 45, s6 = 46, s7 = 47, s8 = 48; // 定义状态常量  
+
+    reg [8:0] ST, NST; // 声明 9 位寄存器 ST (当前状态) 和 NST (下一状态)  
+
+    // 时序逻辑：在时钟的上升沿或复位信号 RST 的上升沿时更新状态  
+    always @(posedge CLK or posedge RST)   
+        if (RST)   
+            ST <= s0; // 如果复位信号为高，则将当前状态设置为 s0  
+        else   
+            ST <= NST; // 否则，将当前状态更新为下一状态 NST  
+
+    // 组合逻辑：根据当前状态 ST 和输入 DIN 来决定下一状态 NST  
+    always @(ST or DIN)   
+    begin   // 处理 11010011 串行输入，高位在前  
+        case (ST) // 检查当前状态  
+            s0 : if (DIN == 1'b1) NST <= s1; else NST <= s0; // 在状态 s0 时，若 DIN 为 1，则转到 s1；否则保持 s0  
+            s1 : if (DIN == 1'b1) NST <= s1; else NST <= s0; // 在状态 s1 时，若 DIN 为 1，则保持 s1；否则转到 s0  
+            s2 : if (DIN == 1'b0) NST <= s1; else NST <= s2; // 在状态 s2 时，若 DIN 为 0，则转到 s1；否则保持 s2  
+            s3 : if (DIN == 1'b1) NST <= s1; else NST <= s0; // 在状态 s3 时，若 DIN 为 1，则转到 s1；否则转到 s0  
+            s4 : if (DIN == 1'b0) NST <= s1; else NST <= s2; // 在状态 s4 时，若 DIN 为 0，则转到 s1；否则转到 s2  
+            s5 : if (DIN == 1'b0) NST <= s1; else NST <= s1; // 在状态 s5 时，若 DIN 为 0，则转到 s1；否则保持 s1  
+            s6 : if (DIN == 1'b1) NST <= s1; else NST <= s0; // 在状态 s6 时，若 DIN 为 1，则转到 s1；否则转到 s0  
+            s7 : if (DIN == 1'b1) NST <= s1; else NST <= s0; // 在状态 s7 时，若 DIN 为 1，则转到 s1；否则转到 s0  
+            s8 : if (DIN == 1'b0) NST <= s1; else NST <= s2; // 在状态 s8 时，若 DIN 为 0，则转到 s1；否则转到 s2  
+            default : NST <= s0; // 默认情况下，将下一状态设置为 s0  
+        endcase  
+    end  
+
+endmodule // 结束模块定义
+
+```
+moore类型
+输出依据当前状态，不受输入立即影响
+mealy类型
+输出依据状态和输入，受输入立即影响
 
 ## testbench
 
