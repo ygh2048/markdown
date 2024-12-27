@@ -136,21 +136,132 @@ endmodule
 ```
 
 ```
-module count(out,data,load,reset,clk);
-    output[7:0] out;
-    input[7:0] data;
-    input load,clk,reset;
-    reg[7:0] out;
-    always @(posedge clk)
-    begin
-    if(!reset) out=8'h00;
+module count(out, data, load, reset, clk);  
+    // 模块名为 count，包含以下端口:  
+    // 输出端口:  
+    output [7:0] out;    // 8 位输出，表示计数的结果  
+    // 输入端口:  
+    input [7:0] data;    // 8 位输入，数据输入，通常用于加载计数器的初始值  
+    input load;          // 负载信号，当其为高时，计数器从 data 加载值  
+    input reset;         // 重置信号，当其为低时，计数器将重置为 0  
+    input clk;           // 时钟信号，用于同步计数器的操作  
+    
+    // 寄存器类型，用于存储 count 的值  
+    reg [7:0] out;       // 定义寄存器 out，表示当前计数值  
 
+    // 时序逻辑块，每当时钟上升沿触发  
+    always @(posedge clk)   
+    begin  
+        // 检查重置信号  
+        if (!reset)   
+            out = 8'h00;  // 如果 reset 为低，计数器被重置为 0  
+        else if (load)   
+            out = data;   // 如果 load 为高，计数器加载 input data 的值  
+        else   
+            out = out + 1; // 否则，计数器递增 1  
+    end  
+endmodule
 
+```
 
 
 ```
+module MUX41a(A, B, C, D, S1, S0, Y);  
+    // 模块名为 MUX41a，表示 4 路复用器，具有以下端口：  
+    
+    // 输入端口：  
+    input A, B, C, D;    // 四个输入信号（A, B, C, D）  
+    input S1, S0;        // 两个选择信号，用于选择哪个输入作为输出  
+    
+    // 输出端口：  
+    output Y;            // 复用器的输出信号 Y  
+
+    // 中间线网声明，用于选择信号的组合  
+    wire AT, BT;         // 中间线网 AT 和 BT  
+
+    // 根据选择信号 S0 选择输入 C 或 D  
+    // 当 S0 为 1 时，AT 选择 D；当 S0 为 0 时，AT 选择 C  
+    assign AT = S0 ? D : C;   
+    
+    // 根据选择信号 S0 选择输入 A 或 B  
+    // 当 S0 为 1 时，BT 选择 B；当 S0 为 0 时，BT 选择 A  
+    assign BT = S0 ? B : A;   
+
+    // 根据选择信号 S1 选择线网 AT 或 BT  
+    // 当 S1 为 1 时，Y 选择 AT；当 S1 为 0 时，Y 选择 BT  
+    assign Y = S1 ? AT : BT;   
+endmodule  
+四选一
+```
+
+```
+module f_adder(ain, bin, cin, cout, sum);  
+    // 模块名为 f_adder，表示一个全加器，具有以下端口：  
+    
+    // 输出端口：  
+    output cout; // 输出进位，若有进位则为 1  
+    output sum;  // 输出和，表示加法结果的某一位  
+
+    // 输入端口：  
+    input ain;   // 输入 A 的一位  
+    input bin;   // 输入 B 的一位  
+    input cin;   // 输入 C 的一位（来自低位的进位）  
+
+    // 中间网线声明，用于连接和计算  
+    wire net1, net2, net3; // net1: 半加器 U1 的进位输出  
+                            // net2: 半加器 U1 的和输出  
+                            // net3: 半加器 U2 的进位输出  
+
+    // 实例化第一个半加器 U1，进行 A 和 B 的加法  
+    h_adder U1(ain, bin, net1, net2);  
+    // U1: 计算输入 A 和 B 的和，产生进位 net1 和和 net2  
+
+    // 实例化第二个半加器 U2，计算 net1（来自 U1 的和）和 cin 的和  
+    h_adder U2(.A(net1), .B(cin), .SO(sum), .CO(net3));  
+    // U2: 计算 net1 和 cin 的和，生成输出 sum 和进位 net3  
+
+    // 最后，通过或门计算最终的进位输出 cout  
+    or U3(cout, net2, net3);  
+    // U3: 输出 cout 为 net2（U1 的进位）和 net3（U2 的进位）的逻辑或  
+endmodule
+
+```
 ---
+#### 语句用法
 always@(敏感信号列表)
     功能描述语句
 
+initial
+    功能描述语句
 
+
+```
+reg Y;
+initial
+    Y=2;//Y在0时刻被赋值为2；
+reg C;
+initial
+    #2 C=1;在时刻2被赋值为1；
+```
+__注意__    
+---    
+一个模块可以包括多个initial和always     
+并行执行        
+过程块都不能嵌套        
+initial和always中被赋值的对象只能是寄存器型变量，是一种动态触发的存储结构       
+initial语句在仿真开始时执行，即在0时刻开始执行，主要用于初始化和波形产生    
+initial语句的各个进程语句仅仅执行一次   
+initial语句不可综合 
+always也是从0时刻执行，执行完最后一条语句后继续循环执行 
+always语句中`@(敏感语句列表)`是可选项目 
+在`always@(clk or reset)`中只要clk和reset有一个信号的电平发生变化，就会触发后面的begin end
+
+
+
+
+
+
+
+## testbench
+
+`always #5 CLK= ~CLK`产生周期为10的波形  
