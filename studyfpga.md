@@ -405,5 +405,71 @@ mealy类型
 
 
 ## testbench
+__主要功能__
+---
+例化待验证的模块实体       
+通过Verilog程序行为描述，为待测模块实体提供激励信号 
+收集待测模块实体的输出结果，必要时将该结果于预置的所期望理想结果进行比较，并给出报告      
+根据结果判断内部功能结构是否正确    
 
+`timescale 1ns/100ps        //仿真步长（时间单位）为1ns，仿真精度100ps  
+
+$display($time,"a = %d",a); 
+
+
+$monitor("带可是字符串"，参数1，参数2，，，);   
+#数字;   //表延时多少时间   
+
+$stop;  
+$finish;    
+
+### 代码
 `always #5 CLK= ~CLK`产生周期为10的波形  
+
+
+
+```
+`timescale 10ns/1ns
+module CNT4B_TB();
+    reg clk1,en1,clr1,load1,ud1;
+    reg[3:0] data1;
+    always #35 clk1 = ~clk1;
+    initial
+    $monitor("DOUT = %h",dout1);
+    initial begin
+        #0      clk1 = 1'b0;
+        #0      clr1 = 1'b0;
+        #200    clr1 = 1'b1;
+        #25     clr1 = 1'b0;
+    end
+    initial begin
+        #0      en1  = 1'b0;
+        #180    en1  = 1'b1'
+    end
+
+    initial begin
+        #0      ud1  = 1'b1;
+        #1500   ud1  = 1'b0;
+    end
+
+    initial begin
+        #0      load1= 1'b0;
+        #590    load1= 1'b1;
+        #35     load1= 1'b0;
+        #600    load1= 1'b1;
+        #39     load1= 1'b0;
+        #1100   load1= 1'b1;
+        #60     load1= 1'b0;
+    end
+    initial begin
+        #0      data1= 4'h8;
+        #800    data1= 4'h7;
+        #800    data1= 4'h3;
+        #900    data1= 4'h9;
+    end
+
+    CNT10 U1(.CLK(clk1),.CLR(clr1),.DATA(data1),.LOAD(load1),.UD(ud1),.EN(en1),,.COUT(cout1),.DOUT(dou1));
+endmodule
+
+
+```
