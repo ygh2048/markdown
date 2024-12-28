@@ -234,6 +234,9 @@ always@(敏感信号列表)
 initial
     功能描述语句
 
+assign   a = b;
+主要用于组合逻辑中，表示连续赋值
+__会创建一个持续赋值的关系，目标信号会随着表达式变化而实时变化__
 
 ```
 reg Y;
@@ -274,9 +277,56 @@ module DFF(CLK, D, Q, RST, EN)  // 定义模块 DFF，输入为 CLK、D、RST �
     end                            // 代码块结束  
 endmodule                          // 结束模块定义
 
+异步D触发器
+```
 
+```
+module fdivl(CLK, PM, D, DOUT, RST);
+    // 输入端口
+    input CLK;           // 时钟信号（正边沿触发）
+    input RST;           // 异步复位信号（低电平有效）
+    input [3:0] D;       // 4位输入数据
 
+    // 输出端口
+    output PM;           // 状态输出，指示是否达到“满”状态
+    output [3:0] DOUT;   // 输出的4位数据
 
+    // 内部寄存器
+    reg [3:0] Q1;        // 用于存储当前的计数值
+    reg FULL;            // 标志位，表示计数器是否已满
+    wire LD;             // 触发加载的信号
+
+    // 同步逻辑块：在时钟上升沿或加载信号、复位信号的作用下更新状态
+    always @(posedge CLK or posedge LD or negedge RST) begin
+        if (!RST) begin
+            // 异步复位：清零Q1和FULL寄存器
+            Q1 <= 0;
+            FULL <= 0;
+        end
+        else if (LD) begin
+            // 当LD信号为1时，加载输入数据D到Q1，并设置FULL标志为1
+            Q1 <= D;
+            FULL <= 1;
+        end
+        else begin
+            // 正常情况下，Q1计数加1，并将FULL标志设置为0
+            Q1 <= Q1 + 1;
+            FULL <= 0;
+        end
+    end
+
+    // LD信号：当Q1的值为0000时，触发加载操作
+    assign LD = (Q1 == 4'b0000);
+
+    // 将FULL寄存器的值作为PM信号的输出，表示是否已满
+    assign PM = FULL;
+
+    // 将Q1的值输出到DOUT端口
+    assign DOUT = Q1;
+endmodule
+  
+
+异步加载计数器
 ```
 ## 状态机
 ```
@@ -315,8 +365,44 @@ endmodule // 结束模块定义
 ```
 moore类型
 输出依据当前状态，不受输入立即影响
+
+```
+module SCHK(input CLK, DIN, RST, output reg SOUT); // 定义模块 SCHK，输入为 CLK、DIN、RST，输出为 SOUT  
+
+    parameter s0 = 40, s1 = 41, s2 = 42, s3 = 43, s4 = 44, s5 = 45, s6 = 46, s7 = 47, s8 = 48; // 定义状态常量  
+
+    reg [8:0] ST; 
+
+    always @(posedge CLK)   
+    begin   // 处理 11010011 串行输入，高位在前 
+    SOUT = 0;
+    if(RST) ST<=s0;
+    else
+        begin
+        case (ST) // 检查当前状态  
+            s0 : if (DIN == 1'b1) NST <= s1; else NST <= s0; // 在状态 s0 时，若 DIN 为 1，则转到 s1；否则保持 s0  
+            s1 : if (DIN == 1'b1) NST <= s1; else NST <= s0; // 在状态 s1 时，若 DIN 为 1，则保持 s1；否则转到 s0  
+            s2 : if (DIN == 1'b0) NST <= s1; else NST <= s2; // 在状态 s2 时，若 DIN 为 0，则转到 s1；否则保持 s2  
+            s3 : if (DIN == 1'b1) NST <= s1; else NST <= s0; // 在状态 s3 时，若 DIN 为 1，则转到 s1；否则转到 s0  
+            s4 : if (DIN == 1'b0) NST <= s1; else NST <= s2; // 在状态 s4 时，若 DIN 为 0，则转到 s1；否则转到 s2  
+            s5 : if (DIN == 1'b0) NST <= s1; else NST <= s1; // 在状态 s5 时，若 DIN 为 0，则转到 s1；否则保持 s1  
+            s6 : if (DIN == 1'b1) NST <= s1; else NST <= s0; // 在状态 s6 时，若 DIN 为 1，则转到 s1；否则转到 s0  
+            s7 : if (DIN == 1'b1) NST <= s1; else NST <= s0; // 在状态 s7 时，若 DIN 为 1，则转到 s1；否则转到 s0  
+            s8 : if (DIN == 1'b0) NST <= s1; else NST <= s2; // 在状态 s8 时，若 DIN 为 0，则转到 s1；否则转到 s2  
+            default : NST <= s0; // 默认情况下，将下一状态设置为 s0  
+        endcase  
+        end
+    end  
+
+endmodule // 结束模块定义
+
+```
+
+
 mealy类型
 输出依据状态和输入，受输入立即影响
+
+
 
 ## testbench
 
