@@ -50,25 +50,25 @@ endmodule
 42_5'1e2    //42500.0
 
 #### 字符串
-用于仿真显示    
-双引号内的字符序列  
-例如："safhqafh"  
+用于仿真显示            
+双引号内的字符序列          
+例如："safhqafh"        
 
 #### 参数
-使用parameter来定义符号常量 
-parameter 参数名=表达式;
+使用parameter来定义符号常量         
+parameter 参数名=表达式;        
 
 ### 变量数据类型
 #### 物理数据类型
-__连线型类型__  
-*定义*
-wire 数据名1，数据名2，，，，;  
-`wire a,b;`
- *用法*
- 对应硬件电路的物理信号连线，没有电荷保持
- *驱动*
- 1 结构描述中将其链接到一个门元件或模块的输出端
- 2 用连续赋值语句assign对其进行赋值
+__连线型类型__          
+*定义*          
+wire 数据名1，数据名2，，，，;       
+`wire a,b;`     
+ *用法*     
+ 对应硬件电路的物理信号连线，没有电荷保持       
+ *驱动*     
+ 1 结构描述中将其链接到一个门元件或模块的输出端     
+ 2 用连续赋值语句assign对其进行赋值     
 
 __寄存器类型__  
 *用法*
@@ -86,12 +86,12 @@ __时间型__
 ```
 & 与    
 ~& 与非
-| 或
-~| 或非
-^ 异或
-^~ ~^  同或
->> 右移 a>>n;//a右移n位，零补齐 
-<< 左移 
+| 或        
+~| 或非     
+^ 异或      
+^~ ~^  同或     
+>> 右移 a>>n;//a右移n位，零补齐         
+<< 左移     
 x ? a : b 条件运算符 x则a，！x则b
 {} 位拼接运算符
 ```
@@ -161,6 +161,7 @@ module count(out, data, load, reset, clk);
             out = out + 1; // 否则，计数器递增 1  
     end  
 endmodule
+计数器
 
 ```
 
@@ -350,6 +351,31 @@ endmodule
 
 异步加载计数器
 ```
+
+
+```
+// 定义一个名为 SHIF4 的模块，包含输入和输出端口  
+module SHIF4(DIN, CLK, RST, DOUT);  
+    input CLK, DIN, RST;       // 输入端口：时钟信号 CLK、数据输入 DIN 和复位信号 RST  
+    output DOUT;               // 输出端口：数据输出 DOUT  
+    reg [3:0] SHFT;            // 4 位宽的寄存器 SHFT 用于存储移位后的值  
+
+    // 在时钟的上升沿或复位信号的上升沿触发此块  
+    always @(posedge CLK or posedge RST)  
+        if (RST)   
+            SHFT <= 4'b0;      // 当 RST 为高时，将 SHFT 寄存器重置为 0（0000）  
+        else begin  
+            SHFT <= (SHFT >> 1); // 将 SHFT 寄存器的值向右移位 1 位  
+            SHFT[3] <= DIN;      // 将输入 DIN 的值赋值给 SHFT 的最高位（SHFT[3]）  
+        end  
+
+    // 将 SHFT 的最低位（SHFT[0]）赋值给输出 DOUT  
+    assign DOUT = SHFT[0];        // 输出 DOUT 即为当前移位寄存器的最低位  
+endmodule // 模块结束
+移位操作符设计移位寄存器
+```
+
+
 ## 状态机
 ```
 module SCHK(input CLK, DIN, RST, output SOUT); // 定义模块 SCHK，输入为 CLK、DIN、RST，输出为 SOUT  
