@@ -387,6 +387,8 @@ endmodule // 结束模块定义
 ```
 moore类型
 输出依据当前状态，不受输入立即影响
+同步输出状态机
+
 
 ```
 module SCHK(input CLK, DIN, RST, output reg SOUT); // 定义模块 SCHK，输入为 CLK、DIN、RST，输出为 SOUT  
@@ -402,16 +404,16 @@ module SCHK(input CLK, DIN, RST, output reg SOUT); // 定义模块 SCHK，输入
     else
         begin
         case (ST) // 检查当前状态  
-            s0 : if (DIN == 1'b1) NST <= s1; else NST <= s0; // 在状态 s0 时，若 DIN 为 1，则转到 s1；否则保持 s0  
-            s1 : if (DIN == 1'b1) NST <= s1; else NST <= s0; // 在状态 s1 时，若 DIN 为 1，则保持 s1；否则转到 s0  
-            s2 : if (DIN == 1'b0) NST <= s1; else NST <= s2; // 在状态 s2 时，若 DIN 为 0，则转到 s1；否则保持 s2  
-            s3 : if (DIN == 1'b1) NST <= s1; else NST <= s0; // 在状态 s3 时，若 DIN 为 1，则转到 s1；否则转到 s0  
-            s4 : if (DIN == 1'b0) NST <= s1; else NST <= s2; // 在状态 s4 时，若 DIN 为 0，则转到 s1；否则转到 s2  
-            s5 : if (DIN == 1'b0) NST <= s1; else NST <= s1; // 在状态 s5 时，若 DIN 为 0，则转到 s1；否则保持 s1  
-            s6 : if (DIN == 1'b1) NST <= s1; else NST <= s0; // 在状态 s6 时，若 DIN 为 1，则转到 s1；否则转到 s0  
-            s7 : if (DIN == 1'b1) NST <= s1; else NST <= s0; // 在状态 s7 时，若 DIN 为 1，则转到 s1；否则转到 s0  
-            s8 : if (DIN == 1'b0) NST <= s1; else NST <= s2; // 在状态 s8 时，若 DIN 为 0，则转到 s1；否则转到 s2  
-            default : NST <= s0; // 默认情况下，将下一状态设置为 s0  
+            s0 : if (DIN == 1'b1) ST <= s1; else NT <= s0; // 在状态 s0 时，若 DIN 为 1，则转到 s1；否则保持 s0  
+            s1 : if (DIN == 1'b1) ST <= s1; else ST <= s0; // 在状态 s1 时，若 DIN 为 1，则保持 s1；否则转到 s0  
+            s2 : if (DIN == 1'b0) ST <= s1; else ST <= s2; // 在状态 s2 时，若 DIN 为 0，则转到 s1；否则保持 s2  
+            s3 : if (DIN == 1'b1) ST <= s1; else ST <= s0; // 在状态 s3 时，若 DIN 为 1，则转到 s1；否则转到 s0  
+            s4 : if (DIN == 1'b0) ST <= s1; else ST <= s2; // 在状态 s4 时，若 DIN 为 0，则转到 s1；否则转到 s2  
+            s5 : if (DIN == 1'b0) ST <= s1; else ST <= s1; // 在状态 s5 时，若 DIN 为 0，则转到 s1；否则保持 s1  
+            s6 : if (DIN == 1'b1) ST <= s1; else ST <= s0; // 在状态 s6 时，若 DIN 为 1，则转到 s1；否则转到 s0  
+            s7 : if (DIN == 1'b1) ST <= s1; else ST <= s0; // 在状态 s7 时，若 DIN 为 1，则转到 s1；否则转到 s0  
+            s8 : if (DIN == 1'b0) ST <= s1; else ST <= s2; // 在状态 s8 时，若 DIN 为 0，则转到 s1；否则转到 s2  
+            default : ST <= s0; // 默认情况下，将下一状态设置为 s0  
         endcase  
         end
     end  
@@ -422,7 +424,8 @@ endmodule // 结束模块定义
 
 
 mealy类型
-输出依据状态和输入，受输入立即影响
+输出依据状态和输入，受输入立即影响  
+异步输出状态机
 
 
 
@@ -434,9 +437,9 @@ __主要功能__
 收集待测模块实体的输出结果，必要时将该结果于预置的所期望理想结果进行比较，并给出报告      
 根据结果判断内部功能结构是否正确    
 
-`timescale 1ns/100ps        //仿真步长（时间单位）为1ns，仿真精度100ps  
+``timescale 1ns/100ps`        //仿真步长（时间单位）为1ns，仿真精度100ps  
 
-$display($time,"a = %d",a); 
+`$display($time,"a = %d",a);` 
 
 
 $monitor("带可是字符串"，参数1，参数2，，，);   
