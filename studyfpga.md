@@ -1,4 +1,4 @@
-# 代码
+# FPGA
 ## 模块
 ### 代码范例
 
@@ -89,7 +89,7 @@ __时间型__
 | 或
 ~| 或非
 ^ 异或
-^~  同或
+^~ ~^  同或
 >> 右移 a>>n;//a右移n位，零补齐 
 << 左移 
 x ? a : b 条件运算符 x则a，！x则b
@@ -251,15 +251,37 @@ __注意__
 一个模块可以包括多个initial和always     
 并行执行        
 过程块都不能嵌套        
-initial和always中被赋值的对象只能是寄存器型变量，是一种动态触发的存储结构       
-initial语句在仿真开始时执行，即在0时刻开始执行，主要用于初始化和波形产生    
-initial语句的各个进程语句仅仅执行一次   
+initial和always中被赋值的对象只能是寄存器型变量，是一种动态触发的存储结构           
+initial语句在仿真开始时执行，即在0时刻开始执行，主要用于初始化和波形产生        
+initial语句的各个进程语句仅仅执行一次       S
 initial语句不可综合 
-always也是从0时刻执行，执行完最后一条语句后继续循环执行 
-always语句中`@(敏感语句列表)`是可选项目 
-在`always@(clk or reset)`中只要clk和reset有一个信号的电平发生变化，就会触发后面的begin end
+always也是从0时刻执行，执行完最后一条语句后继续循环执行     
+always语句中`@(敏感语句列表)`是可选项目     
+在`always@(clk or reset)`中只要clk和reset有一个信号的电平发生变化，就会触发后面的begin end      
 
 
+
+---
+过程性中的两类赋值语句
+---
+指的是在initial或always语句内的幅值，只能对寄存器变量幅值
+分两类
+
+阻塞性赋值  `=`
+按照时间顺序 __串行__ 执行的
+*语句结束后立刻执行*
+适合组合电路
+
+非阻塞性    `<=`
+在整个过程快结束时才完成赋值操作
+若有多条赋值语句，他们是 __并行__ 同时执行的
+适合时序电路
+
+连续赋值
+---
+
+
+---
 
 ## 时序逻辑
 ```
@@ -472,4 +494,78 @@ module CNT4B_TB();
 endmodule
 
 
+```
+
+---
+
+云平台例化代码
+---
+
+```
+
+`timescale 1ns / 1ns
+module calculator_tb;
+
+// 产生时钟信号
+reg clk;
+localparam  PERIOD = 10000000;  // 1cs = 10000000 ns
+initial begin
+    clk = 1'b0;
+    forever
+        #(PERIOD/2) clk = ~clk;
+end
+
+// 产生复位信号，用作8位寄存器的异步复位
+reg rst_n;
+initial begin
+    rst_n = 1'b0;
+    #(PERIOD)
+    rst_n = 1'b1;
+end
+
+// 定义数字钟的使能信号
+reg dig_clk_en;
+
+initial 
+begin
+    #0
+    dig_clk_en = 1'b0;
+    #(PERIOD)
+    
+    dig_clk_en = 1'b1;
+    #(PERIOD*46'd360000)
+    
+    $stop;
+end
+
+// 例化
+wire [6:0] hex7_out;
+wire [6:0] hex6_out;
+wire [6:0] hex5_out;
+wire [6:0] hex4_out;
+wire [6:0] hex3_out;
+wire [6:0] hex2_out;
+
+calculator calculator_inst (
+/* input            */      .clk        (clk),
+/* input            */      .rst_n      (rst_n),
+/* input            */      .en         (),
+/* input    [3:0]   */      .a          (),
+/* input    [3:0]   */      .b          (),
+/* input            */      .carry_in   (),
+/* input    [2:0]   */      .sel        (),
+/* output   [6:0]   */      .hex1_out   (),
+/* output   [6:0]   */      .hex0_out   (),
+/* output   [7:0]   */      .ledr_out   (),
+
+/* input            */      .dig_clk_en (dig_clk_en),
+/* output   [6:0]   */      .hex7_out   (hex7_out),
+/* output   [6:0]   */      .hex6_out   (hex6_out),
+/* output   [6:0]   */      .hex5_out   (hex5_out),
+/* output   [6:0]   */      .hex4_out   (hex4_out),
+/* output   [6:0]   */      .hex3_out   (hex3_out),
+/* output   [6:0]   */      .hex2_out   (hex2_out)
+);
+
+endmodule
 ```
