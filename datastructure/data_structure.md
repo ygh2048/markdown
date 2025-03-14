@@ -68,7 +68,7 @@ S(n)表示空间复杂度
 每个数据元素，不管它是整型，实型还是字符型，它都是需要占用一定的存储单元空间的。    
 
 *存取操作时间性能*  
-![alt text](3299b62adab56610e01de064e0154606.png)   
+![alt text](image-5.png)   
 计算出线性表中任意位置的地址    
 这时对于线性表每个位置的存入或者取出数据都是相等的时间，所以线性表的存取操作时间性能都是**O(1)**    
     
@@ -159,6 +159,83 @@ ___寻址公式:___ 下标 i 对应的数据元素地址 = 数据首地址 + i �
 - *判满：* 堆栈满时返回True，用于添加元素  
 - *删除元素：* push,并且改变top位置 
 
+顺序存储代码
+---
+```
+class Stack:
+    # 初始化空栈
+    def __init__(self, size=100):
+        self.stack = []
+        self.size = size
+        self.top = -1     
+    # 判断栈是否为空
+    def is_empty(self):
+        return self.top == -1
+    # 判断栈是否已满
+    def is_full(self):
+        return self.top + 1 == self.size
+    # 入栈操作
+    def push(self, value):
+        if self.is_full():
+            raise Exception('Stack is full')
+        else:
+            self.stack.append(value)
+            self.top += 1
+    # 出栈操作
+    def pop(self):
+        if self.is_empty():
+            raise Exception('Stack is empty')
+        else:
+            self.stack.pop()
+            self.top -= 1
+    # 获取栈顶元素
+    def peek(self):
+        if self.is_empty():
+            raise Exception('Stack is empty')
+        else:
+            return self.stack[self.top]
+
+```
+链式存储代码
+---
+```
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+        
+class Stack:
+    # 初始化空栈
+    def __init__(self):
+        self.top = None
+    # 判断栈是否为空
+    def is_empty(self):
+        return self.top == None
+    # 入栈操作
+    def push(self, value):
+        cur = Node(value)
+        cur.next = self.top
+        self.top = cur
+    # 出栈操作
+    def pop(self):
+        if self.is_empty():
+            raise Exception('Stack is empty')
+        else:
+            cur = self.top
+            self.top = self.top.next
+            del cur
+    # 获取栈顶元素
+    def peek(self):
+        if self.is_empty():
+            raise Exception('Stack is empty')
+        else:
+            return self.top.value
+
+```
+
+
+## 队列
+一种线性表数据结构，是一种只允许在表的一端进入插入操作，而在表的另一端进行删除操作的线性表。    
 
 
 
