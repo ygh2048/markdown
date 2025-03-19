@@ -155,7 +155,7 @@ void SPI_GPIO_Config(void)
 其中注意，使用SPI时，发送和接收其实是同一个函数，通过判断RXNE来确认发送结束，此时也接收完数据，接收数据同样要主机产生时序，时序通过主机发送数据产生，所以会发送无用的Dummy数据。
 软件模拟不需要，直接接收自己本身会产生时序，不用发送DUMMY数据。Delay函数随便设置，不要小于手册的时间即可。 
 
-
+```
 void SPI_SendData(uint8_t data)
 {
 	uint8_t cnt;
