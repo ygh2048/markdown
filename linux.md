@@ -210,20 +210,20 @@ done
 ### 线程通信    
 
 # socket套接字
-[CSDN来源](https://blog.csdn.net/Edward_Asia/article/details/127412092)
+[CSDN来源](https://blog.csdn.net/Edward_Asia/article/details/127412092)	
 ## 网络     
-网络分层![alt text](image.png)
+网络分层![alt text](image.png)	
 
-7层模型![alt text](image-1.png)
+7层模型![alt text](image-1.png)	
 
 
 
 ### TCP/IP协议  
-![alt text](image-3.png)
-TCP/IP协议应用层主要协议有：
+![alt text](image-3.png)	
+TCP/IP协议应用层主要协议有：	
 HTTP、FTP、SMTP、等，主要用于读取来自传输层的数据或者将数据传输写入传输层   
-传输层的主要协议有UDP、TCP,实现端对端的数据传输   
-网络层的主要协议有ICMP、IP、IGMP,主要负责网络中数据包的传输等
+传输层的主要协议有UDP、TCP,实现端对端的数据传输   	
+网络层的主要协议有ICMP、IP、IGMP,主要负责网络中数据包的传输等		
 
 ## socket
 
@@ -232,12 +232,12 @@ HTTP、FTP、SMTP、等，主要用于读取来自传输层的数据或者将数
 *报文的目的地*  
 
 ### 端口号
-port
-是传输层协议的内容      
-- 是一个2字节16位的整数
-- 用来表示一个进程，告诉操作系统当前的这个数据要交给哪个进程来处理  
-- IP地址 + 端口号能够标识网络上的某一台主机的某个进程   
-- 一个端口号只能被一个进程占用  
+port	
+是传输层协议的内容      	
+- 是一个2字节16位的整数	
+- 用来表示一个进程，告诉操作系统当前的这个数据要交给哪个进程来处理  	
+- IP地址 + 端口号能够标识网络上的某一台主机的某个进程   	
+- 一个端口号只能被一个进程占用  	
   
 ### 端口号和进程ID
 pid表示唯一一个进程，此外我们的端口号也是唯一一个进程   
