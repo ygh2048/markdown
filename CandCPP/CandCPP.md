@@ -5,4 +5,4 @@
 # CPP
 
 # 跳转链接
-[点这里跳转README](../README.md)
+[点这里跳转list](../list.md)

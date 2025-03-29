@@ -769,5 +769,5 @@ int main(int argc, char* argv[])
 - close()，client、server，本质在网络层面就是在进行四次挥手
 
 # 跳转
-[跳转链接README点这里](../README.md)
+[跳转链接list点这里](../list.md)
 
