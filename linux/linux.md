@@ -202,6 +202,24 @@ done
 # 基本操作  
 
 ## apt包管理器
+APT全程 advanced package tool 提供了统一的接口来安装、更新、升级、删除和搜索软件包，简化了在linux上安装软件包的过程     
+
+### 指令
+#### 安装
+`sudo apt install <pkg_name>`   
+#### 更新本地软件包列表
+`sudo apt update`
+#### 更新软件包到最新版本
+`sudo apt upgrade`
+#### 搜索软件包
+搜索名为example的软件包     
+`apt search example`
+#### 显示软件包信息
+`apt show example`
+#### 清除无用的安装包
+`sudo apt autoclean`
+#### 清理无用的依赖项
+`sudo apt autoremove`
 
 ##  一些常用命令行  
 
