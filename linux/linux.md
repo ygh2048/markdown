@@ -768,6 +768,6 @@ int main(int argc, char* argv[])
 - connect()，本质是发起连接，在系统层面，就是构建一个请求报文发送过去；网络层面，发起tcp连接的三次握手
 - close()，client、server，本质在网络层面就是在进行四次挥手
 
+# 跳转
+[跳转链接README点这里](../README.md)
 
-
-v

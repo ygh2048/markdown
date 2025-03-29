@@ -2,7 +2,7 @@
  * @Author: ygh && “ygh2048009576@outlook.com”
  * @Date: 2024-12-27 19:29:17
  * @LastEditors: ygh && “ygh2048009576@outlook.com”
- * @LastEditTime: 2025-03-29 22:04:59
+ * @LastEditTime: 2025-03-29 22:15:26
  * @FilePath: \makedown\readme.md
  * @Description: 
  * 
@@ -12,6 +12,8 @@
 studyfpga    FPGA考试记录   
 面试八股准备    
 算法记录    
+嵌入式相关知识记载          
+
 
 # 列表
 
@@ -35,4 +37,7 @@ studyfpga    FPGA考试记录
 
 ## 力扣
 
+
+# 跳转
+[跳转链接README点这里](README.md)
 
