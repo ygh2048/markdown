@@ -19,7 +19,7 @@
 [FPGA考试内容](fpga/studyfpga.md)
 
 ## 力扣
-[力扣题解]((https://github.com/haoel/leetcode?tab=readme-ov-file))
+[力扣题解](https://github.com/haoel/leetcode?tab=readme-ov-file)
 
 ## 语言
 [C语言](codelanguage/C.md)      
