@@ -25,3 +25,6 @@
 [C语言](codelanguage/C.md)      
 [C++](codelanguage/CPP.md)      
 [python](codelanguage/python.md)    
+
+## 嵌入式
+[嵌入式](embedded_system/embedded_system.md)
