@@ -11,25 +11,25 @@ void delay_ms(INT16U x)
 ```
 uchar keybd()
 {
-			P1=0xFF; 
-			if(~P1)
-			{
-			i=(~P1)&0x3F;
-			delay_ms(10);						 //去抖动
-			if(((~P1)&0x3F)==i)
-			switch(i){
-				case 0x01:i=0;
-				          while(~P1);			 //等待键释放，下同
-						  break;
-				case 0x02:i=0;while(~P1);break;
-				case 0x04:i=1;while(~P1);break;
-				case 0x08:i=2;while(~P1);break;
-				case 0x10:i=3;while(~P1);break;
-				case 0x20:i=4;while(~P1);break;
-                case 0x40:i=5;while(~P1);break;
-			        }
-			 }
-			 return i;
+    P1=0xFF; 
+    if(~P1)
+    {
+    i=(~P1)&0x3F;
+    delay_ms(10);						 //去抖动
+    if(((~P1)&0x3F)==i)
+    switch(i){
+        case 0x01:i=0;
+                    while(~P1);			 //等待键释放，下同
+                    break;
+        case 0x02:i=0;while(~P1);break;
+        case 0x04:i=1;while(~P1);break;
+        case 0x08:i=2;while(~P1);break;
+        case 0x10:i=3;while(~P1);break;
+        case 0x20:i=4;while(~P1);break;
+        case 0x40:i=5;while(~P1);break;
+            }
+        }
+        return i;
 }
 
 
@@ -76,6 +76,13 @@ void NO_ACK()
 	SDA=0;
 }
 ```
+
+# 51知识
+## XBYTE
+XBYTE 是Keil C51编译器提供的扩展关键字，属于absacc.h头文件中的宏，用于直接访问8051的外部数据存储器空间（XDATA）。其底层实现为：
+`#define XBYTE ((unsigned char volatile xdata *) 0)`    
+作用：将外部存储器的16位地址映射为指针，通过数组形式访问
+寻址范围：0x0000~0xFFFF（共64KB）
 
 # 数码管代码
 ```
@@ -1067,6 +1074,47 @@ void DelayMS(uint ms) {
 
 ```
 
+# DAC0832使用
+
+原理图：    
+![alt text](image-4.png)        
+
+```
+//-----------------------------------------------------------------
+// 用DAC0832生成锯齿波 
+//-----------------------------------------------------------------
+//   本例程序向DAC0832反复输出0x00-0xFF的数字量，经过数/模转
+//        换及电流到电压的转换后输出锯齿波.
+//               
+//-----------------------------------------------------------------
+#include <reg51.h>
+#include <absacc.h>
+#define INT8U unsigned char
+#define INT16U  unsigned int
+#define OUTDATA XBYTE[0x7FFF]	   //向0832输出转换数据的地址
+
+//-----------------------------------------------------------------
+// 延时子程序	如果晶振是6M，则这里表示延时2倍的x毫秒 ,如果晶振12M，则是延时x毫秒
+//-----------------------------------------------------------------
+void delay_ms(INT16U x) 
+{
+    INT8U t;
+	while(x--)  for(t = 0; t < 120; t++);
+}
+//-----------------------------------------------------------------
+// 主程序	 
+//-----------------------------------------------------------------
+void main()
+{	INT8U i;
+    while(1)
+	{ for(i=0; i<256; i++)
+	  {    OUTDATA=i;
+	 	  delay_ms(1);
+	  }	 
+	}
+}
+```
+
 
 # 个人代码
 
@@ -1214,3 +1262,325 @@ void main()
 	}
 }
 ```
+
+## SPI历程（软件SPI）
+
+以下是一个完整的51单片机（如STC89C52）使用SPI接口的示例代码，包含详细注释和硬件连接说明。这里以模拟SPI（软件SPI）为例，因为标准51单片机通常没有硬件SPI模块。
+
+---
+
+### **1. 硬件连接示意图**
+```plaintext
+51单片机          SPI设备（如Flash/W25Q64）
+P1.5 (MOSI)  ---> DI (数据输入)
+P1.6 (MISO)  <--- DO (数据输出)
+P1.7 (SCLK)  ---> CLK (时钟)
+P2.0 (CS)    ---> CS (片选，低有效)
+```
+
+---
+
+### **2. 完整代码示例**
+```c
+#include <reg52.h>
+#include <intrins.h> // 包含_nop_()函数
+
+// 定义SPI引脚（根据实际电路修改）
+sbit SPI_SCLK = P1^7;  // SPI时钟线
+sbit SPI_MOSI = P1^5;  // 主机输出从机输入
+sbit SPI_MISO = P1^6;  // 主机输入从机输出
+sbit SPI_CS   = P2^0;  // 片选信号
+
+// 延时函数（12MHz晶振下约1μs）
+void DelayUS(unsigned int us) {
+    while(us--) {
+        _nop_(); _nop_(); _nop_(); _nop_();
+    }
+}
+
+// SPI初始化（设置引脚初始状态）
+void SPI_Init() {
+    SPI_CS = 1;    // 默认不选中设备
+    SPI_SCLK = 0;  // 时钟初始低电平
+    SPI_MOSI = 1;  // MOSI初始高电平
+}
+
+// SPI发送/接收一个字节（全双工）
+unsigned char SPI_Transfer(unsigned char dat) {
+    unsigned char i, recv = 0;
+    
+    for(i = 0; i < 8; i++) {
+        // 设置MOSI（高位先行）
+        SPI_MOSI = (dat & 0x80) ? 1 : 0;
+        dat <<= 1;
+        
+        // 上升沿发送数据
+        SPI_SCLK = 1;
+        DelayUS(1);
+        
+        // 读取MISO（从机输出）
+        recv <<= 1;
+        if(SPI_MISO) recv |= 0x01;
+        
+        // 下降沿准备下一位
+        SPI_SCLK = 0;
+        DelayUS(1);
+    }
+    return recv;
+}
+
+// 示例：读取SPI Flash的ID（W25Q64的ID指令为0x90）
+unsigned int SPI_ReadID() {
+    unsigned int id;
+    SPI_CS = 0;            // 选中设备
+    
+    SPI_Transfer(0x90);    // 发送指令
+    SPI_Transfer(0x00);    // 发送3字节地址（0）
+    SPI_Transfer(0x00);
+    SPI_Transfer(0x00);
+    
+    id = SPI_Transfer(0xFF) << 8; // 读取高字节
+    id |= SPI_Transfer(0xFF);     // 读取低字节
+    
+    SPI_CS = 1;            // 释放片选
+    return id;
+}
+
+void main() {
+    unsigned int flash_id;
+    
+    SPI_Init();            // 初始化SPI
+    flash_id = SPI_ReadID(); // 读取设备ID
+    
+    while(1) {
+        // 在此添加其他操作（如通过串口打印ID）
+    }
+}
+```
+
+---
+
+### **3. 关键代码解析**
+#### **(1) SPI时序控制**
+```c
+// 典型SPI模式0时序（CPOL=0, CPHA=0）
+SPI_MOSI = 数据位;  // 在时钟上升沿前设置数据
+SPI_SCLK = 1;      // 上升沿从机采样
+SPI_SCLK = 0;      // 下降沿主机准备下一位
+```
+
+#### **(2) 字节传输逻辑**
+```c
+for(i = 0; i < 8; i++) {
+    SPI_MOSI = (dat & 0x80) ? 1 : 0; // 取最高位
+    dat <<= 1;                       // 左移准备下一位
+    // ...时钟操作...
+    recv <<= 1;                      // 接收数据移位
+    if(SPI_MISO) recv |= 0x01;       // 读取位
+}
+```
+
+---
+
+### **4. 扩展功能示例**
+#### **(1) 写入SPI Flash一页数据**
+```c
+void SPI_WritePage(unsigned long addr, unsigned char *buf) {
+    SPI_CS = 0;
+    SPI_Transfer(0x02);          // 页编程指令
+    SPI_Transfer(addr >> 16);    // 发送24位地址
+    SPI_Transfer(addr >> 8);
+    SPI_Transfer(addr & 0xFF);
+    
+    for(int i = 0; i < 256; i++) // 写入256字节
+        SPI_Transfer(buf[i]);
+    
+    SPI_CS = 1;
+    // 需等待写入完成（可轮询BUSY位）
+}
+```
+
+#### **(2) 读取SPI Flash数据**
+```c
+void SPI_ReadData(unsigned long addr, unsigned char *buf, unsigned int len) {
+    SPI_CS = 0;
+    SPI_Transfer(0x03);          // 读数据指令
+    SPI_Transfer(addr >> 16);    // 地址
+    SPI_Transfer(addr >> 8);
+    SPI_Transfer(addr & 0xFF);
+    
+    for(int i = 0; i < len; i++)
+        buf[i] = SPI_Transfer(0xFF); // 读数据时发送哑元数据
+    
+    SPI_CS = 1;
+}
+```
+
+---
+
+### **5. 注意事项**
+1. **时钟速度**：软件SPI速度较慢（通常<1MHz），高速场景需用硬件SPI或增强型51（如STC15系列）。
+2. **模式兼容性**：确保SPI设备与代码时序模式（CPOL/CPHA）匹配。
+3. **片选管理**：操作前后正确控制`CS`信号。
+4. **中断处理**：若在中断中使用SPI，需避免嵌套调用。
+
+---
+
+### **6. 硬件SPI扩展（以STC15系列为例）**
+若使用带硬件SPI的51单片机：
+```c
+// 初始化硬件SPI（STC15）
+void SPI_Init_HW() {
+    SPCTL = 0xD0; // 使能SPI,主机模式,MSB先行,模式0
+    SPSTAT = 0xC0; // 清除标志位
+}
+
+// 硬件SPI传输
+unsigned char SPI_Transfer_HW(unsigned char dat) {
+    SPDAT = dat;
+    while(!(SPSTAT & 0x80)); // 等待传输完成
+    SPSTAT |= 0x80;          // 清除标志
+    return SPDAT;
+}
+```
+
+通过上述代码，您可以快速实现51单片机与SPI设备的通信。实际开发时请根据具体器件手册调整指令和时序。
+
+
+# 汇编
+以下是针对 **51单片机（8051架构）汇编语言** 的详细精简版总结，包含核心语法、常用指令和实用开发方案：
+
+---
+
+### **一、51汇编语法基础**
+#### **1. 指令格式**
+```assembly
+[标号:] 操作码 [操作数1][, 操作数2][, 操作数3] [;注释]
+```
+- **标号**：可选，代表地址（如 `LOOP:`）。
+- **操作码**：指令助记符（如 `MOV`, `ADD`）。
+- **操作数**：立即数、寄存器或地址（最多3个）。
+- **注释**：以 `;` 开头。
+
+#### **2. 常用伪指令**
+| 伪指令       | 作用                          | 示例                     |
+|--------------|-------------------------------|--------------------------|
+| `ORG`        | 设置程序起始地址              | `ORG 0000H`             |
+| `END`        | 程序结束标记                  | `END`                   |
+| `EQU`        | 定义符号常量                  | `COUNT EQU 30H`         |
+| `DB`/`DW`    | 定义字节/字数据               | `TAB: DB 01H, 02H`      |
+| `DS`         | 保留存储空间                  | `BUF: DS 10`            |
+
+---
+
+### **二、核心指令集**
+#### **1. 数据传送指令**
+| 指令          | 功能                         | 示例                     |
+|---------------|------------------------------|--------------------------|
+| `MOV A, #data`| 立即数→A                     | `MOV A, #55H`           |
+| `MOV Rn, A`   | A→寄存器Rn（R0-R7）          | `MOV R1, A`             |
+| `MOV @Ri, A`  | A→间接寻址（Ri=R0/R1）       | `MOV @R0, A`            |
+| `MOVX A, @DPTR`| 外部RAM→A（16位地址）        | `MOVX A, @DPTR`         |
+
+#### **2. 算术运算指令**
+| 指令          | 功能                         | 示例                     |
+|---------------|------------------------------|--------------------------|
+| `ADD A, #data`| A + 立即数→A                 | `ADD A, #10H`           |
+| `SUBB A, Rn`  | A - Rn - CY→A（带借位）      | `SUBB A, R2`            |
+| `INC DPTR`    | DPTR + 1→DPTR               | `INC DPTR`              |
+
+#### **3. 逻辑与位操作**
+| 指令          | 功能                         | 示例                     |
+|---------------|------------------------------|--------------------------|
+| `ANL A, #data`| A AND 立即数→A               | `ANL A, #0FH`           |
+| `ORL P1, A`   | P1 OR A→P1                   | `ORL P1, A`             |
+| `SETB bit`    | 位置1                       | `SETB P1.0`             |
+| `CLR C`       | 清进位CY                     | `CLR C`                 |
+
+#### **4. 控制转移指令**
+| 指令          | 功能                         | 示例                     |
+|---------------|------------------------------|--------------------------|
+| `LJMP addr16` | 长跳转（64KB范围）           | `LJMP MAIN`             |
+| `AJMP addr11` | 绝对跳转（2KB页内）          | `AJMP LOOP`             |
+| `DJNZ Rn, rel`| Rn减1，非零跳转              | `DJNZ R3, DELAY`        |
+| `CJNE A, #data, rel` | A≠data则跳转       | `CJNE A, #00H, ERROR`   |
+
+---
+
+### **三、寻址方式**
+| 寻址方式       | 示例                | 说明                     |
+|----------------|---------------------|--------------------------|
+| **立即寻址**   | `MOV A, #30H`      | 操作数为立即数           |
+| **寄存器寻址** | `MOV A, R0`        | 操作数为寄存器           |
+| **直接寻址**   | `MOV A, 40H`       | 操作数为RAM地址          |
+| **间接寻址**   | `MOV A, @R0`       | R0/R1指向RAM地址         |
+| **变址寻址**   | `MOVC A, @A+DPTR`  | A+DPTR指向ROM地址        |
+
+---
+
+### **四、开发方案与技巧**
+#### **1. 程序结构模板**
+```assembly
+ORG 0000H        ; 程序起始地址
+LJMP MAIN        ; 跳转到主程序
+
+ORG 0030H        ; 主程序避开中断向量区
+MAIN:
+    MOV SP, #60H ; 设置堆栈指针
+    ; 用户代码...
+LOOP:
+    NOP
+    SJMP LOOP    ; 无限循环
+
+ORG 0100H        ; 子程序/数据区
+DELAY:
+    MOV R7, #255
+    DJNZ R7, $
+    RET
+
+END
+```
+
+#### **2. 常用代码片段**
+- **软件延时**：
+  ```assembly
+  DELAY_MS:           ; 1ms延时（12MHz晶振）
+      MOV R6, #7
+  D1: MOV R7, #250
+  D2: DJNZ R7, D2
+      DJNZ R6, D1
+      RET
+  ```
+
+- **查表法（ROM访问）**：
+  ```assembly
+  MOV DPTR, #TABLE   ; 表首地址
+  MOV A, #2          ; 索引号
+  MOVC A, @A+DPTR    ; 读取表中第2个数据
+  TABLE: DB 10H, 20H, 30H
+  ```
+
+#### **3. 调试技巧**
+- **单步执行**：利用Keil μVision的仿真器逐步检查寄存器变化。
+- **端口监控**：通过 `MOV P1, A` 输出调试信号。
+- **断点设置**：在关键代码行插入 `NOP` 或设置硬件断点。
+
+---
+
+### **五、注意事项**
+1. **资源限制**：
+   - 内部RAM：128字节（52系列为256字节）。
+   - 使用 `MOVX` 指令访问外部RAM（需外扩芯片）。
+2. **中断向量**：
+   - 中断入口地址固定（如 `ORG 0003H` 对应外部中断0）。
+3. **位操作优势**：
+   - 直接操作位地址（如 `SETB 20H.0`）提升效率。
+
+---
+
+### **六、工具链推荐**
+- **汇编器**：Keil μVision、SDCC（开源）。
+- **仿真器**：Proteus 虚拟硬件调试。
+- **烧录工具**：STC-ISP（针对STC单片机）。
+
+掌握这些核心语法和方案后，可高效开发51单片机的中小规模嵌入式应用（如传感器控制、LED显示等）。
