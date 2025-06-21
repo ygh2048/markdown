@@ -1,0 +1,1978 @@
+<!DOCTYPE html><html><head>
+      <title>code</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:///c:\Users\ygh20\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.8.18\crossnote\dependencies\katex\katex.min.css">
+      
+      
+      
+      
+      
+      <style>
+      code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.4;-moz-tab-size:8;-o-tab-size:8;tab-size:8;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:.8em;overflow:auto;border-radius:3px;background:#f5f5f5}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal;background:#f5f5f5}.token.blockquote,.token.comment{color:#969896}.token.cdata{color:#183691}.token.doctype,.token.macro.property,.token.punctuation,.token.variable{color:#333}.token.builtin,.token.important,.token.keyword,.token.operator,.token.rule{color:#a71d5d}.token.attr-value,.token.regex,.token.string,.token.url{color:#183691}.token.atrule,.token.boolean,.token.code,.token.command,.token.constant,.token.entity,.token.number,.token.property,.token.symbol{color:#0086b3}.token.prolog,.token.selector,.token.tag{color:#63a35c}.token.attr-name,.token.class,.token.class-name,.token.function,.token.id,.token.namespace,.token.pseudo-class,.token.pseudo-element,.token.url-reference .token.variable{color:#795da3}.token.entity{cursor:help}.token.title,.token.title .token.punctuation{font-weight:700;color:#1d3e81}.token.list{color:#ed6a43}.token.inserted{background-color:#eaffea;color:#55a532}.token.deleted{background-color:#ffecec;color:#bd2c00}.token.bold{font-weight:700}.token.italic{font-style:italic}.language-json .token.property{color:#183691}.language-markup .token.tag .token.punctuation{color:#333}.language-css .token.function,code.language-css{color:#0086b3}.language-yaml .token.atrule{color:#63a35c}code.language-yaml{color:#183691}.language-ruby .token.function{color:#333}.language-markdown .token.url{color:#795da3}.language-makefile .token.symbol{color:#795da3}.language-makefile .token.variable{color:#183691}.language-makefile .token.builtin{color:#0086b3}.language-bash .token.keyword{color:#0086b3}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview ul{list-style:disc}.markdown-preview ul ul{list-style:circle}.markdown-preview ul ul ul{list-style:square}.markdown-preview ol{list-style:decimal}.markdown-preview ol ol,.markdown-preview ul ol{list-style-type:lower-roman}.markdown-preview ol ol ol,.markdown-preview ol ul ol,.markdown-preview ul ol ol,.markdown-preview ul ul ol{list-style-type:lower-alpha}.markdown-preview .newpage,.markdown-preview .pagebreak{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center!important}.markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .status{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0;min-height:100vh}@media screen and (min-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{font-size:14px!important;padding:1em}}@media print{html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% - 300px);padding:2em calc(50% - 457px - 300px / 2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+      <!-- The content below will be included at the end of the <head> element. --><script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    // your code here
+  });
+</script></head><body for="html-export">
+    
+    
+      <div class="crossnote markdown-preview  ">
+      
+<div class="md-toc">
+<details style="padding:0;;padding-left:0px;" open="">
+        <summary class="md-toc-link-wrapper">
+          <a href="#常用函数实现" class="md-toc-link"><p>常用函数实现</p>
+</a>
+          </summary>
+        <div>
+          <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#延时函数" class="md-toc-link">
+            <p>延时函数</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#独立按键扫描" class="md-toc-link">
+            <p>独立按键扫描</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#iic-函数" class="md-toc-link">
+            <p>IIC 函数</p>
+
+          </a></div>
+        </div>
+      </details>
+    <details style="padding:0;;padding-left:0px;" open="">
+        <summary class="md-toc-link-wrapper">
+          <a href="#51知识" class="md-toc-link"><p>51知识</p>
+</a>
+          </summary>
+        <div>
+          <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#xbyte" class="md-toc-link">
+            <p>XBYTE</p>
+
+          </a></div>
+        </div>
+      </details>
+    <details style="padding:0;;padding-left:0px;" open="">
+        <summary class="md-toc-link-wrapper">
+          <a href="#数码管代码" class="md-toc-link"><p>数码管代码</p>
+</a>
+          </summary>
+        <div>
+          <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#数码管动态扫描汇编版" class="md-toc-link">
+            <p>数码管动态扫描汇编版</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#数码管动态扫描c语言版" class="md-toc-link">
+            <p>数码管动态扫描C语言版</p>
+
+          </a></div>
+        </div>
+      </details>
+    <details style="padding:0;;padding-left:0px;" open="">
+        <summary class="md-toc-link-wrapper">
+          <a href="#8155扩展数码管显示" class="md-toc-link"><p>8155扩展,数码管显示</p>
+</a>
+          </summary>
+        <div>
+          <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#c语言代码" class="md-toc-link">
+            <p>C语言代码</p>
+
+          </a></div>
+        </div>
+      </details>
+    <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:18px">
+          <a href="#点阵屏幕显示c代码" class="md-toc-link">
+            <p>点阵屏幕显示C代码</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:18px">
+          <a href="#独立连接键盘c代码" class="md-toc-link">
+            <p>独立连接键盘C代码</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:18px">
+          <a href="#矩阵键盘线反转法" class="md-toc-link">
+            <p>矩阵键盘（线反转法）</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:18px">
+          <a href="#8155扩展按键使用行扫描法" class="md-toc-link">
+            <p>8155扩展按键，使用行扫描法</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:18px">
+          <a href="#lcd-1602字符液晶工作代码" class="md-toc-link">
+            <p>LCD 1602字符液晶工作代码</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:18px">
+          <a href="#24c04使用--iic" class="md-toc-link">
+            <p>24C04使用  (IIC)</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:18px">
+          <a href="#pca9544-使用" class="md-toc-link">
+            <p>PCA9544 使用</p>
+
+          </a></div><details style="padding:0;;padding-left:0px;" open="">
+        <summary class="md-toc-link-wrapper">
+          <a href="#adc0809读取lcd1602显示显示" class="md-toc-link"><p>ADC0809读取,LCD1602显示显示</p>
+</a>
+          </summary>
+        <div>
+          <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#io输入时序" class="md-toc-link">
+            <p>IO输入时序</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#定时器输入时序" class="md-toc-link">
+            <p>定时器输入时序</p>
+
+          </a></div>
+        </div>
+      </details>
+    <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:18px">
+          <a href="#dac0832使用" class="md-toc-link">
+            <p>DAC0832使用</p>
+
+          </a></div><details style="padding:0;;padding-left:0px;" open="">
+        <summary class="md-toc-link-wrapper">
+          <a href="#个人代码" class="md-toc-link"><p>个人代码</p>
+</a>
+          </summary>
+        <div>
+          <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#实验一-点阵led显示" class="md-toc-link">
+            <p>实验一 点阵led显示</p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#实验一-多段led显示" class="md-toc-link">
+            <p>实验一 多段led显示</p>
+
+          </a></div><details style="padding:0;;padding-left:24px;" open="">
+        <summary class="md-toc-link-wrapper">
+          <a href="#spi历程软件spi" class="md-toc-link"><p>SPI历程（软件SPI）</p>
+</a>
+          </summary>
+        <div>
+          <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#1-硬件连接示意图" class="md-toc-link">
+            <p><strong>1. 硬件连接示意图</strong></p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#2-完整代码示例" class="md-toc-link">
+            <p><strong>2. 完整代码示例</strong></p>
+
+          </a></div><details style="padding:0;;padding-left:24px;" open="">
+        <summary class="md-toc-link-wrapper">
+          <a href="#3-关键代码解析" class="md-toc-link"><p><strong>3. 关键代码解析</strong></p>
+</a>
+          </summary>
+        <div>
+          <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#1-spi时序控制" class="md-toc-link">
+            <p><strong>(1) SPI时序控制</strong></p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#2-字节传输逻辑" class="md-toc-link">
+            <p><strong>(2) 字节传输逻辑</strong></p>
+
+          </a></div>
+        </div>
+      </details>
+    <details style="padding:0;;padding-left:24px;" open="">
+        <summary class="md-toc-link-wrapper">
+          <a href="#4-扩展功能示例" class="md-toc-link"><p><strong>4. 扩展功能示例</strong></p>
+</a>
+          </summary>
+        <div>
+          <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#1-写入spi-flash一页数据" class="md-toc-link">
+            <p><strong>(1) 写入SPI Flash一页数据</strong></p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#2-读取spi-flash数据" class="md-toc-link">
+            <p><strong>(2) 读取SPI Flash数据</strong></p>
+
+          </a></div>
+        </div>
+      </details>
+    <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#5-注意事项" class="md-toc-link">
+            <p><strong>5. 注意事项</strong></p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#6-硬件spi扩展以stc15系列为例" class="md-toc-link">
+            <p><strong>6. 硬件SPI扩展（以STC15系列为例）</strong></p>
+
+          </a></div>
+        </div>
+      </details>
+    
+        </div>
+      </details>
+    <details style="padding:0;;padding-left:0px;" open="">
+        <summary class="md-toc-link-wrapper">
+          <a href="#汇编" class="md-toc-link"><p>汇编</p>
+</a>
+          </summary>
+        <div>
+          <details style="padding:0;;padding-left:24px;" open="">
+        <summary class="md-toc-link-wrapper">
+          <a href="#一-51汇编语法基础" class="md-toc-link"><p><strong>一、51汇编语法基础</strong></p>
+</a>
+          </summary>
+        <div>
+          <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#1-指令格式" class="md-toc-link">
+            <p><strong>1. 指令格式</strong></p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#2-常用伪指令" class="md-toc-link">
+            <p><strong>2. 常用伪指令</strong></p>
+
+          </a></div>
+        </div>
+      </details>
+    <details style="padding:0;;padding-left:24px;" open="">
+        <summary class="md-toc-link-wrapper">
+          <a href="#二-核心指令集" class="md-toc-link"><p><strong>二、核心指令集</strong></p>
+</a>
+          </summary>
+        <div>
+          <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#1-数据传送指令" class="md-toc-link">
+            <p><strong>1. 数据传送指令</strong></p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#2-算术运算指令" class="md-toc-link">
+            <p><strong>2. 算术运算指令</strong></p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#3-逻辑与位操作" class="md-toc-link">
+            <p><strong>3. 逻辑与位操作</strong></p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#4-控制转移指令" class="md-toc-link">
+            <p><strong>4. 控制转移指令</strong></p>
+
+          </a></div>
+        </div>
+      </details>
+    <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#三-寻址方式" class="md-toc-link">
+            <p><strong>三、寻址方式</strong></p>
+
+          </a></div><details style="padding:0;;padding-left:24px;" open="">
+        <summary class="md-toc-link-wrapper">
+          <a href="#四-开发方案与技巧" class="md-toc-link"><p><strong>四、开发方案与技巧</strong></p>
+</a>
+          </summary>
+        <div>
+          <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#1-程序结构模板" class="md-toc-link">
+            <p><strong>1. 程序结构模板</strong></p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#2-常用代码片段" class="md-toc-link">
+            <p><strong>2. 常用代码片段</strong></p>
+
+          </a></div><div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#3-调试技巧" class="md-toc-link">
+            <p><strong>3. 调试技巧</strong></p>
+
+          </a></div>
+        </div>
+      </details>
+    <div class="md-toc-link-wrapper" style="padding:0;;display:list-item;list-style:square;margin-left:42px">
+          <a href="#五-注意事项" class="md-toc-link">
+            <p><strong>五、注意事项</strong></p>
+
+          </a></div>
+        </div>
+      </details>
+    
+</div>
+<h1 id="常用函数实现">常用函数实现 </h1>
+<h2 id="延时函数">延时函数 </h2>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>void delay_ms(INT16U x) 
+{
+	INT8U t; while(x--) for(t = 0; t &lt; 120; t++);
+}
+</code></pre><h2 id="独立按键扫描">独立按键扫描 </h2>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>uchar keybd()
+{
+    P1=0xFF; 
+    if(~P1)
+    {
+    i=(~P1)&amp;0x3F;
+    delay_ms(10);						 //去抖动
+    if(((~P1)&amp;0x3F)==i)
+    switch(i){
+        case 0x01:i=0;
+                    while(~P1);			 //等待键释放，下同
+                    break;
+        case 0x02:i=0;while(~P1);break;
+        case 0x04:i=1;while(~P1);break;
+        case 0x08:i=2;while(~P1);break;
+        case 0x10:i=3;while(~P1);break;
+        case 0x20:i=4;while(~P1);break;
+        case 0x40:i=5;while(~P1);break;
+            }
+        }
+        return i;
+}
+
+
+</code></pre><h2 id="iic-函数">IIC 函数 </h2>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>//在IIC上产生起始信号
+void Start()
+{
+	SDA=1;
+	SCL=1;
+	NOP4();		//执行四次NOP（空操作），延时，下同
+	SDA=0;
+	NOP4();
+	SCL=0;
+}
+//在IIC上产生停止信号
+void Stop()
+{
+	SDA=0;
+	SCL=0;
+	NOP4();
+	SCL=1;
+	NOP4();
+	SDA=1;
+} 
+//读取应答
+void RACK()
+{
+	SDA=1;
+	NOP4();
+	SCL=1;
+	NOP4();
+	SCL=0;
+}
+//发送非应答信号
+void NO_ACK()
+{
+	SDA=1;
+	SCL=1;
+	NOP4();
+	SCL=0;
+	SDA=0;
+}
+</code></pre><h1 id="51知识">51知识 </h1>
+<h2 id="xbyte">XBYTE </h2>
+<p>XBYTE 是Keil C51编译器提供的扩展关键字，属于absacc.h头文件中的宏，用于直接访问8051的外部数据存储器空间（XDATA）。其底层实现为：<br>
+<code>#define XBYTE ((unsigned char volatile xdata *) 0)</code><br>
+作用：将外部存储器的16位地址映射为指针，通过数组形式访问<br>
+寻址范围：0x0000~0xFFFF（共64KB）</p>
+<h1 id="数码管代码">数码管代码 </h1>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>//共阳数码管0~9的数字段码表
+code INT8U SEG_CODE[] = {0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90};
+</code></pre><p>动态扫描原理图：<br>
+<img src="image.png" alt="alt text"></p>
+<h2 id="数码管动态扫描汇编版">数码管动态扫描汇编版 </h2>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>MAIN: 
+      MOV   70H,  #02H		   ;将单片机RAM地址70H - 77H设置为缓存单元，填入显示的内容，比如20200312
+      MOV   71H,  #00H		   
+      MOV   72H,  #02H
+      MOV   73H,  #00H
+      MOV   74H,  #00H
+      MOV   75H,  #03H
+	  MOV   76H,  #01H
+      MOV   77H,  #02H
+
+AGAIN:ACALL  DISP1 ;
+      SJMP   AGAIN ;主程序末尾应跳转至再次刷新显示或原地等待
+
+;----------------------------------------显示子程序------------            
+DISP1:MOV	R0, #77H           ;R0作显示缓存区的指针，初始指向77H单元，初始选中最右LED
+      MOV	R2, #10000000B     ;R2存放位选码，初始选中KED最右位
+LOOP:MOV    A, #00H
+     MOV    P2, A				;先关闭所有位
+     MOV    A, @R0
+     MOV    DPTR, #PTRN          
+     MOVC   A, @A+DPTR         ;查段选码PTRN，将显示缓存单元的数字代码转换为对应的段选码
+     MOV    P0, A	 		   ;输出段选码
+     MOV    P2,  R2			   ;
+     CALL    D1MS			
+     DEC	 R0			
+     MOV     A, R2			
+     CLR	 C			
+     RRC	 A			
+     JC	    PASS			   ;判断是否8位都已经显示完毕，是就转到PASS
+     MOV     R2,   A		   ;还没显示完，就继续循环
+     AJMP	LOOP	
+PASS: MOV   A,    #00H
+     MOV    P2, A              ;退出子程序前，关闭所有位   
+     RET		
+;----------------延时1ms子程序--------------------------		   
+D1MS:MOV	R7, #02H		      
+DMS:MOV         R6, #0FFH
+    DJNZ	R6, $
+    DJNZ	R7, DMS	
+    RET
+
+;----------------共阳极段码表---------------------------
+PTRN:DB 0C0H, 0F9H, 0A4H, 0B0H, 99H
+     DB 92H, 82H, 0F8H, 80H, 90H
+
+
+;----------------共阴级段码表---------------------------
+PTRNC:DB 3FH, 06H, 5BH, 4FH, 66H
+     DB 6DH, 7DH, 07H, 7FH, 6FH
+
+	END
+</code></pre><h2 id="数码管动态扫描c语言版">数码管动态扫描C语言版 </h2>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>void main()
+{
+	INT8U i;  
+	array[3]=1;
+	while (1)
+	{
+	   for ( i=0; i&lt;8; i++ ) //扫描显示8位数码管
+	   { P0= 0xff;		//段码口输出全1，即先关闭
+	     P2=1 &lt;&lt; i;		//输出位选码		 00000001   	  00000010       00000100       ....    10000000
+		 P0=SEG_CODE[array[i]];	 //输出段选码
+		 delay_ms(4);	     
+	   }  					 
+	}
+}
+</code></pre><h1 id="8155扩展数码管显示">8155扩展,数码管显示 </h1>
+<p>原理图如下：<br>
+<img src="image-1.png" alt="alt text"></p>
+<h2 id="c语言代码">C语言代码 </h2>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>#include&lt;reg52.h&gt;
+#include&lt;absacc.h&gt;
+#include &lt;intrins.h&gt;
+#define uchar unsigned char
+#define uint unsigned int
+#define dula_data XBYTE[0x7f02]	  //8155 PB口地址 
+#define wela_data XBYTE[0x7f01]	  //8155 PA口地址
+#define dispcom XBYTE[0x7f00]	  //8155命令寄存器地址
+uchar code table[]={
+0x3f,0x06,0x5b,0x4f,
+0x66,0x6d,0x7d,0x07,
+0x7f,0x6f,0x77,0x7c,
+0x39,0x5e,0x79,0x71,
+0x76,0x38};
+void delay(uint x)
+{
+	uint i,j;
+	for(i=x;i&gt;0;i--)
+		for(j=11;j&gt;0;j--) ;
+}
+void main()
+{                       
+    dispcom=0x03;
+    //使用8155前别忘了应先对其初始化,
+    //设置其口的工作方式、输出输入方向！
+    //这里设置PA口，PB口为基本输出方式，为输出口。   
+    while(1)	    			 
+   {
+    wela_data=0x20;
+    dula_data=table[5];
+		delay(5);
+                
+    wela_data=0x10;
+    dula_data=table[4];
+		delay(5);
+                
+    wela_data=0x08;
+    dula_data=table[3];
+		delay(5);
+                
+    wela_data=0x04;
+    dula_data=table[2];
+		delay(5);
+                
+    wela_data=0x02;
+    dula_data=table[1];
+		delay(5);
+                
+    wela_data=0x01;
+    dula_data=table[0];
+		delay(5);          
+    }
+}
+</code></pre><h1 id="点阵屏幕显示c代码">点阵屏幕显示C代码 </h1>
+<p>原理图如下：<br>
+<img src="image-2.png" alt="alt text"></p>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>//  名称: TIMER0控制8×8LED点阵屏显示数字
+
+
+#include &lt;reg51.h&gt;
+#include &lt;intrins.h&gt;
+#define INT8U   unsigned char
+#define INT16U  unsigned int
+//-----------------------------------------------------------------
+// 数字点阵
+//-----------------------------------------------------------------
+INT8U code DotMatrix[] = 
+{	0x00,0x3E,0x41,0x41,0x41,0x3E,0x00,0x00,	//0	的点阵码
+	0x00,0x00,0x00,0x21,0x7F,0x01,0x00,0x00,	//1	的点阵码
+	0x00,0x27,0x45,0x45,0x45,0x39,0x00,0x00,	//2	的点阵码
+	0x00,0x22,0x49,0x49,0x49,0x36,0x00,0x00,	//3	的点阵码
+	0x00,0x0C,0x14,0x24,0x7F,0x04,0x00,0x00,	//4	的点阵码
+	0x00,0x72,0x51,0x51,0x51,0x4E,0x00,0x00,	//5	的点阵码
+	0x00,0x3E,0x49,0x49,0x49,0x26,0x00,0x00,	//6	的点阵码
+	0x00,0x40,0x40,0x40,0x4F,0x70,0x00,0x00,	//7	的点阵码
+	0x00,0x36,0x49,0x49,0x49,0x36,0x00,0x00,	//8	的点阵码
+	0x00,0x32,0x49,0x49,0x49,0x3E,0x00,0x00		//9	的点阵码
+};
+INT8U i=0,t=0,Num_Index,cs; 
+
+//------------------------------------------------------------------
+// 主程序
+//------------------------------------------------------------------
+void main() 
+{  
+ //P3=0x80;       //列选码初值1000000B，经左移1位，根据连线图可知最先选C0列
+  cs=0x80;
+ Num_Index=0;    //从“0 ”开始显示 
+ TMOD=0x00;      //T0 工作在方式 0 、作13位的定时器
+ TH0=(8192-2000)/32;   //求定时 2ms的初值，高8位放TH0,
+ TL0=(8192-2000)%32;  //初值低5位放TL0 （2^13=8192，2^5=32）
+ IE=0x82;    //开T0中断和总中断
+ TR0=1;      //启动 T0 
+ while(1);    //无限循环，(每当定时时间到，则执行中断函数一次)
+} 
+
+//------------------------------------------------------------------
+// T0定时器溢出中断函数控制LED点阵屏刷新显示
+//------------------------------------------------------------------
+void LED_Screen_Refresh() interrupt 1 
+{
+    TH0=(8192-2000)/32;      //重置初值 
+    TL0=(8192-2000)%32; 
+	
+//	P2=0xff;        //输出点阵码 
+    P3=0x00;
+	P2=~DotMatrix[Num_Index*8+i]; //因LED是共阳极故取反
+    cs=_crol_(cs,1);
+	P3=cs;
+   //P3=_crol_(P3,1);  //P3值循环左移1位，调整列选码并输出	
+   if(++i==8) i=0;   //每个数字的点阵码有 8 个字节 
+   if(++t==250)    //每个数字刷新显示一段时间(执行该函数250次
+                     //即约250×2ms后调整指针Num_Index显示下一个 
+ { 
+    t=0; 
+    if(++Num_Index==10) Num_Index=0; //偏移量加1，显示
+             //下一个数字,若偏移量加1后=10，则重置为从0开始 
+ } 
+
+
+</code></pre><h1 id="独立连接键盘c代码">独立连接键盘C代码 </h1>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>#include &lt;reg52.h&gt;
+#define uchar	unsigned char
+#define uint	unsigned int
+//0~9的共阴数码管段码表
+code uchar SEG_CODE[] = { 0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F,0x40};
+uchar keybd();
+uchar i=10;			             //初始显示短横线
+void delay_ms(uchar x) {
+	uchar t; while(x--) for(t = 0; t &lt; 120; t++);
+}
+  
+void main()
+{  						 
+   while(1){
+	P2=	 SEG_CODE[keybd()]	;
+	}
+}
+uchar keybd()
+{
+			P1=0xFF; 
+			if(~P1)
+			{
+			i=(~P1)&amp;0x3F;
+			delay_ms(10);						 //去抖动
+			if(((~P1)&amp;0x3F)==i)
+			switch(i){
+				case 0x01:i=0;
+				          while(~P1);			 //等待键释放，下同
+						  break;
+				case 0x02:i=1;while(~P1);break;
+				case 0x04:i=2;while(~P1);break;
+				case 0x08:i=3;while(~P1);break;
+				case 0x10:i=4;while(~P1);break;
+				case 0x20:i=5;while(~P1);break;
+			        }
+			 }
+			 return i;
+}
+
+</code></pre><h1 id="矩阵键盘线反转法">矩阵键盘（线反转法） </h1>
+<p>原理图：<br>
+<img src="image-3.png" alt="alt text"></p>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>// 键盘扫描函数 (4x4矩阵键盘)
+void Keys_Scan()
+{ 
+	P3 = 0x00;   // 列输出低电平
+	P1 = 0x0f;   // 行输入带上拉
+	delay_ms(1);
+	
+	if (P1 == 0x0f) // 无按键
+	{
+		keyNo = 0xff;
+		return;
+	}
+
+	// 检测按键所在的列
+	switch (P1)
+	{
+		case 0x0e: keyNo = 0; break;  // 第0列 
+		case 0x0d: keyNo = 1; break;  // 第1列
+		case 0x0b: keyNo = 2; break;  // 第2列
+		case 0x07: keyNo = 3; break;  // 第3列
+		default:   keyNo = 0xff; return;
+	}
+
+	// 检测按键所在的行
+	P1 = 0x00;   // 行输出低电平
+	P3 = 0xff;   // 列输入带上拉
+	delay_ms(1);
+	
+	if (P3 == 0xff) // 无按键
+	{
+		keyNo = 0xff;
+		return;
+	}
+	
+	switch(P3)
+	{
+		case 0xfe: keyNo += 0;  break; // 第0行 
+		case 0xfd: keyNo += 4;  break; // 第1行
+		case 0xfb: keyNo += 8;  break; // 第2行
+		case 0xf7: keyNo += 12; break; // 第3行
+		default:   keyNo = 0xff;
+	}
+}
+</code></pre><h1 id="8155扩展按键使用行扫描法">8155扩展按键，使用行扫描法 </h1>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>#include&lt;reg52.h&gt;
+#include&lt;absacc.h&gt;
+#include &lt;intrins.h&gt;
+#define uchar unsigned char
+#define uint unsigned int
+#define dula_data XBYTE[0x7f02]  //8155 PB口地址 
+#define scan_data XBYTE[0x7f01]	  //8155 PA口地址  扫描口
+#define read_data XBYTE[0x7f03]	  //8155 PC口地址  回扫口
+#define dispcom XBYTE[0x7f00]	  //8155命令寄存器地址
+sbit LED = P1^0;
+uchar code table[]={
+0x3f,0x06,0x5b,0x4f,
+0x66,0x6d,0x7d,0x07,
+0x7f,0x6f,0x77,0x7c,
+0x39,0x5e,0x79,0x71,
+0x76,0x38};		  
+uchar keyNo = 0xff;
+void key8155();
+void delay_ms(uint x)
+{
+	uchar t;
+	while(x--) for(t = 0; t &lt; 120; t++);
+}
+//--------------------主程序------------------------------------------------------------------------------------------------
+void main()
+{   uchar keyNo_temp =0xff;                    
+    dispcom=0x01;              // 使用8155前应先对其初始化设置其口的工作方式、输出输入方向！A口基本输出方式，C口为输入方式   
+	while(1)	    			  
+	{	key8155();
+	    if(keyNo==0xff) {delay_ms(10);continue;}
+		keyNo_temp= keyNo;						 //有按键	 
+		while(key8155(), keyNo!= 0xff);			 // 等键释放 
+		LED = ~LED; 							 
+		DBYTE[0x70]= keyNo_temp;    			 
+	}
+}
+//---------------------键盘接口子程序----------------------------------------------------------------------------------------
+void key8155()
+{    uchar i;
+     scan_data = 0x00 ;	 
+	 delay_ms(1);
+	 if (((~read_data)&amp;0x0f) == 0x00)
+	 {
+		keyNo = 0xff;
+		return;               //无按键提前返回
+	 }	
+	 delay_ms(10);	          //去抖动
+     scan_data = 0x00 ;	 
+	 delay_ms(1);
+	 if (((~read_data)&amp;0x0f) == 0x00)
+	 {
+		keyNo = 0xff;
+		return;               //无按键提前返回
+	 }
+	 for(i=0; i&lt;8; i++)
+	 {   
+	 	 scan_data =~(1 &lt;&lt; i);	
+		 delay_ms(1);
+		 
+		 switch((~read_data)&amp;0x0f)
+		 {	case 0x01:keyNo=0+i; return;		//赋值键号=首行键号+列号；返回
+		    case 0x02:keyNo=8+i; return;
+			case 0x04:keyNo=16+i; return;
+			case 0x08:keyNo=24+i; return; 
+			case 0x00:break;					//不是此列有按键。break，扫描下一列
+			
+		 }
+	     	    
+	 }
+    	keyNo = 0xff;
+		return; 
+}
+
+
+</code></pre><h1 id="lcd-1602字符液晶工作代码">LCD 1602字符液晶工作代码 </h1>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>#include &lt;reg51.h&gt;	
+#define uchar unsigned char 
+#define uint unsigned int
+uchar code table1[]="I LOVE MCU!";        //第一行显示的字符,共11个
+uchar code table2[]="WWW.YNMEC.COM";      //第二行显示的字符，共13个
+sbit RS=P2^5;          //单片机端口定义
+sbit RW=P2^6;
+sbit E=P2^7;
+uchar num;
+void delay(uint xms)      //----------延时子函数--------------------
+{
+	uint i,j;
+	for(i=xms;i&gt;0;i--)
+		for(j=125;j&gt;0;j--);
+}
+
+void write_com(uchar com)     //---------写命令子函数------------
+{	RS=0;        //写命令
+	RW=0;       //写模式
+    P0=com;     //将命令字送到数据线上
+	delay(5);     //稍延时
+    E=1;  //给E一个高脉冲将命令字送入液晶控制器，完成写操作
+	delay(5);
+	E=0;
+}
+void write_data(uchar date)  //---------写数据子函数---------------
+{	RS=1;             //写数据
+	RW=0;            // 写模式
+	P0 = date;       //将要写的数据送到数据线上
+	delay(5);        //稍延时
+     E=1;   //给E一个高脉冲将命令字送入液晶控制器，完成写操作
+	delay(5);
+	E=0;
+}
+void LCD1602_init()      //--------------LCD1602初始化设置------------
+{
+	E=0;
+    write_com(0x38);      //设置8位数据接口，16×2显示，5×7点阵
+    write_com(0x0c);      //设置开显示，光标不显示
+    write_com(0x06);      //写一个字符后地址指针自动加上
+    write_com(0x01);      //清屏，数据指针清0
+}
+
+//---------------------主函数-----------------------------------------
+void main()
+{	LCD1602_init();
+	write_com(0x80);      //DDRAM数据指针定位在第一行第一个字符处
+	for(num=0;num&lt;11;num++)  //写第一行要显示的信息
+	{	write_data(table1[num]);
+		delay(5);     //每两个字符间稍延时
+	}
+	write_com(0x80+0x40); // 数据指针定位在第二行首字符处
+	for(num=0;num&lt;13;num++)   //写第二行要显示的信息
+	{
+		write_data(table2[num]);
+	           delay(5);
+	}
+	while(1);
+}
+
+</code></pre><h1 id="24c04使用--iic">24C04使用  (IIC) </h1>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>#include&lt;reg51.h&gt;
+#include&lt;intrins.h&gt;	
+#define uchar unsigned char
+#define uint unsigned int
+#define NOP4() {_nop_();_nop_();_nop_();_nop_();}
+sbit SCL=P1^0;
+sbit SDA=P1^1;
+sbit SPK=P3^0;					//蜂鸣器输出端
+//标准音阶频率对应的定时初值表		 按照1234567和高音的1234567存放，共14个音符，即数组第0~6对应音符1234567，第7~13对应高音音符1234567.
+uchar code HI_LIST[]={226,229,232,233,236,238,240,241,242,244,245,246,247,248}; //依次对应1234567和高音的1234567的T0高位定时初值
+uchar code LO_LIST[]={4,13,10,20,3,8,6,2,23,5,26,1,4,3};   //依次对应1234567和高音的1234567的T0低位定时初值
+//待写入24C04的音符
+uchar code Song_24C04[]={0,1,2,0,0,1,2,0,2,3,4,4,2,3,4,4};//1234567音符分别对应上面数组的0123456位置，所以要把简谱里的音符号要减1后存入
+//uchar code Song2_24C04[]={0,0,4,4,5,5,4,4,3,3,2,2,1,1,0,0,4,4,3,3,2,2,1,1,4,4,3,3,2,2,1,1,0,0,4,4,5,5,4,4,3,3,2,2,1,1,0,0};//小星星
+uchar sidx;			//读取音符索引
+//延时
+void DelayMS(uint ms)
+{	
+	uchar i;
+	while(ms--) for(i=0;i&lt;120;i++);
+}
+//在IIC上产生起始信号
+void Start()
+{
+	SDA=1;
+	SCL=1;
+	NOP4();		//执行四次NOP（空操作），延时，下同
+	SDA=0;
+	NOP4();
+	SCL=0;
+}
+//在IIC上产生停止信号
+void Stop()
+{
+	SDA=0;
+	SCL=0;
+	NOP4();
+	SCL=1;
+	NOP4();
+	SDA=1;
+} 
+//读取应答
+void RACK()
+{
+	SDA=1;
+	NOP4();
+	SCL=1;
+	NOP4();
+	SCL=0;
+}
+//发送非应答信号
+void NO_ACK()
+{
+	SDA=1;
+	SCL=1;
+	NOP4();
+	SCL=0;
+	SDA=0;
+}
+//向24C04中写一个字节数据
+void Write_A_Byte(uchar b)
+{
+	uchar i;
+	for(i=0;i&lt;8;i++)
+	{
+		b&lt;&lt;=1;	    //将要传输的字节左移一位,最高一位移到了进位位C中，（CY就是表示进位位c）
+		SDA=CY;		
+		_nop_();
+		SCL=1;
+		NOP4();
+		SCL=0;
+	}
+	RACK();			//接收从机的应答信号
+}
+//向指定地址写数据
+void Write_IIC(uchar addr,uchar dat)
+{
+	Start();
+	Write_A_Byte(0xa0);
+	Write_A_Byte(addr);
+	Write_A_Byte(dat);
+	Stop();
+	DelayMS(10);
+}
+//从24C04中读一个字节数据
+uchar Read_A_Byte()
+{
+	uchar i,b;      
+	for(i=0;i&lt;8;i++)
+	{
+		SCL=1;
+		b&lt;&lt;=1;		  //当前b左移1位————各位往高位移1位，最低位变为0
+		b|=SDA;		  //b的最低位与SDA线上的值相“或”，“或”后结果放b的最低位	,就等价于将读取到的当前位数据放进b中最低位（之后经多次移位，移到对应的数据位上）
+		SCL=0;
+	}
+	return b;		  //返回值b中内容就是读到的一个字节
+}
+//从当前地址读取数据
+uchar Read_Current()
+{
+	uchar d;
+	Start();
+	Write_A_Byte(0xa1);
+	d=Read_A_Byte();  //读取到的字节数据放d中
+	NO_ACK();
+	Stop();
+	return d;
+}
+//从任意地址读取数据
+uchar Random_Read(uchar addr)
+{
+	Start();
+	Write_A_Byte(0xa0);
+	Write_A_Byte(addr);
+	Stop();
+	return Read_Current();
+}
+//定时器0中断
+void T0_INT() interrupt 1
+{
+	SPK=~SPK;    	   // P3.0电平反转一次
+	TH0=HI_LIST[sidx];
+	TL0=LO_LIST[sidx];
+}
+//主程序
+void main()
+{
+	uint i;
+	IE=0x82;
+	TMOD=0x00;					   //设置定时器 T0为13位定时器
+	for(i=0;i&lt;16;i++)			   //将存放在Song_24C04[]的乐谱写入24C04。其实实际上该写入步骤并不是在主函数执行。实际应是预先将多首歌曲乐谱存入24C04，掉电不会丢失，
+	                               //而单片机在程序中只需要对24c04进行读操作，依次取出并播放
+	{
+		Write_IIC(i,Song_24C04[i]);
+	} 
+
+/*		for(i=0;i&lt;48;i++)		   //将存放在Song2_24C04[]的乐谱写入24C04。其实实际上该写入步骤并不是在主函数执行。实际应是预先将多首歌曲乐谱存入24C04，掉电不会丢失，
+	                               //而单片机在程序中只需要对24c04进行读操作，依次取出并播放
+	{
+		Write_IIC(i,Song2_24C04[i]);	 
+	}								 */
+
+	while(1)			 			//读取一个音符并播放，重复16次
+	{
+    	for(i=0;i&lt;16;i++)			//从24C04中读取第1首	
+	/*	   	for(i=0;i&lt;48;i++)			//从24C04中读取第2首   */
+		{
+			sidx=Random_Read(i);	//从指定地址读取
+			TH0=HI_LIST[sidx];
+	        TL0=LO_LIST[sidx];
+			TR0=1;					//启动定时器，让播放
+			DelayMS(350);			//该延时控制每个音符播放的时长，该延时短则体现出乐曲节拍快，反之节拍慢
+		}
+	}
+}
+
+
+</code></pre><h1 id="pca9544-使用">PCA9544 使用 </h1>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>#include&lt;reg51.h&gt;
+#include&lt;intrins.h&gt;	
+#define uchar unsigned char
+#define uint unsigned int
+#define NOP4() {_nop_();_nop_();_nop_();_nop_();}
+sbit SCL=P0^0;
+sbit SDA=P0^1;
+#define PCA9554_LED 0x40
+#define PCA9554_KEY 0x42
+uchar buffer1[1];
+uchar buffer2[1];
+//延时
+void DelayMS(uint ms)
+{	
+	uchar i;
+	while(ms--) for(i=0;i&lt;120;i++);
+}
+//在IIC上产生起始信号
+void Start()
+{
+	SDA=1;
+	SCL=1;
+	NOP4();		//执行四次NOP（空操作），延时，下同
+	SDA=0;
+	NOP4();
+	SCL=0;
+}
+//在IIC上产生停止信号
+void Stop()
+{
+	SDA=0;
+	SCL=0;
+	NOP4();
+	SCL=1;
+	NOP4();
+	SDA=1;
+} 
+//读取应答
+void RACK()
+{
+	SDA=1;
+	NOP4();
+	SCL=1;
+	NOP4();
+	SCL=0;
+}
+//发送非应答信号
+void NO_ACK()
+{
+	SDA=1;
+	SCL=1;
+	NOP4();
+	SCL=0;
+	SDA=0;
+}
+//向24C04中写一个字节数据
+void Write_A_Byte(uchar b)
+{
+	uchar i;
+	for(i=0;i&lt;8;i++)
+	{
+		b&lt;&lt;=1;	    //将要传输的字节左移一位,最高一位移到了进位位C中，（CY就是表示进位位c）
+		SDA=CY;		
+		_nop_();
+		SCL=1;
+		NOP4();
+		SCL=0;
+	}
+	RACK();			//接收从机的应答信号
+}
+//向指定地址写数据
+void Write_IIC(uchar addr,uchar dat)
+{
+	Start();
+	Write_A_Byte(0xa0);
+	Write_A_Byte(addr);
+	Write_A_Byte(dat);
+	Stop();
+	DelayMS(10);
+}
+//从中读一个字节数据
+uchar Read_A_Byte()
+{
+	uchar i,b;      
+	for(i=0;i&lt;8;i++)
+	{
+		SCL=1;
+		b&lt;&lt;=1;		  //当前b左移1位————各位往高位移1位，最低位变为0
+		b|=SDA;		  //b的最低位与SDA线上的值相“或”，“或”后结果放b的最低位	,就等价于将读取到的当前位数据放进b中最低位（之后经多次移位，移到对应的数据位上）
+		SCL=0;
+	}
+	return b;		  //返回值b中内容就是读到的一个字节
+}
+//从当前地址读取数据
+uchar Read_Current()
+{
+	uchar d;
+	Start();
+	Write_A_Byte(0xa1);
+	d=Read_A_Byte();  //读取到的字节数据放d中
+	NO_ACK();
+	Stop();
+	return d;
+}
+//从任意地址读取数据
+uchar Random_Read(uchar addr)
+{
+	Start();
+	Write_A_Byte(0xa0);
+	Write_A_Byte(addr);
+	Stop();
+	return Read_Current();
+}
+void ISendStr(uchar sla,uchar suba,uchar (*s)[1])
+{
+			Start();
+			Write_A_Byte(sla);
+			Write_A_Byte(suba);
+			Write_A_Byte((*s)[0]);
+			Stop();
+			DelayMS(10);
+				
+}
+void IRcvStr(uchar sla,uchar suba,uchar (*s)[1])
+{
+//			Start();
+//			Write_A_Byte(sla);
+//			Write_A_Byte(suba);
+//			Write_A_Byte(0x43);
+//			(*s)[0]=Read_A_Byte();
+//			Stop();
+//			DelayMS(10);
+				Write_IIC(sla,suba);
+				Start();
+				Write_A_Byte(0x43);
+				(*s)[0]=Read_A_Byte();
+				Stop();
+				DelayMS(10);
+}
+void main()
+{
+			buffer1[0]=0x00;
+			ISendStr(PCA9554_LED,0x03,&amp;buffer1);
+			buffer1[0]=0xff;
+			ISendStr(PCA9554_LED,0x01,&amp;buffer1);//初始输出全1，LED全灭。
+			while(1)
+			{
+				IRcvStr(PCA9554_KEY,0x00,&amp;buffer2);
+				ISendStr(PCA9554_LED,0x01,&amp;buffer2);
+			}
+			
+			
+
+}
+
+
+
+</code></pre><h1 id="adc0809读取lcd1602显示显示">ADC0809读取,LCD1602显示显示 </h1>
+<h2 id="io输入时序">IO输入时序 </h2>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>#include &lt;reg51.h&gt;       // 8051标准头文件
+#include &lt;intrins.h&gt;     // 内联函数库（包含_nop_()）
+#define uchar unsigned char  // 定义无符号字符类型简写
+#define uint unsigned int    // 定义无符号整型简写
+#define NOP4() {_nop_();_nop_();_nop_();_nop_();}  // 4个空指令延时宏
+
+// I2C通信引脚定义（用于PCA9554通信）
+sbit SCL = P0^0;  // I2C时钟线
+sbit SDA = P0^1;  // I2C数据线
+
+// PCA9554器件地址定义（用于LCD数据线控制）
+#define PCA9554_LCD 0x40  // 器件地址：A0A1A2=000（二进制01000000）
+
+// ADC0809引脚定义
+sbit OE  = P1^0;    // 输出使能（高电平有效）
+&lt;!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} --&gt;
+
+sbit EOC = P1^1;    // 转换结束标志（低电平表示转换中）
+sbit ST  = P1^2;    // 启动转换信号（上升沿触发）
+sbit CLK = P1^3;    // 时钟输入（典型频率500kHz）
+
+// LCD1602控制引脚定义
+sbit RS = P2^0;     // 寄存器选择（0=指令寄存器，1=数据寄存器）
+sbit RW = P2^1;     // 读写控制（0=写，1=读）
+sbit E  = P2^2;     // 使能信号（下降沿执行命令）
+
+// 全局变量
+uchar adc_raw;       // 存储ADC原始值（0-255）
+
+// 通道3选择参数（对应ADC0809的IN3通道）
+const uchar channel_three[3] = {0, 0, 1};  // 二进制011选择IN3
+
+// 函数声明
+void DelayMS(uint ms);                // 毫秒级延时
+void I2C_Start();                     // I2C起始信号
+void I2C_Stop();                      // I2C停止信号
+void I2C_SendByte(uchar dat);         // I2C发送单字节
+void PCA9554_Write(uchar addr, uchar reg, uchar dat); // PCA9554写操作
+void ADC_Init();                      // ADC初始化
+uchar ADC_Read();                     // ADC读取数据
+void LCD_Init();                      // LCD初始化
+void LCD_Cmd(uchar cmd);              // 发送LCD指令
+void LCD_Data(uchar dat);             // 发送LCD数据
+void Timer0_Init();                   // 定时器0初始化（用于ADC时钟）
+void Display_Voltage(uint voltage);   // 电压显示函数
+
+// 定时器0中断服务函数（为ADC0809提供时钟）
+void Timer0_ISR() interrupt 1 {  // 中断号1对应定时器0
+    CLK = !CLK;  // 翻转时钟信号（产生方波）
+}
+
+// 主函数
+void main() {
+    uint voltage;  // 存储计算后的电压值（单位：mV）
+    
+    Timer0_Init();  // 初始化定时器（用于ADC时钟）
+    ADC_Init();     // 初始化ADC0809
+    PCA9554_Write(PCA9554_LCD, 0x03, 0x00); // 配置PCA9554的PORT0为输出模式
+    LCD_Init();     // 初始化LCD1602
+    
+    while(1) {
+        adc_raw = ADC_Read();  // 读取ADC值（通道3）
+        // 将ADC值转换为电压（0-5V对应0-5000mV）
+        voltage = (uint)adc_raw * 5000UL / 255; 
+        Display_Voltage(voltage);  // LCD显示电压
+        DelayMS(100);              // 采样间隔100ms
+    }
+}
+
+// 定时器0初始化（模式2，自动重载）
+void Timer0_Init() {
+    TMOD = 0x02;    // 设置定时器模式2（8位自动重载）
+    TH0 = TL0 = 230; // 定时初值（12MHz晶振下约52μs周期）
+    ET0 = 1;        // 使能定时器0中断
+    EA = 1;         // 开启总中断
+    TR0 = 1;        // 启动定时器0
+}
+
+// ADC0809初始化
+void ADC_Init() {
+    P1 = 0x3F;      // 初始化P1口（高两位保留，低6位用于ADC控制）
+    OE = 0;         // 输出使能置低
+    ST = 0;         // 转换启动信号置低
+    CLK = 0;        // 时钟初始低电平
+}
+
+// 读取ADC值（通道3）
+uchar ADC_Read() {
+    uchar result;
+    ST = 0;         // 确保ST初始低电平
+    ST = 1;         // 产生上升沿启动转换
+    ST = 0;
+    while(EOC == 0); // 等待转换完成（EOC变高）
+    _nop_(); _nop_(); // 短暂延时确保稳定
+    OE = 1;         // 允许输出数据
+    result = P3;    // 从P3口读取转换结果
+    OE = 0;         // 关闭输出
+    return result;
+}
+
+// LCD1602初始化
+void LCD_Init() {
+    PCA9554_Write(PCA9554_LCD, 0x01, 0x00); // 初始化PCA9554输出寄存器
+    LCD_Cmd(0x38);  // 功能设置：8位总线，2行显示，5x8点阵
+    LCD_Cmd(0x0C);  // 显示控制：开显示，关光标
+    LCD_Cmd(0x06);  // 输入模式：地址递增，不移屏
+    LCD_Cmd(0x01);  // 清屏
+    DelayMS(5);     // 等待清屏完成
+}
+
+// 发送LCD指令
+void LCD_Cmd(uchar cmd) {
+    RS = 0;         // 选择指令寄存器
+    RW = 0;         // 设置为写模式
+    PCA9554_Write(PCA9554_LCD, 0x01, cmd); // 通过PCA9554发送指令
+    E = 1;          // 使能信号高电平
+    DelayMS(2);     // 保持使能
+    E = 0;          // 下降沿执行指令
+    DelayMS(2);     // 指令执行时间
+}
+
+// 发送LCD数据
+void LCD_Data(uchar dat) {
+    RS = 1;         // 选择数据寄存器
+    RW = 0;         // 设置为写模式
+    PCA9554_Write(PCA9554_LCD, 0x01, dat); // 通过PCA9554发送数据
+    E = 1;          // 使能信号高电平
+    DelayMS(2);     
+    E = 0;          // 下降沿写入数据
+    DelayMS(2);
+}
+
+// 在LCD显示电压值（格式：X.XXV）
+void Display_Voltage(uint voltage) {
+    uchar str[6];   // 显示缓冲区
+    uchar i;
+    // 电压分解：整数部分+两位小数
+    uchar integer_part = voltage / 1000;        // 提取整数位（0-5）
+    uchar fractional = (voltage % 1000) / 10;   // 提取小数部分（0-99）
+    uchar decimal1 = fractional / 10;           // 十位小数
+    uchar decimal2 = fractional % 10;           // 个位小数
+    
+    // 构建显示字符串
+    str[0] = integer_part + '0';  // 整数转ASCII
+    str[1] = '.';                 // 小数点
+    str[2] = decimal1 + '0';      // 十位小数转ASCII
+    str[3] = decimal2 + '0';      // 个位小数转ASCII
+    str[4] = 'V';                 // 单位符号
+    str[5] = '\0';                // 字符串结束符
+    
+    LCD_Cmd(0x80);  // 设置光标到第一行首
+    for(i = 0; i &lt; 5; i++) {
+        LCD_Data(str[i]);  // 逐个字符显示
+    }
+}
+
+// I2C起始信号（SCL高时SDA下降沿）
+void I2C_Start() {
+    SDA = 1;  // 确保SDA高
+    SCL = 1;  // SCL高电平
+    NOP4();   // 保持时间
+    SDA = 0;  // SDA下降沿
+    NOP4();
+    SCL = 0;  // 准备数据传输
+}
+
+// I2C停止信号（SCL高时SDA上升沿）
+void I2C_Stop() {
+    SDA = 0;  // 确保SDA低
+    SCL = 0;  // SCL低电平
+    NOP4();
+    SCL = 1;  // SCL上升沿
+    NOP4();
+    SDA = 1;  // SDA上升沿
+}
+
+// I2C发送单字节（MSB first）
+void I2C_SendByte(uchar dat) {
+    uchar i;
+    for(i = 0; i &lt; 8; i++) {
+        SDA = (dat &amp; 0x80) ? 1 : 0;  // 取出最高位
+        dat &lt;&lt;= 1;                   // 左移准备下一位
+        SCL = 1;                     // 时钟上升沿
+        NOP4();                      // 保持时间
+        SCL = 0;                     // 时钟下降沿
+    }
+    SDA = 1;  // 释放SDA线（等待ACK）
+    SCL = 1;  // 第9个时钟脉冲
+    NOP4();
+    SCL = 0;
+}
+
+// PCA9554写操作（三步：地址+寄存器+数据）
+void PCA9554_Write(uchar addr, uchar reg, uchar dat) {
+    I2C_Start();             // 起始信号
+    I2C_SendByte(addr);      // 发送器件地址（写模式）
+    I2C_SendByte(reg);       // 发送寄存器地址
+    I2C_SendByte(dat);       // 发送数据
+    I2C_Stop();              // 停止信号
+}
+
+// 毫秒级延时（12MHz晶振下近似延时）
+void DelayMS(uint ms) {
+    uint i, j;
+    for(i = 0; i &lt; ms; i++)
+        for(j = 0; j &lt; 125; j++);  // 内循环约1ms
+}
+
+</code></pre><h2 id="定时器输入时序">定时器输入时序 </h2>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>//本例是用80C51的定时器0产生周期方波来作为0809工作的CLK时钟信号.		  不用80C51的ALE端二分频后的信号作为0809工作的CLK时钟信号。
+#include &lt;reg51.h&gt;
+#include&lt;absacc.h&gt;
+#include &lt;intrins.h&gt;
+#define INT8U unsigned char
+#define INT16U	unsigned int
+#define ADCADD XBYTE[0x7FF3]  //对ADC0809的读写地址                       第3通道的地址
+sbit EOC = P1^7;		//状态信号引脚
+sbit CLK = P1^0;		//提供的时钟输出引脚
+//-----------------------------------------------------------------
+// 主程序
+//-----------------------------------------------------------------
+void main()
+{ 
+	TMOD = 0x02; //定时方式2，8位可重装初值定时器
+	TL0 = 240;	//256-240=16 又单片机接6MHz晶振，即定时16*2us=32us。	
+	TH0 = 240;	 
+	IE = 0x82;
+	TR0 = 1;	 //启动定时器0
+
+   	while(1)
+	{	ADCADD = 0x00;                                                //随便输出一个值，只是为了产生启动信号
+	    while(EOC == 0);
+																	 //这里插入延时1~2ms函数，即延时1~2ms再读结果，确保新的转换结果已送到0809内的三态门输出
+		DBYTE[0x50] = ADCADD;	                                      //转换结果放入内存50h单元里	
+		}
+}
+
+//-----------------------------------------------------------------
+// T0定时器中断给ADC0809提供时钟信号（周期64us的方波信号）
+//-----------------------------------------------------------------
+void Timer0_INT() interrupt 1
+{
+ 	CLK = !CLK;
+}
+
+
+  
+
+
+</code></pre><h1 id="dac0832使用">DAC0832使用 </h1>
+<p>原理图：<br>
+<img src="image-4.png" alt="alt text"></p>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>//-----------------------------------------------------------------
+// 用DAC0832生成锯齿波 
+//-----------------------------------------------------------------
+//   本例程序向DAC0832反复输出0x00-0xFF的数字量，经过数/模转
+//        换及电流到电压的转换后输出锯齿波.
+//               
+//-----------------------------------------------------------------
+#include &lt;reg51.h&gt;
+#include &lt;absacc.h&gt;
+#define INT8U unsigned char
+#define INT16U  unsigned int
+#define OUTDATA XBYTE[0x7FFF]	   //向0832输出转换数据的地址
+
+//-----------------------------------------------------------------
+// 延时子程序	如果晶振是6M，则这里表示延时2倍的x毫秒 ,如果晶振12M，则是延时x毫秒
+//-----------------------------------------------------------------
+void delay_ms(INT16U x) 
+{
+    INT8U t;
+	while(x--)  for(t = 0; t &lt; 120; t++);
+}
+//-----------------------------------------------------------------
+// 主程序	 
+//-----------------------------------------------------------------
+void main()
+{	INT8U i;
+    while(1)
+	{ for(i=0; i&lt;256; i++)
+	  {    OUTDATA=i;
+	 	  delay_ms(1);
+	  }	 
+	}
+}
+</code></pre><h1 id="个人代码">个人代码 </h1>
+<h2 id="实验一-点阵led显示">实验一 点阵led显示 </h2>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>//-----------------------------------------------------------------
+//  名称: TIMER0控制8×8LED点阵屏显示数字
+//-----------------------------------------------------------------
+//  说明: 8×8LED点阵屏循环显示数字0-9,刷新过程由T0定时器溢出中断完成.
+//   
+//-----------------------------------------------------------------
+#include &lt;reg51.h&gt;
+#include &lt;intrins.h&gt;
+#define INT8U   unsigned char
+#define INT16U  unsigned int
+//-----------------------------------------------------------------
+// 数字点阵
+//-----------------------------------------------------------------
+INT8U code DotMatrix[] = 
+{	
+	0x00,0x00,0x00,0x21,0x7F,0x01,0x00,0x00,	//1	的点阵码
+	0x00,0x00,0x00,0x21,0x7F,0x01,0x00,0x00,	//1	的点阵码
+	0x00,0x27,0x45,0x45,0x45,0x39,0x00,0x00,	//2	的点阵码
+	0x00,0x27,0x45,0x45,0x45,0x39,0x00,0x00,	//2	的点阵码
+	0x00,0x3E,0x41,0x41,0x41,0x3E,0x00,0x00,	//0	的点阵码
+	0x00,0x3E,0x41,0x41,0x41,0x3E,0x00,0x00,	//0	的点阵码
+	0x00,0x27,0x45,0x45,0x45,0x39,0x00,0x00,	//2	的点阵码
+	0x00,0x22,0x49,0x49,0x49,0x36,0x00,0x00,	//3	的点阵码
+	0x00,0x27,0x45,0x45,0x45,0x39,0x00,0x00,	//2	的点阵码
+
+	0x93,0x96,0x9c,0xfd,0x9e,0x93,0x13,0x00,
+	0x38,0x00,0x3e,0xc2,0x02,0x26,0x10,0x00,
+	0x44,0x4c,0xde,0x52,0x62,0x42,0x02,0x00,
+	0xa6,0x1e,0x62,0x52,0x46,0xfe,0x42,0x00,
+	
+	
+
+	0x10,0xFE,0x92,0x92,0xFE,0x92,0x10,0x10	//zhong
+};
+INT8U i=0,t=0,Num_Index,cs; 
+
+//------------------------------------------------------------------
+// 主程序
+//------------------------------------------------------------------
+void main() 
+{  
+ //P3=0x80;       //列选码初值1000000B，经左移1位，根据连线图可知最先选C0列
+  cs=0x80;
+ Num_Index=0;    //从“0 ”开始显示 
+ TMOD=0x00;      //T0 工作在方式 0 、作13位的定时器
+ TH0=(8192-2000)/32;   //求定时 2ms的初值，高8位放TH0,
+ TL0=(8192-2000)%32;  //初值低5位放TL0 （2^13=8192，2^5=32）
+ IE=0x82;    //开T0中断和总中断
+ TR0=1;      //启动 T0 
+ while(1);    //无限循环，(每当定时时间到，则执行中断函数一次)
+} 
+
+//------------------------------------------------------------------
+// T0定时器溢出中断函数控制LED点阵屏刷新显示
+//------------------------------------------------------------------
+void LED_Screen_Refresh() interrupt 1 
+{
+    TH0=(8192-2000)/32;      //重置初值 
+    TL0=(8192-2000)%32; 
+	
+//	P2=0xff;        //输出点阵码 
+    P3=0x00;
+	  P2=~DotMatrix[Num_Index*8+i]; //因LED是共阳极故取反
+    cs=_crol_(cs,1);
+	  P3=cs;
+   //P3=_crol_(P3,1);  //P3值循环左移1位，调整列选码并输出	
+   if(++i==8) i=0;   //每个数字的点阵码有 8 个字节 
+   if(++t==250)    //每个数字刷新显示一段时间(执行该函数250次
+                     //即约250×2ms后调整指针Num_Index显示下一个 
+ { 
+    t=0; 
+    if(++Num_Index==13) Num_Index=0; //偏移量加1，显示
+             //下一个数字,若偏移量加1后=10，则重置为从0开始 
+ } 
+
+
+
+}
+
+</code></pre><h2 id="实验一-多段led显示">实验一 多段led显示 </h2>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>//-----------------------------------------------------------------
+//  名称: 集成式数码管动态扫描显示
+//-----------------------------------------------------------------
+//  说明: 本例使用动态扫描显示方法在8位数码管上显示指定数组内容
+//	
+//-----------------------------------------------------------------
+#include &lt;reg51.h&gt;
+#define INT8U	unsigned char
+#define INT16U  unsigned int
+//共阳数码管0~9的数字段码表
+code INT8U SEG_CODE[] = {
+  0xC0, // 0
+  0xF9, // 1
+  0xA4, // 2
+  0xB0, // 3
+  0x99, // 4
+  0x92, // 5
+  0x82, // 6
+  0xF8, // 7
+  0x80, // 8
+  0x90, // 9
+  0x88, // A (??: A,B,C,E,F,G)
+  0x83, // b (??: C,D,E,F,G)
+  0xA7, // c (??: D,E,G)
+  0xA1, // d (??: B,C,D,E,G)
+  0x86, // E (??: A,D,E,F,G)
+  0x8E  // F (??: A,E,F,G)
+};
+
+//待显示到数码管的8个数字
+ INT8U array[] = {1,2,3,10,11,12,13,14} ;   //显示缓存		 可更新显示内容：如 array[i]=keyno;
+//-----------------------------------------------------------------
+// 延时函数
+//-----------------------------------------------------------------
+void delay_ms(INT16U x) 
+{
+	INT8U t; while(x--) for(t = 0; t &lt; 120; t++);
+}
+
+//-----------------------------------------------------------------
+// 主程序	  
+//-----------------------------------------------------------------
+void main()
+{
+	INT8U i;  
+	while (1)
+	{
+	   for ( i=0; i&lt;6; i++ ) //扫描显示8位数码管
+	   { P0= 0xff;		//段码口输出全1，即先关闭
+	     P2=1 &lt;&lt; i;		//输出位选码		 00000001   	  00000010       00000100       ....    10000000
+		 P0=SEG_CODE[array[i]];	 //输出段选码
+		 delay_ms(4);	     
+	   }  					 
+	}
+}
+</code></pre><h2 id="spi历程软件spi">SPI历程（软件SPI） </h2>
+<p>以下是一个完整的51单片机（如STC89C52）使用SPI接口的示例代码，包含详细注释和硬件连接说明。这里以模拟SPI（软件SPI）为例，因为标准51单片机通常没有硬件SPI模块。</p>
+<hr>
+<h3 id="1-硬件连接示意图"><strong>1. 硬件连接示意图</strong> </h3>
+<pre data-role="codeBlock" data-info="plaintext" class="language-plaintext plaintext"><code>51单片机          SPI设备（如Flash/W25Q64）
+P1.5 (MOSI)  ---&gt; DI (数据输入)
+P1.6 (MISO)  &lt;--- DO (数据输出)
+P1.7 (SCLK)  ---&gt; CLK (时钟)
+P2.0 (CS)    ---&gt; CS (片选，低有效)
+</code></pre><hr>
+<h3 id="2-完整代码示例"><strong>2. 完整代码示例</strong> </h3>
+<pre data-role="codeBlock" data-info="c" class="language-c c"><code><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;reg52.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;intrins.h&gt;</span> <span class="token comment">// 包含_nop_()函数</span></span>
+
+<span class="token comment">// 定义SPI引脚（根据实际电路修改）</span>
+sbit SPI_SCLK <span class="token operator">=</span> P1<span class="token operator">^</span><span class="token number">7</span><span class="token punctuation">;</span>  <span class="token comment">// SPI时钟线</span>
+sbit SPI_MOSI <span class="token operator">=</span> P1<span class="token operator">^</span><span class="token number">5</span><span class="token punctuation">;</span>  <span class="token comment">// 主机输出从机输入</span>
+sbit SPI_MISO <span class="token operator">=</span> P1<span class="token operator">^</span><span class="token number">6</span><span class="token punctuation">;</span>  <span class="token comment">// 主机输入从机输出</span>
+sbit SPI_CS   <span class="token operator">=</span> P2<span class="token operator">^</span><span class="token number">0</span><span class="token punctuation">;</span>  <span class="token comment">// 片选信号</span>
+
+<span class="token comment">// 延时函数（12MHz晶振下约1μs）</span>
+<span class="token keyword keyword-void">void</span> <span class="token function">DelayUS</span><span class="token punctuation">(</span><span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-int">int</span> us<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-while">while</span><span class="token punctuation">(</span>us<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">_nop_</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">_nop_</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">_nop_</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">_nop_</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// SPI初始化（设置引脚初始状态）</span>
+<span class="token keyword keyword-void">void</span> <span class="token function">SPI_Init</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    SPI_CS <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>    <span class="token comment">// 默认不选中设备</span>
+    SPI_SCLK <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>  <span class="token comment">// 时钟初始低电平</span>
+    SPI_MOSI <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>  <span class="token comment">// MOSI初始高电平</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// SPI发送/接收一个字节（全双工）</span>
+<span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-char">char</span> <span class="token function">SPI_Transfer</span><span class="token punctuation">(</span><span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-char">char</span> dat<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-char">char</span> i<span class="token punctuation">,</span> recv <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    
+    <span class="token keyword keyword-for">for</span><span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">8</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 设置MOSI（高位先行）</span>
+        SPI_MOSI <span class="token operator">=</span> <span class="token punctuation">(</span>dat <span class="token operator">&amp;</span> <span class="token number">0x80</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token number">1</span> <span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        dat <span class="token operator">&lt;&lt;=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        
+        <span class="token comment">// 上升沿发送数据</span>
+        SPI_SCLK <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token function">DelayUS</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        
+        <span class="token comment">// 读取MISO（从机输出）</span>
+        recv <span class="token operator">&lt;&lt;=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword keyword-if">if</span><span class="token punctuation">(</span>SPI_MISO<span class="token punctuation">)</span> recv <span class="token operator">|=</span> <span class="token number">0x01</span><span class="token punctuation">;</span>
+        
+        <span class="token comment">// 下降沿准备下一位</span>
+        SPI_SCLK <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token function">DelayUS</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword keyword-return">return</span> recv<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 示例：读取SPI Flash的ID（W25Q64的ID指令为0x90）</span>
+<span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-int">int</span> <span class="token function">SPI_ReadID</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-int">int</span> id<span class="token punctuation">;</span>
+    SPI_CS <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>            <span class="token comment">// 选中设备</span>
+    
+    <span class="token function">SPI_Transfer</span><span class="token punctuation">(</span><span class="token number">0x90</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment">// 发送指令</span>
+    <span class="token function">SPI_Transfer</span><span class="token punctuation">(</span><span class="token number">0x00</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment">// 发送3字节地址（0）</span>
+    <span class="token function">SPI_Transfer</span><span class="token punctuation">(</span><span class="token number">0x00</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">SPI_Transfer</span><span class="token punctuation">(</span><span class="token number">0x00</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    id <span class="token operator">=</span> <span class="token function">SPI_Transfer</span><span class="token punctuation">(</span><span class="token number">0xFF</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> <span class="token number">8</span><span class="token punctuation">;</span> <span class="token comment">// 读取高字节</span>
+    id <span class="token operator">|=</span> <span class="token function">SPI_Transfer</span><span class="token punctuation">(</span><span class="token number">0xFF</span><span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token comment">// 读取低字节</span>
+    
+    SPI_CS <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>            <span class="token comment">// 释放片选</span>
+    <span class="token keyword keyword-return">return</span> id<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword keyword-void">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-int">int</span> flash_id<span class="token punctuation">;</span>
+    
+    <span class="token function">SPI_Init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>            <span class="token comment">// 初始化SPI</span>
+    flash_id <span class="token operator">=</span> <span class="token function">SPI_ReadID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 读取设备ID</span>
+    
+    <span class="token keyword keyword-while">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 在此添加其他操作（如通过串口打印ID）</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><hr>
+<h3 id="3-关键代码解析"><strong>3. 关键代码解析</strong> </h3>
+<h4 id="1-spi时序控制"><strong>(1) SPI时序控制</strong> </h4>
+<pre data-role="codeBlock" data-info="c" class="language-c c"><code><span class="token comment">// 典型SPI模式0时序（CPOL=0, CPHA=0）</span>
+SPI_MOSI <span class="token operator">=</span> 数据位<span class="token punctuation">;</span>  <span class="token comment">// 在时钟上升沿前设置数据</span>
+SPI_SCLK <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>      <span class="token comment">// 上升沿从机采样</span>
+SPI_SCLK <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>      <span class="token comment">// 下降沿主机准备下一位</span>
+</code></pre><h4 id="2-字节传输逻辑"><strong>(2) 字节传输逻辑</strong> </h4>
+<pre data-role="codeBlock" data-info="c" class="language-c c"><code><span class="token keyword keyword-for">for</span><span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">8</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    SPI_MOSI <span class="token operator">=</span> <span class="token punctuation">(</span>dat <span class="token operator">&amp;</span> <span class="token number">0x80</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token number">1</span> <span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token comment">// 取最高位</span>
+    dat <span class="token operator">&lt;&lt;=</span> <span class="token number">1</span><span class="token punctuation">;</span>                       <span class="token comment">// 左移准备下一位</span>
+    <span class="token comment">// ...时钟操作...</span>
+    recv <span class="token operator">&lt;&lt;=</span> <span class="token number">1</span><span class="token punctuation">;</span>                      <span class="token comment">// 接收数据移位</span>
+    <span class="token keyword keyword-if">if</span><span class="token punctuation">(</span>SPI_MISO<span class="token punctuation">)</span> recv <span class="token operator">|=</span> <span class="token number">0x01</span><span class="token punctuation">;</span>       <span class="token comment">// 读取位</span>
+<span class="token punctuation">}</span>
+</code></pre><hr>
+<h3 id="4-扩展功能示例"><strong>4. 扩展功能示例</strong> </h3>
+<h4 id="1-写入spi-flash一页数据"><strong>(1) 写入SPI Flash一页数据</strong> </h4>
+<pre data-role="codeBlock" data-info="c" class="language-c c"><code><span class="token keyword keyword-void">void</span> <span class="token function">SPI_WritePage</span><span class="token punctuation">(</span><span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-long">long</span> addr<span class="token punctuation">,</span> <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-char">char</span> <span class="token operator">*</span>buf<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    SPI_CS <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token function">SPI_Transfer</span><span class="token punctuation">(</span><span class="token number">0x02</span><span class="token punctuation">)</span><span class="token punctuation">;</span>          <span class="token comment">// 页编程指令</span>
+    <span class="token function">SPI_Transfer</span><span class="token punctuation">(</span>addr <span class="token operator">&gt;&gt;</span> <span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment">// 发送24位地址</span>
+    <span class="token function">SPI_Transfer</span><span class="token punctuation">(</span>addr <span class="token operator">&gt;&gt;</span> <span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">SPI_Transfer</span><span class="token punctuation">(</span>addr <span class="token operator">&amp;</span> <span class="token number">0xFF</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    <span class="token keyword keyword-for">for</span><span class="token punctuation">(</span><span class="token keyword keyword-int">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">256</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token comment">// 写入256字节</span>
+        <span class="token function">SPI_Transfer</span><span class="token punctuation">(</span>buf<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    SPI_CS <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token comment">// 需等待写入完成（可轮询BUSY位）</span>
+<span class="token punctuation">}</span>
+</code></pre><h4 id="2-读取spi-flash数据"><strong>(2) 读取SPI Flash数据</strong> </h4>
+<pre data-role="codeBlock" data-info="c" class="language-c c"><code><span class="token keyword keyword-void">void</span> <span class="token function">SPI_ReadData</span><span class="token punctuation">(</span><span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-long">long</span> addr<span class="token punctuation">,</span> <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-char">char</span> <span class="token operator">*</span>buf<span class="token punctuation">,</span> <span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-int">int</span> len<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    SPI_CS <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token function">SPI_Transfer</span><span class="token punctuation">(</span><span class="token number">0x03</span><span class="token punctuation">)</span><span class="token punctuation">;</span>          <span class="token comment">// 读数据指令</span>
+    <span class="token function">SPI_Transfer</span><span class="token punctuation">(</span>addr <span class="token operator">&gt;&gt;</span> <span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment">// 地址</span>
+    <span class="token function">SPI_Transfer</span><span class="token punctuation">(</span>addr <span class="token operator">&gt;&gt;</span> <span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">SPI_Transfer</span><span class="token punctuation">(</span>addr <span class="token operator">&amp;</span> <span class="token number">0xFF</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    <span class="token keyword keyword-for">for</span><span class="token punctuation">(</span><span class="token keyword keyword-int">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> len<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+        buf<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">SPI_Transfer</span><span class="token punctuation">(</span><span class="token number">0xFF</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 读数据时发送哑元数据</span>
+    
+    SPI_CS <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre><hr>
+<h3 id="5-注意事项"><strong>5. 注意事项</strong> </h3>
+<ol>
+<li><strong>时钟速度</strong>：软件SPI速度较慢（通常&lt;1MHz），高速场景需用硬件SPI或增强型51（如STC15系列）。</li>
+<li><strong>模式兼容性</strong>：确保SPI设备与代码时序模式（CPOL/CPHA）匹配。</li>
+<li><strong>片选管理</strong>：操作前后正确控制<code>CS</code>信号。</li>
+<li><strong>中断处理</strong>：若在中断中使用SPI，需避免嵌套调用。</li>
+</ol>
+<hr>
+<h3 id="6-硬件spi扩展以stc15系列为例"><strong>6. 硬件SPI扩展（以STC15系列为例）</strong> </h3>
+<p>若使用带硬件SPI的51单片机：</p>
+<pre data-role="codeBlock" data-info="c" class="language-c c"><code><span class="token comment">// 初始化硬件SPI（STC15）</span>
+<span class="token keyword keyword-void">void</span> <span class="token function">SPI_Init_HW</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    SPCTL <span class="token operator">=</span> <span class="token number">0xD0</span><span class="token punctuation">;</span> <span class="token comment">// 使能SPI,主机模式,MSB先行,模式0</span>
+    SPSTAT <span class="token operator">=</span> <span class="token number">0xC0</span><span class="token punctuation">;</span> <span class="token comment">// 清除标志位</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 硬件SPI传输</span>
+<span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-char">char</span> <span class="token function">SPI_Transfer_HW</span><span class="token punctuation">(</span><span class="token keyword keyword-unsigned">unsigned</span> <span class="token keyword keyword-char">char</span> dat<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    SPDAT <span class="token operator">=</span> dat<span class="token punctuation">;</span>
+    <span class="token keyword keyword-while">while</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>SPSTAT <span class="token operator">&amp;</span> <span class="token number">0x80</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 等待传输完成</span>
+    SPSTAT <span class="token operator">|=</span> <span class="token number">0x80</span><span class="token punctuation">;</span>          <span class="token comment">// 清除标志</span>
+    <span class="token keyword keyword-return">return</span> SPDAT<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre><p>通过上述代码，您可以快速实现51单片机与SPI设备的通信。实际开发时请根据具体器件手册调整指令和时序。</p>
+<h1 id="汇编">汇编 </h1>
+<p>以下是针对 <strong>51单片机（8051架构）汇编语言</strong> 的详细精简版总结，包含核心语法、常用指令和实用开发方案：</p>
+<hr>
+<h2 id="一-51汇编语法基础"><strong>一、51汇编语法基础</strong> </h2>
+<h3 id="1-指令格式"><strong>1. 指令格式</strong> </h3>
+<pre data-role="codeBlock" data-info="assembly" class="language-assembly assembly"><code>[标号:] 操作码 [操作数1][, 操作数2][, 操作数3] [;注释]
+</code></pre><ul>
+<li><strong>标号</strong>：可选，代表地址（如 <code>LOOP:</code>）。</li>
+<li><strong>操作码</strong>：指令助记符（如 <code>MOV</code>, <code>ADD</code>）。</li>
+<li><strong>操作数</strong>：立即数、寄存器或地址（最多3个）。</li>
+<li><strong>注释</strong>：以 <code>;</code> 开头。</li>
+</ul>
+<h3 id="2-常用伪指令"><strong>2. 常用伪指令</strong> </h3>
+<table>
+<thead>
+<tr>
+<th>伪指令</th>
+<th>作用</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ORG</code></td>
+<td>设置程序起始地址</td>
+<td><code>ORG 0000H</code></td>
+</tr>
+<tr>
+<td><code>END</code></td>
+<td>程序结束标记</td>
+<td><code>END</code></td>
+</tr>
+<tr>
+<td><code>EQU</code></td>
+<td>定义符号常量</td>
+<td><code>COUNT EQU 30H</code></td>
+</tr>
+<tr>
+<td><code>DB</code>/<code>DW</code></td>
+<td>定义字节/字数据</td>
+<td><code>TAB: DB 01H, 02H</code></td>
+</tr>
+<tr>
+<td><code>DS</code></td>
+<td>保留存储空间</td>
+<td><code>BUF: DS 10</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="二-核心指令集"><strong>二、核心指令集</strong> </h2>
+<h3 id="1-数据传送指令"><strong>1. 数据传送指令</strong> </h3>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>功能</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MOV A, #data</code></td>
+<td>立即数→A</td>
+<td><code>MOV A, #55H</code></td>
+</tr>
+<tr>
+<td><code>MOV Rn, A</code></td>
+<td>A→寄存器Rn（R0-R7）</td>
+<td><code>MOV R1, A</code></td>
+</tr>
+<tr>
+<td><code>MOV @Ri, A</code></td>
+<td>A→间接寻址（Ri=R0/R1）</td>
+<td><code>MOV @R0, A</code></td>
+</tr>
+<tr>
+<td><code>MOVX A, @DPTR</code></td>
+<td>外部RAM→A（16位地址）</td>
+<td><code>MOVX A, @DPTR</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-算术运算指令"><strong>2. 算术运算指令</strong> </h3>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>功能</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ADD A, #data</code></td>
+<td>A + 立即数→A</td>
+<td><code>ADD A, #10H</code></td>
+</tr>
+<tr>
+<td><code>SUBB A, Rn</code></td>
+<td>A - Rn - CY→A（带借位）</td>
+<td><code>SUBB A, R2</code></td>
+</tr>
+<tr>
+<td><code>INC DPTR</code></td>
+<td>DPTR + 1→DPTR</td>
+<td><code>INC DPTR</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-逻辑与位操作"><strong>3. 逻辑与位操作</strong> </h3>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>功能</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ANL A, #data</code></td>
+<td>A AND 立即数→A</td>
+<td><code>ANL A, #0FH</code></td>
+</tr>
+<tr>
+<td><code>ORL P1, A</code></td>
+<td>P1 OR A→P1</td>
+<td><code>ORL P1, A</code></td>
+</tr>
+<tr>
+<td><code>SETB bit</code></td>
+<td>位置1</td>
+<td><code>SETB P1.0</code></td>
+</tr>
+<tr>
+<td><code>CLR C</code></td>
+<td>清进位CY</td>
+<td><code>CLR C</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-控制转移指令"><strong>4. 控制转移指令</strong> </h3>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>功能</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LJMP addr16</code></td>
+<td>长跳转（64KB范围）</td>
+<td><code>LJMP MAIN</code></td>
+</tr>
+<tr>
+<td><code>AJMP addr11</code></td>
+<td>绝对跳转（2KB页内）</td>
+<td><code>AJMP LOOP</code></td>
+</tr>
+<tr>
+<td><code>DJNZ Rn, rel</code></td>
+<td>Rn减1，非零跳转</td>
+<td><code>DJNZ R3, DELAY</code></td>
+</tr>
+<tr>
+<td><code>CJNE A, #data, rel</code></td>
+<td>A≠data则跳转</td>
+<td><code>CJNE A, #00H, ERROR</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="三-寻址方式"><strong>三、寻址方式</strong> </h2>
+<table>
+<thead>
+<tr>
+<th>寻址方式</th>
+<th>示例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>立即寻址</strong></td>
+<td><code>MOV A, #30H</code></td>
+<td>操作数为立即数</td>
+</tr>
+<tr>
+<td><strong>寄存器寻址</strong></td>
+<td><code>MOV A, R0</code></td>
+<td>操作数为寄存器</td>
+</tr>
+<tr>
+<td><strong>直接寻址</strong></td>
+<td><code>MOV A, 40H</code></td>
+<td>操作数为RAM地址</td>
+</tr>
+<tr>
+<td><strong>间接寻址</strong></td>
+<td><code>MOV A, @R0</code></td>
+<td>R0/R1指向RAM地址</td>
+</tr>
+<tr>
+<td><strong>变址寻址</strong></td>
+<td><code>MOVC A, @A+DPTR</code></td>
+<td>A+DPTR指向ROM地址</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="四-开发方案与技巧"><strong>四、开发方案与技巧</strong> </h2>
+<h3 id="1-程序结构模板"><strong>1. 程序结构模板</strong> </h3>
+<pre data-role="codeBlock" data-info="assembly" class="language-assembly assembly"><code>ORG 0000H        ; 程序起始地址
+LJMP MAIN        ; 跳转到主程序
+
+ORG 0030H        ; 主程序避开中断向量区
+MAIN:
+    MOV SP, #60H ; 设置堆栈指针
+    ; 用户代码...
+LOOP:
+    NOP
+    SJMP LOOP    ; 无限循环
+
+ORG 0100H        ; 子程序/数据区
+DELAY:
+    MOV R7, #255
+    DJNZ R7, $
+    RET
+
+END
+</code></pre><h3 id="2-常用代码片段"><strong>2. 常用代码片段</strong> </h3>
+<ul>
+<li>
+<p><strong>软件延时</strong>：</p>
+<pre data-role="codeBlock" data-info="assembly" class="language-assembly assembly"><code>DELAY_MS:           ; 1ms延时（12MHz晶振）
+    MOV R6, #7
+D1: MOV R7, #250
+D2: DJNZ R7, D2
+    DJNZ R6, D1
+    RET
+</code></pre></li>
+<li>
+<p><strong>查表法（ROM访问）</strong>：</p>
+<pre data-role="codeBlock" data-info="assembly" class="language-assembly assembly"><code>MOV DPTR, #TABLE   ; 表首地址
+MOV A, #2          ; 索引号
+MOVC A, @A+DPTR    ; 读取表中第2个数据
+TABLE: DB 10H, 20H, 30H
+</code></pre></li>
+</ul>
+<h3 id="3-调试技巧"><strong>3. 调试技巧</strong> </h3>
+<ul>
+<li><strong>单步执行</strong>：利用Keil μVision的仿真器逐步检查寄存器变化。</li>
+<li><strong>端口监控</strong>：通过 <code>MOV P1, A</code> 输出调试信号。</li>
+<li><strong>断点设置</strong>：在关键代码行插入 <code>NOP</code> 或设置硬件断点。</li>
+</ul>
+<hr>
+<h2 id="五-注意事项"><strong>五、注意事项</strong> </h2>
+<ol>
+<li><strong>资源限制</strong>：
+<ul>
+<li>内部RAM：128字节（52系列为256字节）。</li>
+<li>使用 <code>MOVX</code> 指令访问外部RAM（需外扩芯片）。</li>
+</ul>
+</li>
+<li><strong>中断向量</strong>：
+<ul>
+<li>中断入口地址固定（如 <code>ORG 0003H</code> 对应外部中断0）。</li>
+</ul>
+</li>
+<li><strong>位操作优势</strong>：
+<ul>
+<li>直接操作位地址（如 <code>SETB 20H.0</code>）提升效率。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p>掌握这些核心语法和方案后，可高效开发51单片机的中小规模嵌入式应用（如传感器控制、LED显示等）。</p>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+  
+    </body></html>

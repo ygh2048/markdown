@@ -1,0 +1,12 @@
+/* 添加页码 */
+@page {
+    @bottom-right {
+        content: "Page " counter(page) " of " counter(pages);
+    }
+}
+
+/* 目录样式 - 显示页面编号 */
+.markdown-pdf-toc a::after {
+    content: leader('.') " " target-counter(attr(href), page);
+    float: right;
+}

@@ -1,5 +1,60 @@
+
+- [常用函数实现](#常用函数实现)
+	- [延时函数](#延时函数)
+	- [独立按键扫描](#独立按键扫描)
+	- [IIC 函数](#iic-函数)
+- [51知识](#51知识)
+	- [XBYTE](#xbyte)
+- [数码管代码](#数码管代码)
+	- [数码管动态扫描汇编版](#数码管动态扫描汇编版)
+	- [数码管动态扫描C语言版](#数码管动态扫描c语言版)
+- [8155扩展,数码管显示](#8155扩展数码管显示)
+	- [C语言代码](#c语言代码)
+- [点阵屏幕显示C代码](#点阵屏幕显示c代码)
+- [独立连接键盘C代码](#独立连接键盘c代码)
+- [矩阵键盘（线反转法）](#矩阵键盘线反转法)
+- [8155扩展按键，使用行扫描法](#8155扩展按键使用行扫描法)
+- [LCD 1602字符液晶工作代码](#lcd-1602字符液晶工作代码)
+- [24C04使用  (IIC)](#24c04使用--iic)
+- [PCA9544 使用](#pca9544-使用)
+- [ADC0809读取,LCD1602显示显示](#adc0809读取lcd1602显示显示)
+	- [IO输入时序](#io输入时序)
+	- [定时器输入时序](#定时器输入时序)
+- [DAC0832使用](#dac0832使用)
+- [个人代码](#个人代码)
+	- [实验一 点阵led显示](#实验一-点阵led显示)
+	- [实验一 多段led显示](#实验一-多段led显示)
+	- [SPI历程（软件SPI）](#spi历程软件spi)
+		- [**1. 硬件连接示意图**](#1-硬件连接示意图)
+		- [**2. 完整代码示例**](#2-完整代码示例)
+		- [**3. 关键代码解析**](#3-关键代码解析)
+			- [**(1) SPI时序控制**](#1-spi时序控制)
+			- [**(2) 字节传输逻辑**](#2-字节传输逻辑)
+		- [**4. 扩展功能示例**](#4-扩展功能示例)
+			- [**(1) 写入SPI Flash一页数据**](#1-写入spi-flash一页数据)
+			- [**(2) 读取SPI Flash数据**](#2-读取spi-flash数据)
+		- [**5. 注意事项**](#5-注意事项)
+		- [**6. 硬件SPI扩展（以STC15系列为例）**](#6-硬件spi扩展以stc15系列为例)
+- [汇编](#汇编)
+	- [**一、51汇编语法基础**](#一51汇编语法基础)
+		- [**1. 指令格式**](#1-指令格式)
+		- [**2. 常用伪指令**](#2-常用伪指令)
+	- [**二、核心指令集**](#二核心指令集)
+		- [**1. 数据传送指令**](#1-数据传送指令)
+		- [**2. 算术运算指令**](#2-算术运算指令)
+		- [**3. 逻辑与位操作**](#3-逻辑与位操作)
+		- [**4. 控制转移指令**](#4-控制转移指令)
+	- [**三、寻址方式**](#三寻址方式)
+	- [**四、开发方案与技巧**](#四开发方案与技巧)
+		- [**1. 程序结构模板**](#1-程序结构模板)
+		- [**2. 常用代码片段**](#2-常用代码片段)
+		- [**3. 调试技巧**](#3-调试技巧)
+	- [**五、注意事项**](#五注意事项)
+
 # 常用函数实现
+
 ## 延时函数
+
 ```
 void delay_ms(INT16U x) 
 {
@@ -8,6 +63,7 @@ void delay_ms(INT16U x)
 ```
 
 ## 独立按键扫描
+
 ```
 uchar keybd()
 {
@@ -36,6 +92,7 @@ uchar keybd()
 ```
 
 ## IIC 函数
+
 ```
 //在IIC上产生起始信号
 void Start()
@@ -78,21 +135,26 @@ void NO_ACK()
 ```
 
 # 51知识
+
 ## XBYTE
+
 XBYTE 是Keil C51编译器提供的扩展关键字，属于absacc.h头文件中的宏，用于直接访问8051的外部数据存储器空间（XDATA）。其底层实现为：
-`#define XBYTE ((unsigned char volatile xdata *) 0)`    
+`#define XBYTE ((unsigned char volatile xdata *) 0)`
 作用：将外部存储器的16位地址映射为指针，通过数组形式访问
 寻址范围：0x0000~0xFFFF（共64KB）
 
 # 数码管代码
+
 ```
 //共阳数码管0~9的数字段码表
 code INT8U SEG_CODE[] = {0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90};
 ```
-动态扫描原理图：    
+
+动态扫描原理图：
 ![alt text](image.png)
 
 ## 数码管动态扫描汇编版
+
 ```
 MAIN: 
       MOV   70H,  #02H		   ;将单片机RAM地址70H - 77H设置为缓存单元，填入显示的内容，比如20200312
@@ -107,32 +169,32 @@ MAIN:
 AGAIN:ACALL  DISP1 ;
       SJMP   AGAIN ;主程序末尾应跳转至再次刷新显示或原地等待
 
-;----------------------------------------显示子程序------------            
+;----------------------------------------显示子程序------------          
 DISP1:MOV	R0, #77H           ;R0作显示缓存区的指针，初始指向77H单元，初始选中最右LED
       MOV	R2, #10000000B     ;R2存放位选码，初始选中KED最右位
 LOOP:MOV    A, #00H
      MOV    P2, A				;先关闭所有位
      MOV    A, @R0
-     MOV    DPTR, #PTRN          
+     MOV    DPTR, #PTRN        
      MOVC   A, @A+DPTR         ;查段选码PTRN，将显示缓存单元的数字代码转换为对应的段选码
      MOV    P0, A	 		   ;输出段选码
      MOV    P2,  R2			   ;
-     CALL    D1MS			
-     DEC	 R0			
-     MOV     A, R2			
-     CLR	 C			
-     RRC	 A			
+     CALL    D1MS		
+     DEC	 R0		
+     MOV     A, R2		
+     CLR	 C		
+     RRC	 A		
      JC	    PASS			   ;判断是否8位都已经显示完毕，是就转到PASS
      MOV     R2,   A		   ;还没显示完，就继续循环
-     AJMP	LOOP	
+     AJMP	LOOP
 PASS: MOV   A,    #00H
      MOV    P2, A              ;退出子程序前，关闭所有位   
-     RET		
+     RET	
 ;----------------延时1ms子程序--------------------------		   
-D1MS:MOV	R7, #02H		      
+D1MS:MOV	R7, #02H		    
 DMS:MOV         R6, #0FFH
     DJNZ	R6, $
-    DJNZ	R7, DMS	
+    DJNZ	R7, DMS
     RET
 
 ;----------------共阳极段码表---------------------------
@@ -160,15 +222,16 @@ void main()
 	   { P0= 0xff;		//段码口输出全1，即先关闭
 	     P2=1 << i;		//输出位选码		 00000001   	  00000010       00000100       ....    10000000
 		 P0=SEG_CODE[array[i]];	 //输出段选码
-		 delay_ms(4);	     
+		 delay_ms(4);	   
 	   }  					 
 	}
 }
 ```
-# 8155扩展,数码管显示   
 
-原理图如下：    
-![alt text](image-1.png)    
+# 8155扩展,数码管显示
+
+原理图如下：
+![alt text](image-1.png)
 
 ## C语言代码
 
@@ -194,7 +257,7 @@ void delay(uint x)
 		for(j=11;j>0;j--) ;
 }
 void main()
-{                       
+{                     
     dispcom=0x03;
     //使用8155前别忘了应先对其初始化,
     //设置其口的工作方式、输出输入方向！
@@ -204,36 +267,35 @@ void main()
     wela_data=0x20;
     dula_data=table[5];
 		delay(5);
-                
+              
     wela_data=0x10;
     dula_data=table[4];
 		delay(5);
-                
+              
     wela_data=0x08;
     dula_data=table[3];
 		delay(5);
-                
+              
     wela_data=0x04;
     dula_data=table[2];
 		delay(5);
-                
+              
     wela_data=0x02;
     dula_data=table[1];
 		delay(5);
-                
+              
     wela_data=0x01;
     dula_data=table[0];
-		delay(5);          
+		delay(5);        
     }
 }
 ```
 
-
-
 # 点阵屏幕显示C代码
 
-原理图如下：    
-![alt text](image-2.png)    
+原理图如下：
+![alt text](image-2.png)
+
 ```
 //  名称: TIMER0控制8×8LED点阵屏显示数字
 
@@ -282,13 +344,13 @@ void LED_Screen_Refresh() interrupt 1
 {
     TH0=(8192-2000)/32;      //重置初值 
     TL0=(8192-2000)%32; 
-	
+
 //	P2=0xff;        //输出点阵码 
     P3=0x00;
 	P2=~DotMatrix[Num_Index*8+i]; //因LED是共阳极故取反
     cs=_crol_(cs,1);
 	P3=cs;
-   //P3=_crol_(P3,1);  //P3值循环左移1位，调整列选码并输出	
+   //P3=_crol_(P3,1);  //P3值循环左移1位，调整列选码并输出
    if(++i==8) i=0;   //每个数字的点阵码有 8 个字节 
    if(++t==250)    //每个数字刷新显示一段时间(执行该函数250次
                      //即约250×2ms后调整指针Num_Index显示下一个 
@@ -299,10 +361,9 @@ void LED_Screen_Refresh() interrupt 1
  } 
 
 
-``` 
+```
 
 # 独立连接键盘C代码
-
 
 ```
 #include <reg52.h>
@@ -348,8 +409,9 @@ uchar keybd()
 
 # 矩阵键盘（线反转法）
 
-原理图：    
-![alt text](image-3.png)        
+原理图：
+![alt text](image-3.png)
+
 ```
 // 键盘扫描函数 (4x4矩阵键盘)
 void Keys_Scan()
@@ -357,7 +419,7 @@ void Keys_Scan()
 	P3 = 0x00;   // 列输出低电平
 	P1 = 0x0f;   // 行输入带上拉
 	delay_ms(1);
-	
+
 	if (P1 == 0x0f) // 无按键
 	{
 		keyNo = 0xff;
@@ -378,13 +440,13 @@ void Keys_Scan()
 	P1 = 0x00;   // 行输出低电平
 	P3 = 0xff;   // 列输入带上拉
 	delay_ms(1);
-	
+
 	if (P3 == 0xff) // 无按键
 	{
 		keyNo = 0xff;
 		return;
 	}
-	
+
 	switch(P3)
 	{
 		case 0xfe: keyNo += 0;  break; // 第0行 
@@ -397,6 +459,7 @@ void Keys_Scan()
 ```
 
 # 8155扩展按键，使用行扫描法
+
 ```
 #include<reg52.h>
 #include<absacc.h>
@@ -423,7 +486,7 @@ void delay_ms(uint x)
 }
 //--------------------主程序------------------------------------------------------------------------------------------------
 void main()
-{   uchar keyNo_temp =0xff;                    
+{   uchar keyNo_temp =0xff;                  
     dispcom=0x01;              // 使用8155前应先对其初始化设置其口的工作方式、输出输入方向！A口基本输出方式，C口为输入方式   
 	while(1)	    			  
 	{	key8155();
@@ -443,7 +506,7 @@ void key8155()
 	 {
 		keyNo = 0xff;
 		return;               //无按键提前返回
-	 }	
+	 }
 	 delay_ms(10);	          //去抖动
      scan_data = 0x00 ;	 
 	 delay_ms(1);
@@ -454,7 +517,7 @@ void key8155()
 	 }
 	 for(i=0; i<8; i++)
 	 {   
-	 	 scan_data =~(1 << i);	
+	 	 scan_data =~(1 << i);
 		 delay_ms(1);
 		 
 		 switch((~read_data)&0x0f)
@@ -463,9 +526,9 @@ void key8155()
 			case 0x04:keyNo=16+i; return;
 			case 0x08:keyNo=24+i; return; 
 			case 0x00:break;					//不是此列有按键。break，扫描下一列
-			
+		
 		 }
-	     	    
+	     	  
 	 }
     	keyNo = 0xff;
 		return; 
@@ -477,7 +540,7 @@ void key8155()
 # LCD 1602字符液晶工作代码
 
 ```
-#include <reg51.h>	
+#include <reg51.h>
 #define uchar unsigned char 
 #define uint unsigned int
 uchar code table1[]="I LOVE MCU!";        //第一行显示的字符,共11个
@@ -538,12 +601,12 @@ void main()
 }
 
 ```
-# 24C04使用  (IIC)
 
+# 24C04使用  (IIC)
 
 ```
 #include<reg51.h>
-#include<intrins.h>	
+#include<intrins.h>
 #define uchar unsigned char
 #define uint unsigned int
 #define NOP4() {_nop_();_nop_();_nop_();_nop_();}
@@ -559,7 +622,7 @@ uchar code Song_24C04[]={0,1,2,0,0,1,2,0,2,3,4,4,2,3,4,4};//1234567音符分别�
 uchar sidx;			//读取音符索引
 //延时
 void DelayMS(uint ms)
-{	
+{
 	uchar i;
 	while(ms--) for(i=0;i<120;i++);
 }
@@ -608,7 +671,7 @@ void Write_A_Byte(uchar b)
 	for(i=0;i<8;i++)
 	{
 		b<<=1;	    //将要传输的字节左移一位,最高一位移到了进位位C中，（CY就是表示进位位c）
-		SDA=CY;		
+		SDA=CY;	
 		_nop_();
 		SCL=1;
 		NOP4();
@@ -629,7 +692,7 @@ void Write_IIC(uchar addr,uchar dat)
 //从24C04中读一个字节数据
 uchar Read_A_Byte()
 {
-	uchar i,b;      
+	uchar i,b;    
 	for(i=0;i<8;i++)
 	{
 		SCL=1;
@@ -686,7 +749,7 @@ void main()
 
 	while(1)			 			//读取一个音符并播放，重复16次
 	{
-    	for(i=0;i<16;i++)			//从24C04中读取第1首	
+    	for(i=0;i<16;i++)			//从24C04中读取第1首
 	/*	   	for(i=0;i<48;i++)			//从24C04中读取第2首   */
 		{
 			sidx=Random_Read(i);	//从指定地址读取
@@ -701,11 +764,11 @@ void main()
 
 ```
 
-# PCA9544 使用      
+# PCA9544 使用
 
 ```
 #include<reg51.h>
-#include<intrins.h>	
+#include<intrins.h>
 #define uchar unsigned char
 #define uint unsigned int
 #define NOP4() {_nop_();_nop_();_nop_();_nop_();}
@@ -717,7 +780,7 @@ uchar buffer1[1];
 uchar buffer2[1];
 //延时
 void DelayMS(uint ms)
-{	
+{
 	uchar i;
 	while(ms--) for(i=0;i<120;i++);
 }
@@ -766,7 +829,7 @@ void Write_A_Byte(uchar b)
 	for(i=0;i<8;i++)
 	{
 		b<<=1;	    //将要传输的字节左移一位,最高一位移到了进位位C中，（CY就是表示进位位c）
-		SDA=CY;		
+		SDA=CY;	
 		_nop_();
 		SCL=1;
 		NOP4();
@@ -787,7 +850,7 @@ void Write_IIC(uchar addr,uchar dat)
 //从中读一个字节数据
 uchar Read_A_Byte()
 {
-	uchar i,b;      
+	uchar i,b;    
 	for(i=0;i<8;i++)
 	{
 		SCL=1;
@@ -825,7 +888,7 @@ void ISendStr(uchar sla,uchar suba,uchar (*s)[1])
 			Write_A_Byte((*s)[0]);
 			Stop();
 			DelayMS(10);
-				
+			
 }
 void IRcvStr(uchar sla,uchar suba,uchar (*s)[1])
 {
@@ -854,8 +917,8 @@ void main()
 				IRcvStr(PCA9554_KEY,0x00,&buffer2);
 				ISendStr(PCA9554_LED,0x01,&buffer2);
 			}
-			
-			
+		
+		
 
 }
 
@@ -863,8 +926,10 @@ void main()
 
 ```
 
+# ADC0809读取,LCD1602显示显示
 
-# ADC0809读取，LCD1602显示显示
+## IO输入时序
+
 ```
 #include <reg51.h>       // 8051标准头文件
 #include <intrins.h>     // 内联函数库（包含_nop_()）
@@ -881,6 +946,8 @@ sbit SDA = P0^1;  // I2C数据线
 
 // ADC0809引脚定义
 sbit OE  = P1^0;    // 输出使能（高电平有效）
+<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
+
 sbit EOC = P1^1;    // 转换结束标志（低电平表示转换中）
 sbit ST  = P1^2;    // 启动转换信号（上升沿触发）
 sbit CLK = P1^3;    // 时钟输入（典型频率500kHz）
@@ -918,12 +985,12 @@ void Timer0_ISR() interrupt 1 {  // 中断号1对应定时器0
 // 主函数
 void main() {
     uint voltage;  // 存储计算后的电压值（单位：mV）
-    
+  
     Timer0_Init();  // 初始化定时器（用于ADC时钟）
     ADC_Init();     // 初始化ADC0809
     PCA9554_Write(PCA9554_LCD, 0x03, 0x00); // 配置PCA9554的PORT0为输出模式
     LCD_Init();     // 初始化LCD1602
-    
+  
     while(1) {
         adc_raw = ADC_Read();  // 读取ADC值（通道3）
         // 将ADC值转换为电压（0-5V对应0-5000mV）
@@ -991,7 +1058,7 @@ void LCD_Data(uchar dat) {
     RW = 0;         // 设置为写模式
     PCA9554_Write(PCA9554_LCD, 0x01, dat); // 通过PCA9554发送数据
     E = 1;          // 使能信号高电平
-    DelayMS(2);     
+    DelayMS(2);   
     E = 0;          // 下降沿写入数据
     DelayMS(2);
 }
@@ -1005,7 +1072,7 @@ void Display_Voltage(uint voltage) {
     uchar fractional = (voltage % 1000) / 10;   // 提取小数部分（0-99）
     uchar decimal1 = fractional / 10;           // 十位小数
     uchar decimal2 = fractional % 10;           // 个位小数
-    
+  
     // 构建显示字符串
     str[0] = integer_part + '0';  // 整数转ASCII
     str[1] = '.';                 // 小数点
@@ -1013,7 +1080,7 @@ void Display_Voltage(uint voltage) {
     str[3] = decimal2 + '0';      // 个位小数转ASCII
     str[4] = 'V';                 // 单位符号
     str[5] = '\0';                // 字符串结束符
-    
+  
     LCD_Cmd(0x80);  // 设置光标到第一行首
     for(i = 0; i < 5; i++) {
         LCD_Data(str[i]);  // 逐个字符显示
@@ -1074,10 +1141,55 @@ void DelayMS(uint ms) {
 
 ```
 
+## 定时器输入时序
+
+```
+//本例是用80C51的定时器0产生周期方波来作为0809工作的CLK时钟信号.		  不用80C51的ALE端二分频后的信号作为0809工作的CLK时钟信号。
+#include <reg51.h>
+#include<absacc.h>
+#include <intrins.h>
+#define INT8U unsigned char
+#define INT16U	unsigned int
+#define ADCADD XBYTE[0x7FF3]  //对ADC0809的读写地址                       第3通道的地址
+sbit EOC = P1^7;		//状态信号引脚
+sbit CLK = P1^0;		//提供的时钟输出引脚
+//-----------------------------------------------------------------
+// 主程序
+//-----------------------------------------------------------------
+void main()
+{ 
+	TMOD = 0x02; //定时方式2，8位可重装初值定时器
+	TL0 = 240;	//256-240=16 又单片机接6MHz晶振，即定时16*2us=32us。
+	TH0 = 240;	 
+	IE = 0x82;
+	TR0 = 1;	 //启动定时器0
+
+   	while(1)
+	{	ADCADD = 0x00;                                                //随便输出一个值，只是为了产生启动信号
+	    while(EOC == 0);
+																	 //这里插入延时1~2ms函数，即延时1~2ms再读结果，确保新的转换结果已送到0809内的三态门输出
+		DBYTE[0x50] = ADCADD;	                                      //转换结果放入内存50h单元里
+		}
+}
+
+//-----------------------------------------------------------------
+// T0定时器中断给ADC0809提供时钟信号（周期64us的方波信号）
+//-----------------------------------------------------------------
+void Timer0_INT() interrupt 1
+{
+ 	CLK = !CLK;
+}
+
+
+  
+
+
+```
+
 # DAC0832使用
 
-原理图：    
-![alt text](image-4.png)        
+原理图：
+![alt text](image-4.png)
 
 ```
 //-----------------------------------------------------------------
@@ -1085,7 +1197,7 @@ void DelayMS(uint ms) {
 //-----------------------------------------------------------------
 //   本例程序向DAC0832反复输出0x00-0xFF的数字量，经过数/模转
 //        换及电流到电压的转换后输出锯齿波.
-//               
+//             
 //-----------------------------------------------------------------
 #include <reg51.h>
 #include <absacc.h>
@@ -1115,7 +1227,6 @@ void main()
 }
 ```
 
-
 # 个人代码
 
 ## 实验一 点阵led显示
@@ -1135,7 +1246,7 @@ void main()
 // 数字点阵
 //-----------------------------------------------------------------
 INT8U code DotMatrix[] = 
-{	
+{
 	0x00,0x00,0x00,0x21,0x7F,0x01,0x00,0x00,	//1	的点阵码
 	0x00,0x00,0x00,0x21,0x7F,0x01,0x00,0x00,	//1	的点阵码
 	0x00,0x27,0x45,0x45,0x45,0x39,0x00,0x00,	//2	的点阵码
@@ -1150,8 +1261,8 @@ INT8U code DotMatrix[] =
 	0x38,0x00,0x3e,0xc2,0x02,0x26,0x10,0x00,
 	0x44,0x4c,0xde,0x52,0x62,0x42,0x02,0x00,
 	0xa6,0x1e,0x62,0x52,0x46,0xfe,0x42,0x00,
-	
-	
+
+
 
 	0x10,0xFE,0x92,0x92,0xFE,0x92,0x10,0x10	//zhong
 };
@@ -1180,13 +1291,13 @@ void LED_Screen_Refresh() interrupt 1
 {
     TH0=(8192-2000)/32;      //重置初值 
     TL0=(8192-2000)%32; 
-	
+
 //	P2=0xff;        //输出点阵码 
     P3=0x00;
 	  P2=~DotMatrix[Num_Index*8+i]; //因LED是共阳极故取反
     cs=_crol_(cs,1);
 	  P3=cs;
-   //P3=_crol_(P3,1);  //P3值循环左移1位，调整列选码并输出	
+   //P3=_crol_(P3,1);  //P3值循环左移1位，调整列选码并输出
    if(++i==8) i=0;   //每个数字的点阵码有 8 个字节 
    if(++t==250)    //每个数字刷新显示一段时间(执行该函数250次
                      //即约250×2ms后调整指针Num_Index显示下一个 
@@ -1210,7 +1321,7 @@ void LED_Screen_Refresh() interrupt 1
 //  名称: 集成式数码管动态扫描显示
 //-----------------------------------------------------------------
 //  说明: 本例使用动态扫描显示方法在8位数码管上显示指定数组内容
-//	
+//
 //-----------------------------------------------------------------
 #include <reg51.h>
 #define INT8U	unsigned char
@@ -1257,7 +1368,7 @@ void main()
 	   { P0= 0xff;		//段码口输出全1，即先关闭
 	     P2=1 << i;		//输出位选码		 00000001   	  00000010       00000100       ....    10000000
 		 P0=SEG_CODE[array[i]];	 //输出段选码
-		 delay_ms(4);	     
+		 delay_ms(4);	   
 	   }  					 
 	}
 }
@@ -1270,6 +1381,7 @@ void main()
 ---
 
 ### **1. 硬件连接示意图**
+
 ```plaintext
 51单片机          SPI设备（如Flash/W25Q64）
 P1.5 (MOSI)  ---> DI (数据输入)
@@ -1281,6 +1393,7 @@ P2.0 (CS)    ---> CS (片选，低有效)
 ---
 
 ### **2. 完整代码示例**
+
 ```c
 #include <reg52.h>
 #include <intrins.h> // 包含_nop_()函数
@@ -1308,20 +1421,20 @@ void SPI_Init() {
 // SPI发送/接收一个字节（全双工）
 unsigned char SPI_Transfer(unsigned char dat) {
     unsigned char i, recv = 0;
-    
+  
     for(i = 0; i < 8; i++) {
         // 设置MOSI（高位先行）
         SPI_MOSI = (dat & 0x80) ? 1 : 0;
         dat <<= 1;
-        
+      
         // 上升沿发送数据
         SPI_SCLK = 1;
         DelayUS(1);
-        
+      
         // 读取MISO（从机输出）
         recv <<= 1;
         if(SPI_MISO) recv |= 0x01;
-        
+      
         // 下降沿准备下一位
         SPI_SCLK = 0;
         DelayUS(1);
@@ -1333,25 +1446,25 @@ unsigned char SPI_Transfer(unsigned char dat) {
 unsigned int SPI_ReadID() {
     unsigned int id;
     SPI_CS = 0;            // 选中设备
-    
+  
     SPI_Transfer(0x90);    // 发送指令
     SPI_Transfer(0x00);    // 发送3字节地址（0）
     SPI_Transfer(0x00);
     SPI_Transfer(0x00);
-    
+  
     id = SPI_Transfer(0xFF) << 8; // 读取高字节
     id |= SPI_Transfer(0xFF);     // 读取低字节
-    
+  
     SPI_CS = 1;            // 释放片选
     return id;
 }
 
 void main() {
     unsigned int flash_id;
-    
+  
     SPI_Init();            // 初始化SPI
     flash_id = SPI_ReadID(); // 读取设备ID
-    
+  
     while(1) {
         // 在此添加其他操作（如通过串口打印ID）
     }
@@ -1361,7 +1474,9 @@ void main() {
 ---
 
 ### **3. 关键代码解析**
+
 #### **(1) SPI时序控制**
+
 ```c
 // 典型SPI模式0时序（CPOL=0, CPHA=0）
 SPI_MOSI = 数据位;  // 在时钟上升沿前设置数据
@@ -1370,6 +1485,7 @@ SPI_SCLK = 0;      // 下降沿主机准备下一位
 ```
 
 #### **(2) 字节传输逻辑**
+
 ```c
 for(i = 0; i < 8; i++) {
     SPI_MOSI = (dat & 0x80) ? 1 : 0; // 取最高位
@@ -1383,7 +1499,9 @@ for(i = 0; i < 8; i++) {
 ---
 
 ### **4. 扩展功能示例**
+
 #### **(1) 写入SPI Flash一页数据**
+
 ```c
 void SPI_WritePage(unsigned long addr, unsigned char *buf) {
     SPI_CS = 0;
@@ -1391,16 +1509,17 @@ void SPI_WritePage(unsigned long addr, unsigned char *buf) {
     SPI_Transfer(addr >> 16);    // 发送24位地址
     SPI_Transfer(addr >> 8);
     SPI_Transfer(addr & 0xFF);
-    
+  
     for(int i = 0; i < 256; i++) // 写入256字节
         SPI_Transfer(buf[i]);
-    
+  
     SPI_CS = 1;
     // 需等待写入完成（可轮询BUSY位）
 }
 ```
 
 #### **(2) 读取SPI Flash数据**
+
 ```c
 void SPI_ReadData(unsigned long addr, unsigned char *buf, unsigned int len) {
     SPI_CS = 0;
@@ -1408,10 +1527,10 @@ void SPI_ReadData(unsigned long addr, unsigned char *buf, unsigned int len) {
     SPI_Transfer(addr >> 16);    // 地址
     SPI_Transfer(addr >> 8);
     SPI_Transfer(addr & 0xFF);
-    
+  
     for(int i = 0; i < len; i++)
         buf[i] = SPI_Transfer(0xFF); // 读数据时发送哑元数据
-    
+  
     SPI_CS = 1;
 }
 ```
@@ -1419,15 +1538,18 @@ void SPI_ReadData(unsigned long addr, unsigned char *buf, unsigned int len) {
 ---
 
 ### **5. 注意事项**
+
 1. **时钟速度**：软件SPI速度较慢（通常<1MHz），高速场景需用硬件SPI或增强型51（如STC15系列）。
 2. **模式兼容性**：确保SPI设备与代码时序模式（CPOL/CPHA）匹配。
-3. **片选管理**：操作前后正确控制`CS`信号。
+3. **片选管理**：操作前后正确控制 `CS`信号。
 4. **中断处理**：若在中断中使用SPI，需避免嵌套调用。
 
 ---
 
 ### **6. 硬件SPI扩展（以STC15系列为例）**
+
 若使用带硬件SPI的51单片机：
+
 ```c
 // 初始化硬件SPI（STC15）
 void SPI_Init_HW() {
@@ -1446,80 +1568,92 @@ unsigned char SPI_Transfer_HW(unsigned char dat) {
 
 通过上述代码，您可以快速实现51单片机与SPI设备的通信。实际开发时请根据具体器件手册调整指令和时序。
 
-
 # 汇编
+
 以下是针对 **51单片机（8051架构）汇编语言** 的详细精简版总结，包含核心语法、常用指令和实用开发方案：
 
 ---
 
-### **一、51汇编语法基础**
-#### **1. 指令格式**
+## **一、51汇编语法基础**
+
+### **1. 指令格式**
+
 ```assembly
 [标号:] 操作码 [操作数1][, 操作数2][, 操作数3] [;注释]
 ```
+
 - **标号**：可选，代表地址（如 `LOOP:`）。
 - **操作码**：指令助记符（如 `MOV`, `ADD`）。
 - **操作数**：立即数、寄存器或地址（最多3个）。
 - **注释**：以 `;` 开头。
 
-#### **2. 常用伪指令**
-| 伪指令       | 作用                          | 示例                     |
-|--------------|-------------------------------|--------------------------|
-| `ORG`        | 设置程序起始地址              | `ORG 0000H`             |
-| `END`        | 程序结束标记                  | `END`                   |
-| `EQU`        | 定义符号常量                  | `COUNT EQU 30H`         |
-| `DB`/`DW`    | 定义字节/字数据               | `TAB: DB 01H, 02H`      |
-| `DS`         | 保留存储空间                  | `BUF: DS 10`            |
+### **2. 常用伪指令**
+
+| 伪指令        | 作用             | 示例                 |
+| ------------- | ---------------- | -------------------- |
+| `ORG`       | 设置程序起始地址 | `ORG 0000H`        |
+| `END`       | 程序结束标记     | `END`              |
+| `EQU`       | 定义符号常量     | `COUNT EQU 30H`    |
+| `DB`/`DW` | 定义字节/字数据  | `TAB: DB 01H, 02H` |
+| `DS`        | 保留存储空间     | `BUF: DS 10`       |
 
 ---
 
-### **二、核心指令集**
-#### **1. 数据传送指令**
-| 指令          | 功能                         | 示例                     |
-|---------------|------------------------------|--------------------------|
-| `MOV A, #data`| 立即数→A                     | `MOV A, #55H`           |
-| `MOV Rn, A`   | A→寄存器Rn（R0-R7）          | `MOV R1, A`             |
-| `MOV @Ri, A`  | A→间接寻址（Ri=R0/R1）       | `MOV @R0, A`            |
-| `MOVX A, @DPTR`| 外部RAM→A（16位地址）        | `MOVX A, @DPTR`         |
+## **二、核心指令集**
 
-#### **2. 算术运算指令**
-| 指令          | 功能                         | 示例                     |
-|---------------|------------------------------|--------------------------|
-| `ADD A, #data`| A + 立即数→A                 | `ADD A, #10H`           |
-| `SUBB A, Rn`  | A - Rn - CY→A（带借位）      | `SUBB A, R2`            |
-| `INC DPTR`    | DPTR + 1→DPTR               | `INC DPTR`              |
+### **1. 数据传送指令**
 
-#### **3. 逻辑与位操作**
-| 指令          | 功能                         | 示例                     |
-|---------------|------------------------------|--------------------------|
-| `ANL A, #data`| A AND 立即数→A               | `ANL A, #0FH`           |
-| `ORL P1, A`   | P1 OR A→P1                   | `ORL P1, A`             |
-| `SETB bit`    | 位置1                       | `SETB P1.0`             |
-| `CLR C`       | 清进位CY                     | `CLR C`                 |
+| 指令              | 功能                    | 示例              |
+| ----------------- | ----------------------- | ----------------- |
+| `MOV A, #data`  | 立即数→A               | `MOV A, #55H`   |
+| `MOV Rn, A`     | A→寄存器Rn（R0-R7）    | `MOV R1, A`     |
+| `MOV @Ri, A`    | A→间接寻址（Ri=R0/R1） | `MOV @R0, A`    |
+| `MOVX A, @DPTR` | 外部RAM→A（16位地址）  | `MOVX A, @DPTR` |
 
-#### **4. 控制转移指令**
-| 指令          | 功能                         | 示例                     |
-|---------------|------------------------------|--------------------------|
-| `LJMP addr16` | 长跳转（64KB范围）           | `LJMP MAIN`             |
-| `AJMP addr11` | 绝对跳转（2KB页内）          | `AJMP LOOP`             |
-| `DJNZ Rn, rel`| Rn减1，非零跳转              | `DJNZ R3, DELAY`        |
-| `CJNE A, #data, rel` | A≠data则跳转       | `CJNE A, #00H, ERROR`   |
+### **2. 算术运算指令**
 
----
+| 指令             | 功能                     | 示例            |
+| ---------------- | ------------------------ | --------------- |
+| `ADD A, #data` | A + 立即数→A            | `ADD A, #10H` |
+| `SUBB A, Rn`   | A - Rn - CY→A（带借位） | `SUBB A, R2`  |
+| `INC DPTR`     | DPTR + 1→DPTR           | `INC DPTR`    |
 
-### **三、寻址方式**
-| 寻址方式       | 示例                | 说明                     |
-|----------------|---------------------|--------------------------|
-| **立即寻址**   | `MOV A, #30H`      | 操作数为立即数           |
-| **寄存器寻址** | `MOV A, R0`        | 操作数为寄存器           |
-| **直接寻址**   | `MOV A, 40H`       | 操作数为RAM地址          |
-| **间接寻址**   | `MOV A, @R0`       | R0/R1指向RAM地址         |
-| **变址寻址**   | `MOVC A, @A+DPTR`  | A+DPTR指向ROM地址        |
+### **3. 逻辑与位操作**
+
+| 指令             | 功能            | 示例            |
+| ---------------- | --------------- | --------------- |
+| `ANL A, #data` | A AND 立即数→A | `ANL A, #0FH` |
+| `ORL P1, A`    | P1 OR A→P1     | `ORL P1, A`   |
+| `SETB bit`     | 位置1           | `SETB P1.0`   |
+| `CLR C`        | 清进位CY        | `CLR C`       |
+
+### **4. 控制转移指令**
+
+| 指令                   | 功能                | 示例                    |
+| ---------------------- | ------------------- | ----------------------- |
+| `LJMP addr16`        | 长跳转（64KB范围）  | `LJMP MAIN`           |
+| `AJMP addr11`        | 绝对跳转（2KB页内） | `AJMP LOOP`           |
+| `DJNZ Rn, rel`       | Rn减1，非零跳转     | `DJNZ R3, DELAY`      |
+| `CJNE A, #data, rel` | A≠data则跳转       | `CJNE A, #00H, ERROR` |
 
 ---
 
-### **四、开发方案与技巧**
-#### **1. 程序结构模板**
+## **三、寻址方式**
+
+| 寻址方式             | 示例                | 说明              |
+| -------------------- | ------------------- | ----------------- |
+| **立即寻址**   | `MOV A, #30H`     | 操作数为立即数    |
+| **寄存器寻址** | `MOV A, R0`       | 操作数为寄存器    |
+| **直接寻址**   | `MOV A, 40H`      | 操作数为RAM地址   |
+| **间接寻址**   | `MOV A, @R0`      | R0/R1指向RAM地址  |
+| **变址寻址**   | `MOVC A, @A+DPTR` | A+DPTR指向ROM地址 |
+
+---
+
+## **四、开发方案与技巧**
+
+### **1. 程序结构模板**
+
 ```assembly
 ORG 0000H        ; 程序起始地址
 LJMP MAIN        ; 跳转到主程序
@@ -1541,8 +1675,10 @@ DELAY:
 END
 ```
 
-#### **2. 常用代码片段**
+### **2. 常用代码片段**
+
 - **软件延时**：
+
   ```assembly
   DELAY_MS:           ; 1ms延时（12MHz晶振）
       MOV R6, #7
@@ -1551,8 +1687,8 @@ END
       DJNZ R6, D1
       RET
   ```
-
 - **查表法（ROM访问）**：
+
   ```assembly
   MOV DPTR, #TABLE   ; 表首地址
   MOV A, #2          ; 索引号
@@ -1560,14 +1696,16 @@ END
   TABLE: DB 10H, 20H, 30H
   ```
 
-#### **3. 调试技巧**
+### **3. 调试技巧**
+
 - **单步执行**：利用Keil μVision的仿真器逐步检查寄存器变化。
 - **端口监控**：通过 `MOV P1, A` 输出调试信号。
 - **断点设置**：在关键代码行插入 `NOP` 或设置硬件断点。
 
 ---
 
-### **五、注意事项**
+## **五、注意事项**
+
 1. **资源限制**：
    - 内部RAM：128字节（52系列为256字节）。
    - 使用 `MOVX` 指令访问外部RAM（需外扩芯片）。
@@ -1577,10 +1715,5 @@ END
    - 直接操作位地址（如 `SETB 20H.0`）提升效率。
 
 ---
-
-### **六、工具链推荐**
-- **汇编器**：Keil μVision、SDCC（开源）。
-- **仿真器**：Proteus 虚拟硬件调试。
-- **烧录工具**：STC-ISP（针对STC单片机）。
 
 掌握这些核心语法和方案后，可高效开发51单片机的中小规模嵌入式应用（如传感器控制、LED显示等）。
