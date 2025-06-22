@@ -1000,6 +1000,43 @@ OSTimeSet()
 
 > 设置当前(系统)时间
 
+## DARTS流图
+
+### 基本图形符号解析
+![1750598741484](image/embedded_system/1750598741484.png) 
+
+
+### 数据流图示例
+
+  ![1750598770767](image/embedded_system/1750598770767.png) 
+
+  ![1750599178215](image/embedded_system/1750599178215.png)
+
+  ![1750599206166](image/embedded_system/1750599206166.png)
+    
+### 任务划分
+- I/O依赖性
+  - 依赖，受限于I/O，则独立成任务
+  - I/O设备创建等数量的I/O任务
+  - I/O任务只实现设备相关
+  - 其速度取决于I/O设备速度，而非处理器
+- 功能的时间关键性
+- 计算需求
+- 功能内聚
+- 时间内聚
+- 功能的周期执行
+
+### rtos相关
+- 松耦合（消息队列）
+  - ![1750599075315](image/embedded_system/1750599075315.png) ![1750599114110](image/embedded_system/1750599114110.png)
+- 任务
+  - ![1750599098413](image/embedded_system/1750599098413.png) 
+- 消息
+  - ![1750599138184](image/embedded_system/1750599138184.png)
+- 总
+  - ![1750599151938](image/embedded_system/1750599151938.png)
+
 # 跳转
+
 
 [跳转链接list点这里](../list.md)
