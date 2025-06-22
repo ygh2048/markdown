@@ -1,4 +1,3 @@
-
 - [常用函数实现](#常用函数实现)
 	- [延时函数](#延时函数)
 	- [独立按键扫描](#独立按键扫描)
@@ -169,29 +168,29 @@ MAIN:
 AGAIN:ACALL  DISP1 ;
       SJMP   AGAIN ;主程序末尾应跳转至再次刷新显示或原地等待
 
-;----------------------------------------显示子程序------------          
+;----------------------------------------显示子程序------------        
 DISP1:MOV	R0, #77H           ;R0作显示缓存区的指针，初始指向77H单元，初始选中最右LED
       MOV	R2, #10000000B     ;R2存放位选码，初始选中KED最右位
 LOOP:MOV    A, #00H
      MOV    P2, A				;先关闭所有位
      MOV    A, @R0
-     MOV    DPTR, #PTRN        
+     MOV    DPTR, #PTRN      
      MOVC   A, @A+DPTR         ;查段选码PTRN，将显示缓存单元的数字代码转换为对应的段选码
      MOV    P0, A	 		   ;输出段选码
      MOV    P2,  R2			   ;
-     CALL    D1MS		
-     DEC	 R0		
-     MOV     A, R2		
-     CLR	 C		
-     RRC	 A		
+     CALL    D1MS	
+     DEC	 R0	
+     MOV     A, R2	
+     CLR	 C	
+     RRC	 A	
      JC	    PASS			   ;判断是否8位都已经显示完毕，是就转到PASS
      MOV     R2,   A		   ;还没显示完，就继续循环
      AJMP	LOOP
 PASS: MOV   A,    #00H
      MOV    P2, A              ;退出子程序前，关闭所有位   
-     RET	
+     RET
 ;----------------延时1ms子程序--------------------------		   
-D1MS:MOV	R7, #02H		    
+D1MS:MOV	R7, #02H		  
 DMS:MOV         R6, #0FFH
     DJNZ	R6, $
     DJNZ	R7, DMS
@@ -257,7 +256,7 @@ void delay(uint x)
 		for(j=11;j>0;j--) ;
 }
 void main()
-{                     
+{                   
     dispcom=0x03;
     //使用8155前别忘了应先对其初始化,
     //设置其口的工作方式、输出输入方向！
@@ -267,26 +266,26 @@ void main()
     wela_data=0x20;
     dula_data=table[5];
 		delay(5);
-              
+            
     wela_data=0x10;
     dula_data=table[4];
 		delay(5);
-              
+            
     wela_data=0x08;
     dula_data=table[3];
 		delay(5);
-              
+            
     wela_data=0x04;
     dula_data=table[2];
 		delay(5);
-              
+            
     wela_data=0x02;
     dula_data=table[1];
 		delay(5);
-              
+            
     wela_data=0x01;
     dula_data=table[0];
-		delay(5);        
+		delay(5);      
     }
 }
 ```
@@ -486,7 +485,7 @@ void delay_ms(uint x)
 }
 //--------------------主程序------------------------------------------------------------------------------------------------
 void main()
-{   uchar keyNo_temp =0xff;                  
+{   uchar keyNo_temp =0xff;                
     dispcom=0x01;              // 使用8155前应先对其初始化设置其口的工作方式、输出输入方向！A口基本输出方式，C口为输入方式   
 	while(1)	    			  
 	{	key8155();
@@ -526,7 +525,7 @@ void key8155()
 			case 0x04:keyNo=16+i; return;
 			case 0x08:keyNo=24+i; return; 
 			case 0x00:break;					//不是此列有按键。break，扫描下一列
-		
+	
 		 }
 	     	  
 	 }
@@ -671,7 +670,7 @@ void Write_A_Byte(uchar b)
 	for(i=0;i<8;i++)
 	{
 		b<<=1;	    //将要传输的字节左移一位,最高一位移到了进位位C中，（CY就是表示进位位c）
-		SDA=CY;	
+		SDA=CY;
 		_nop_();
 		SCL=1;
 		NOP4();
@@ -692,7 +691,7 @@ void Write_IIC(uchar addr,uchar dat)
 //从24C04中读一个字节数据
 uchar Read_A_Byte()
 {
-	uchar i,b;    
+	uchar i,b;  
 	for(i=0;i<8;i++)
 	{
 		SCL=1;
@@ -829,7 +828,7 @@ void Write_A_Byte(uchar b)
 	for(i=0;i<8;i++)
 	{
 		b<<=1;	    //将要传输的字节左移一位,最高一位移到了进位位C中，（CY就是表示进位位c）
-		SDA=CY;	
+		SDA=CY;
 		_nop_();
 		SCL=1;
 		NOP4();
@@ -850,7 +849,7 @@ void Write_IIC(uchar addr,uchar dat)
 //从中读一个字节数据
 uchar Read_A_Byte()
 {
-	uchar i,b;    
+	uchar i,b;  
 	for(i=0;i<8;i++)
 	{
 		SCL=1;
@@ -888,7 +887,7 @@ void ISendStr(uchar sla,uchar suba,uchar (*s)[1])
 			Write_A_Byte((*s)[0]);
 			Stop();
 			DelayMS(10);
-			
+		
 }
 void IRcvStr(uchar sla,uchar suba,uchar (*s)[1])
 {
@@ -917,8 +916,8 @@ void main()
 				IRcvStr(PCA9554_KEY,0x00,&buffer2);
 				ISendStr(PCA9554_LED,0x01,&buffer2);
 			}
-		
-		
+	
+	
 
 }
 
@@ -1165,11 +1164,12 @@ void main()
 	TR0 = 1;	 //启动定时器0
 
    	while(1)
-	{	ADCADD = 0x00;                                                //随便输出一个值，只是为了产生启动信号
-	    while(EOC == 0);
-																	 //这里插入延时1~2ms函数，即延时1~2ms再读结果，确保新的转换结果已送到0809内的三态门输出
-		DBYTE[0x50] = ADCADD;	                                      //转换结果放入内存50h单元里
-		}
+	{
+	ADCADD = 0x00;                                            //随便输出一个值，只是为了产生启动信号
+	while(EOC == 0);
+						                        //这里插入延时1~2ms函数，即延时1~2ms再读结果，确保新的转换结果已送到0809内的三态门输出
+	DBYTE[0x50] = ADCADD;	                                //转换结果放入内存50h单元里
+	}
 }
 
 //-----------------------------------------------------------------
@@ -1188,6 +1188,19 @@ void Timer0_INT() interrupt 1
 
 # DAC0832使用
 
+接线解释：
+- 使用的是地址扩展，所以要注意XBYTE的用法
+- P0口作为默认数据总线连接
+- 地址总线（一般P1为低8位，P2为高8位）
+- 使用运放放大信号
+- 使用WR单片机写信号
+- 地址解码逻辑：
+	代码中 #define OUTDATA XBYTE[0x7FFF] 表示：
+	高8位地址：0x7F (二进制 0111 1111)
+	P2.7 (A15) 是最高位地址线，此处为 0（因为 0x7F 的二进制最高位是 0）
+	当单片机执行 OUTDATA=i 时：
+	P2.7 (A15) 输出低电平（0）
+	其他地址线组合成 0x7FFF
 原理图：
 ![alt text](image-4.png)
 
@@ -1197,7 +1210,7 @@ void Timer0_INT() interrupt 1
 //-----------------------------------------------------------------
 //   本例程序向DAC0832反复输出0x00-0xFF的数字量，经过数/模转
 //        换及电流到电压的转换后输出锯齿波.
-//             
+//           
 //-----------------------------------------------------------------
 #include <reg51.h>
 #include <absacc.h>
@@ -1426,15 +1439,15 @@ unsigned char SPI_Transfer(unsigned char dat) {
         // 设置MOSI（高位先行）
         SPI_MOSI = (dat & 0x80) ? 1 : 0;
         dat <<= 1;
-      
+    
         // 上升沿发送数据
         SPI_SCLK = 1;
         DelayUS(1);
-      
+    
         // 读取MISO（从机输出）
         recv <<= 1;
         if(SPI_MISO) recv |= 0x01;
-      
+    
         // 下降沿准备下一位
         SPI_SCLK = 0;
         DelayUS(1);

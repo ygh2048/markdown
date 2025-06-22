@@ -448,9 +448,21 @@ IRQ中断、FIQ中断
 
 **片外Flash映射**
 
+### 汇编使用
+
+#### 预定义寄存器
+![1750511534145](image/embedded_system/1750511534145.png) 
+
 ### 相互调用
 
 #### ARM和Thumb的调用
+
+**ARM指令例程代码：** 
+![1750511676538](image/embedded_system/1750511676538.png) 
+![1750511686277](image/embedded_system/1750511686277.png) 
+![1750511699308](image/embedded_system/1750511699308.png) 
+
+
 
 #### 汇编中调用C函数
 
@@ -489,11 +501,11 @@ start.s
 
 Ni  EQU 5              ; 定义常量
 
-    AREA fctrl, CODE, READONLY  ; 定义代码段（关键修正）
+    AREA fctrl, CODE, READONLY  ; 定义代码段
     ENTRY               ; 声明程序入口点
     EXPORT __main       ; 导出入口符号（如果需被链接器识别）
 
-__main                   ; 标签必须顶格（无缩进）
+__main                   ; 标签必须顶格
 
 
     MOV R0, #Ni         ; 传递参数
