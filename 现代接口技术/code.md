@@ -33,7 +33,7 @@
 - [个人代码](#个人代码)
 	- [实验一 点阵led显示](#实验一-点阵led显示)
 	- [实验一 多段led显示](#实验一-多段led显示)
-	- [SPI历程（软件SPI）](#spi历程软件spi)
+	- [SPI例程（软件SPI）](#spi例程软件spi)
 		- [1. 硬件连接示意图](#1-硬件连接示意图)
 		- [2. 完整代码示例](#2-完整代码示例)
 		- [3. 关键代码解析](#3-关键代码解析)
@@ -44,11 +44,11 @@
 			- [(2) 读取SPI Flash数据](#2-读取spi-flash数据)
 		- [5. 注意事项](#5-注意事项)
 		- [6. 硬件SPI扩展（以STC15系列为例）](#6-硬件spi扩展以stc15系列为例)
+	- [LCD1604 加 4\*5键盘 加 菜单](#lcd1604-加-45键盘-加-菜单)
 - [数字芯片的使用补充](#数字芯片的使用补充)
 	- [8-3 译码器](#8-3-译码器)
 	- [3-8译码器](#3-8译码器)
 	- [地址锁存器](#地址锁存器)
-	- [](#)
 
 # 常用函数实现
 
@@ -186,12 +186,12 @@ XBYTE 是Keil C51编译器提供的扩展关键字，属于absacc.h头文件中�
 
 | 数据类型 | 循环左移实现                    | 循环右移实现                    |
 |----------|--------------------------------|--------------------------------|
-| 8位      | `(x<<n)\|(x>>(8-n))`           | `(x>>n)\|(x<<(8-n))`          |
-| 16位     | `(x<<n)\|(x>>(16-n))`          | `(x>>n)\|(x<<(16-n))`         |
-| 32位     | `(x<<n)\|(x>>(32-n))`          | `(x>>n)\|(x<<(32-n))`         |
-| 64位     | `(x<<n)\|(x>>(64-n))`          | `(x>>n)\|(x<<(64-n))`         |
+| 8位      | (x<<n)\|(x>>(8-n))           | (x>>n)\|(x<<(8-n))          |
+| 16位     | (x<<n)\|(x>>(16-n))          | (x>>n)\|(x<<(16-n))         |
+| 32位     | (x<<n)\|(x>>(32-n))          | (x>>n)\|(x<<(32-n))         |
+| 64位     | (x<<n)\|(x>>(64-n))          | (x>>n)\|(x<<(64-n))         |
 
-> 提示：所有实现都需要先做 `n %= 位数` 确保安全移位
+> 提示：所有实现都需要先做 n %= 位数 确保安全移位
 
 
 # 数码管代码
@@ -235,26 +235,26 @@ code INT8U SEG_CODE[] = {0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};
 ### 一位为0，其余为1（7个1 + 1个0）
 | 0的位置 | 二进制      | 十六进制 | 十进制 |
 |---------|------------|----------|--------|
-| 位7 (MSB) | `01111111` | `0x7F`   | 127    |
-| 位6     | `10111111` | `0xBF`   | 191    |
-| 位5     | `11011111` | `0xDF`   | 223    |
-| 位4     | `11101111` | `0xEF`   | 239    |
-| 位3     | `11110111` | `0xF7`   | 247    |
-| 位2     | `11111011` | `0xFB`   | 251    |
-| 位1     | `11111101` | `0xFD`   | 253    |
-| 位0 (LSB) | `11111110` | `0xFE`   | 254    |
+| 位7 (MSB) | 01111111 | 0x7F   | 127    |
+| 位6     | 10111111 | 0xBF   | 191    |
+| 位5     | 11011111 | 0xDF   | 223    |
+| 位4     | 11101111 | 0xEF   | 239    |
+| 位3     | 11110111 | 0xF7   | 247    |
+| 位2     | 11111011 | 0xFB   | 251    |
+| 位1     | 11111101 | 0xFD   | 253    |
+| 位0 (LSB) | 11111110 | 0xFE   | 254    |
 
 ### 一位为1，其余为0（7个0 + 1个1）
 | 1的位置 | 二进制      | 十六进制 | 十进制 |
 |---------|------------|----------|--------|
-| 位7 (MSB) | `10000000` | `0x80`   | 128    |
-| 位6     | `01000000` | `0x40`   | 64     |
-| 位5     | `00100000` | `0x20`   | 32     |
-| 位4     | `00010000` | `0x10`   | 16     |
-| 位3     | `00001000` | `0x08`   | 8      |
-| 位2     | `00000100` | `0x04`   | 4      |
-| 位1     | `00000010` | `0x02`   | 2      |
-| 位0 (LSB) | `00000001` | `0x01`   | 1      |
+| 位7 (MSB) | 10000000 | 0x80   | 128    |
+| 位6     | 01000000 | 0x40   | 64     |
+| 位5     | 00100000 | 0x20   | 32     |
+| 位4     | 00010000 | 0x10   | 16     |
+| 位3     | 00001000 | 0x08  | 8      |
+| 位2     | 00000100 | 0x04  | 4      |
+| 位1     | 00000010 | 0x02   | 2      |
+| 位0 (LSB) | 00000001 | 0x01   | 1      |
 
 
 
@@ -320,6 +320,7 @@ void main()
     wela_data=0x20;
     dula_data=table[5];
 		delay(5);
+
     wela_data=0x10;
     dula_data=table[4];
 		delay(5);
@@ -749,6 +750,8 @@ void main()
 
 # 24C04使用  (IIC)
 
+原理图：	
+![alt text](image-17.png)	
 ```c
 #include<reg51.h>
 #include<intrins.h>
@@ -910,6 +913,8 @@ void main()
 ```
 
 # PCA9544 使用
+原理图：
+![alt text](image-16.png)	
 
 ```c
 #include<reg51.h>
@@ -1096,7 +1101,8 @@ void main()
 # ADC0809读取,LCD1602显示显示
 
 ## IO输入时序
-
+原理图：	
+![alt text](image-15.png)		
 ```c
 #include <reg51.h>       // 8051标准头文件
 #include <intrins.h>     // 内联函数库（包含_nop_()）
@@ -1619,7 +1625,7 @@ void main()
 }
 ```
 
-## SPI历程（软件SPI）
+## SPI例程（软件SPI）
 
 以下是一个完整的51单片机（如STC89C52）使用SPI接口的示例代码，包含详细注释和硬件连接说明。这里以模拟SPI（软件SPI）为例，因为标准51单片机通常没有硬件SPI模块。
 
@@ -1810,6 +1816,410 @@ unsigned char SPI_Transfer_HW(unsigned char dat) {
     return SPDAT;
 }
 ```
+## LCD1604 加 4*5键盘 加 菜单	
+原理图；	
+![alt text](image-18.png)	
+```c
+#include <reg51.h>	
+#define uchar unsigned char 
+#define uint unsigned int
+#define INT8U	unsigned char
+#define INT16U unsigned int
+// 键盘相关定义
+sbit BEEP = P3^5; 
+INT8U keyNo = 0xff;
+// LED控制引脚
+sbit LED1 = P2^0;
+sbit LED2 = P2^1;
+sbit LED3 = P2^2;
+sbit LED4 = P2^3;
+// LCD相关定义
+sbit RS = P2^5;
+sbit RW = P2^6;
+sbit E  = P2^7;
+uchar num;
+// 历史按键记录
+uchar keyHistory[17] = "                "; // 16个空格+结束符
+uchar historyIndex = 0;  // 跟踪当前有效字符位置
+// 功能键定义 (基于4x5矩阵键盘的20个键值)
+#define KEY_UP      0    // 上移键（0）
+#define KEY_DOWN    4    // 下移键（4）
+#define KEY_SELECT  8    // 选择键（8）
+#define KEY_BACK    12   // 返回键（12）
+#define KEY_MENU    16   // 菜单键（16）
+#define KEY_DEL     17   // 删除键（17）
+#define KEY_SPACE   18   // 空格键（18）
+#define KEY_ENTER   19   // 换行键（19）
+#define KEY_CLS     13   // 清屏键（13）
+// 菜单系统
+uchar menuState = 0;     // 0:主菜单 1:LED控制菜单
+uchar currentMenuItem = 0;
+uchar menuItemCount = 3; // 主菜单项数量
+// LED模式
+uchar ledMode = 0;
+// 键盘扫描函数 (4x5矩阵键盘)  //线反转法
+void Keys_Scan()
+{ 
+	P3 = 0x00;   // 列输出低电平
+	P1 = 0x0f;   // 行输入带上拉
+	delay_ms(1);
+	if (P1 == 0x0f) // 无按键
+	{
+		keyNo = 0xff;
+		return;
+	}
+	// 检测按键所在的列
+	switch (P1)
+	{
+		case 0x0e: keyNo = 0; break;  // 第0列 
+		case 0x0d: keyNo = 1; break;  // 第1列
+		case 0x0b: keyNo = 2; break;  // 第2列
+		case 0x07: keyNo = 3; break;  // 第3列
+		default:   keyNo = 0xff; return;
+	}
+	// 检测按键所在的行
+	P1 = 0x00;   // 行输出低电平
+	P3 = 0xff;   // 列输入带上拉
+	delay_ms(1);
+	if (P3 == 0xff) // 无按键
+	{
+		keyNo = 0xff;
+		return;
+	}
+	switch(P3)
+	{
+		case 0xfe: keyNo += 0;  break; // 第0行 
+		case 0xfd: keyNo += 4;  break; // 第1行
+		case 0xfb: keyNo += 8;  break; // 第2行
+		case 0xf7: keyNo += 12; break; // 第3行
+		case 0xef: keyNo += 16; break; // 第4行
+		default:   keyNo = 0xff;
+	}
+}
+// LCD写命令
+void write_com(uchar com)
+{	
+	RS = 0; // 命令模式
+	RW = 0; // 写模式
+    P0 = com;
+	delay(5);
+    E = 1;
+	delay(5);
+	E = 0;
+}
+// LCD写数据
+void write_data(uchar date)
+{	
+	RS = 1; // 数据模式
+	RW = 0; // 写模式
+	P0 = date;
+	delay(5);
+    E = 1;
+	delay(5);
+	E = 0;
+}
+// LCD初始化 (1604)
+void LCD1604_init()
+{
+	delay_ms(15);       // 上电延时
+    
+	// 初始化命令序列
+	write_com(0x38);    // 8位接口, 4行显示, 5x8点阵
+	write_com(0x0c);    // 显示开, 光标关, 闪烁关
+	write_com(0x06);    // 写入后光标右移
+	write_com(0x01);    // 清屏
+	delay_ms(2);        // 清屏延时
+}
+// 设置显示位置 (1604的行地址)
+void set_position(uchar row, uchar col)
+{
+	uchar address;
+	// 1604的行地址映射
+	switch(row)
+	{
+		case 0: address = 0x80 + col; break; // 第1行
+		case 1: address = 0xC0 + col; break; // 第2行
+		case 2: address = 0x90 + col; break; // 第3行
+		case 3: address = 0xD0 + col; break; // 第4行
+		default: address = 0x80;
+	}
+	write_com(address);
+}
+// 显示字符串
+void display_string(uchar row, uchar col, uchar *str)
+{
+	set_position(row, col);
+	while(*str != '\0')
+	{
+		write_data(*str++);
+		delay(1);
+	}
+}
+// 清屏函数
+void clear_screen()
+{
+	write_com(0x01);    // 清屏命令
+	delay_ms(2);        // 清屏延时
+}
+// 蜂鸣器提示
+void beep()
+{
+	uchar i;
+	for(i = 0; i < 60; i++)
+	{
+		delay_ms(1);
+		BEEP = ~BEEP;
+	}
+	BEEP = 1;
+}
+// 按键值转字符
+uchar key_to_char(uchar key_value)
+{
+	// 20个键值映射
+	const uchar keymap[20] = {
+		'0','1','2','3',
+		'4','5','6','7',
+		'8','9','A','B',
+		'C','D','E','F',
+		'M','D','S','E'  // M:菜单, D:删除, S:空格, E:回车
+	};
+	if(key_value < 20) 
+		return keymap[key_value];
+	else 
+		return '?'; // 无效按键
+}
+// 更新历史记录
+void update_history(uchar key_char)
+{
+	// 如果历史记录已满，左移所有字符
+	if(historyIndex >= 16) {
+		uchar i;
+		for(i = 0; i < 15; i++) {
+			keyHistory[i] = keyHistory[i+1];
+		}
+		historyIndex = 15; // 指向最后一个位置
+	}
+	// 添加新按键
+	keyHistory[historyIndex] = key_char;
+	historyIndex++;
+	keyHistory[historyIndex] = '\0'; // 确保以null结尾
+	// 显示更新后的历史记录
+	display_string(1, 0, keyHistory);
+}
+// 修复后的删除函数
+void delete_last_char()
+{
+	if(historyIndex > 0) {
+		historyIndex--; // 回退一个位置
+		keyHistory[historyIndex] = ' '; // 用空格替换
+		keyHistory[historyIndex+1] = '\0'; // 更新结束符
+		// 更新显示 - 只更新被删除的位置
+		set_position(1, historyIndex);
+		write_data(' ');
+	}
+}
+// 显示主菜单
+void display_main_menu()
+{
+	clear_screen();
+	display_string(0, 0, "  MAIN MENU  ");
+	display_string(1, 0, "1.Key History");
+	display_string(2, 0, "2.LED Control");
+	display_string(3, 0, "3.Settings  ");
+}
+// 显示LED控制菜单
+void display_led_menu()
+{
+	clear_screen();
+	display_string(0, 0, " LED CONTROL ");
+	display_string(1, 0, "1.All OFF    ");
+	display_string(2, 0, "2.All ON     ");
+	display_string(3, 0, "3.Blink      ");
+}
+// 控制LED
+void control_led(uchar mode)
+{
+	static uint blinkTimer = 0;
+	if(mode != ledMode) {
+		ledMode = mode;
+		blinkTimer = 0;
+	}
+	switch(ledMode)
+	{
+		case 0: // All OFF
+			LED1 = LED2 = LED3 = LED4 = 1;
+			break;	
+		case 1: // All ON
+			LED1 = LED2 = LED3 = LED4 = 0;
+			break;	
+		case 2: // Blink
+			blinkTimer++;
+			if(blinkTimer >= 500) {
+				LED1 = ~LED1;
+				LED2 = ~LED2;
+				LED3 = ~LED3;
+				LED4 = ~LED4;
+				blinkTimer = 0;
+			}
+			break;
+	}
+}
+// 处理菜单导航
+void handle_menu(uchar key)
+{
+	switch(menuState)
+	{
+		case 0: // 主菜单
+			if(key == KEY_DOWN)
+			{
+				currentMenuItem = (currentMenuItem + 1) % menuItemCount;
+				display_main_menu();
+				set_position(currentMenuItem+1, 0);
+				write_data('>'); // 标记当前选项
+			}
+			else if(key == KEY_UP)
+			{
+				currentMenuItem = (currentMenuItem == 0) ? menuItemCount-1 : currentMenuItem-1;
+				display_main_menu();
+				set_position(currentMenuItem+1, 0);
+				write_data('>');
+			}
+			else if(key == KEY_SELECT)
+			{
+				if(currentMenuItem == 0) // Key History
+				{
+					clear_screen();
+					display_string(0, 0, "Key History:");
+					display_string(1, 0, keyHistory);
+					display_string(3, 0, "Menu>Back");
+				}
+				else if(currentMenuItem == 1) // LED Control
+				{
+					menuState = 1;
+					currentMenuItem = 0;
+					display_led_menu();
+					set_position(1, 0);
+					write_data('>');
+				}
+			}
+			break;
+			
+		case 1: // LED控制菜单
+			if(key == KEY_DOWN)
+			{
+				currentMenuItem = (currentMenuItem + 1) % 3;
+				display_led_menu();
+				set_position(currentMenuItem+1, 0);
+				write_data('>');
+			}
+			else if(key == KEY_UP)
+			{
+				currentMenuItem = (currentMenuItem == 0) ? 2 : currentMenuItem-1;
+				display_led_menu();
+				set_position(currentMenuItem+1, 0);
+				write_data('>');
+			}
+			else if(key == KEY_SELECT)
+			{
+				control_led(currentMenuItem);
+			}
+			else if(key == KEY_BACK)
+			{
+				menuState = 0;
+				currentMenuItem = 0;
+				display_main_menu();
+				set_position(1, 0);
+				write_data('>');
+			}
+			break;
+	}
+}
+// 主函数
+void main()
+{	
+	INT8U keyNo_temp;
+	uchar key_char;
+	// 初始化LED
+	LED1 = LED2 = LED3 = LED4 = 1; // 初始状态为熄灭
+	// LCD初始化
+	LCD1604_init();
+	// 显示欢迎界面
+	display_string(0, 0, "  4x5 MATRIX  ");
+	display_string(1, 0, "  KEY SYSTEM  ");
+	display_string(2, 0, " WITH MENU &  ");
+	display_string(3, 0, "  LED CONTROL ");
+	delay_ms(2000);
+	// 显示主菜单
+	display_main_menu();
+	set_position(1, 0);
+	write_data('>'); // 标记第一个选项
+	while(1)//主循环
+	{
+		Keys_Scan(); // 扫描键盘
+		if(keyNo == 0xff) // 无按键
+		{
+			// 处理LED闪烁模式
+			control_led(ledMode);
+			delay_ms(1);
+			continue;
+		}
+		keyNo_temp = keyNo; // 保存按键值
+		beep();             // 蜂鸣提示
+		// 等待按键释放
+		while(Keys_Scan(), keyNo != 0xff);
+		// 功能键处理
+		switch(keyNo_temp)
+		{
+			case KEY_CLS:    // 清屏
+				clear_screen();
+				break;		
+			case KEY_ENTER:  // 换行
+				// 在LCD上实现换行
+				if(menuState == 0) {
+					set_position(3, 0);
+					write_data('>');
+				}
+				break;	
+			case KEY_SPACE:  // 空格
+				update_history(' ');
+				break;
+			case KEY_DEL:    // 删除
+				delete_last_char();
+				break;
+			case KEY_MENU:   // 菜单
+				menuState = 0;
+				currentMenuItem = 0;
+				display_main_menu();//显示主菜单
+				set_position(1, 0);
+				write_data('>');
+				break;
+			case KEY_UP:     // 上移
+			case KEY_DOWN:   // 下移
+			case KEY_SELECT: // 选择
+			case KEY_BACK:   // 返回
+				handle_menu(keyNo_temp);
+				break;			
+			default:         // 普通按键
+				key_char = key_to_char(keyNo_temp);		
+				// 显示当前按键
+				if(menuState == 0) // 只有在普通模式下显示按键
+				{
+					set_position(3, 0);
+					write_data('C');//显示当前按键
+					write_data('u');
+					write_data('r');
+					write_data('r');
+					write_data(':');
+					write_data(key_char);
+					write_data(' ');			
+					// 更新并显示历史记录
+					update_history(key_char);
+				}
+				break;
+		}
+	}
+}
+```
 
 # 数字芯片的使用补充
 
@@ -1829,5 +2239,3 @@ unsigned char SPI_Transfer_HW(unsigned char dat) {
 - OE 数据输出使能信号
 
 ![alt text](image-12.png)	
-
-## 
