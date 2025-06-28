@@ -2239,3 +2239,6 @@ void main()
 - OE 数据输出使能信号
 
 ![alt text](image-12.png)	
+
+
+单片机
