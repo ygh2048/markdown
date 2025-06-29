@@ -229,24 +229,855 @@ void task_ctl(void *pdata)
 
 # 实验三
 ## task1
+```c
+
+/*
+ * @Author: ygh && “ygh2048009576@outlook.com”
+ * @Date: 2025-04-12 20:57:59
+ * @LastEditors: ygh && “ygh2048009576@outlook.com”
+ * @LastEditTime: 2025-04-26 22:16:22
+ * @FilePath: \task1\USER\task.c
+ * @Description: 任务函数具体实现
+ * 
+ * Copyright (c) 2025 by ygh, All Rights Reserved. 
+ */
+#include "task.h"
+
+OS_STK START_TASK_STK[START_STK_SIZE];
+OS_STK ONE_TASK_STK[ONE_STK_SIZE];
+OS_STK TWO_TASK_STK[TWO_STK_SIZE];
+OS_STK THREE_TASK_STK[THREE_STK_SIZE];
 
 
-## task2
+#define MUTEX_PRIO 5 /*定义互斥信号量优先级*/
+OS_EVENT *mutex; /*定义互斥信号量指针*/
+                                     
+/**
+ * @description: 启动任务，创建其他任务，并创建信号量
+ * @param {void} *pdata
+ * @return {*}
+ */
+void start_task(void *pdata)
+{
+  OS_CPU_SR cpu_sr=0;
+	pdata = pdata; 
+	printf("start task\r\n");
+  OS_ENTER_CRITICAL();			 
+	OSTaskCreate(task_one,(void *)0,(OS_STK*)&ONE_TASK_STK[ONE_STK_SIZE-1],ONE_TASK_PRIO); 	
+	OSTaskCreate(task_two,(void *)0,(OS_STK*)&TWO_TASK_STK[TWO_STK_SIZE-1],TWO_TASK_PRIO);
+	OSTaskCreate(task_three,(void *)0,(OS_STK*)&THREE_TASK_STK[THREE_STK_SIZE-1],THREE_TASK_PRIO);			   
+	OSTaskSuspend(START_TASK_PRIO);	
+	OS_EXIT_CRITICAL();				
+} 
 
-## task3
+
+void LED(void)
+{
+	INT8U err;
+	OSMutexPend(mutex, 0, &err);
+	LED1 = 0;
+	//OSTimeDly(30);
+	delay_ms(30);
+	LED1 = 1;
+	//OSTimeDly(60);
+	delay_ms(60);
+	OSMutexPost(mutex);
+}
  
 
+/**
+ * @description: 实验任务一
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_one(void *pdata)
+{	 	
+	INT8U err;
+	mutex=OSMutexCreate (MUTEX_PRIO, &err);
+	//LED_Init();		  
+	while (1)
+	{
+		LED();
+		OSTimeDly(1000);
+	}
+}
+
+/**s
+ * @description: 实验任务二
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_two(void *pdata)
+{	  
+	pdata = pdata;
+	while (1)
+	{
+		LED();
+		OSTimeDly(2000);
+	}
+}
+
+/**
+ * @description: 实验任务三
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_three(void *pdata)
+{	  
+	INT8U err;
+	u32 time_press = 0;	//按下时间
+
+	while(1)
+	{
+		OSTimeDly(1000);
+	}
+
+}
+
+
+```
+
+## task2
+```c
+
+/*
+ * @Author: ygh && “ygh2048009576@outlook.com”
+ * @Date: 2025-04-12 20:57:59
+ * @LastEditors: ygh && “ygh2048009576@outlook.com”
+ * @LastEditTime: 2025-04-26 22:23:18
+ * @FilePath: \task2\USER\task.c
+ * @Description: 任务函数具体实现
+ * 
+ * Copyright (c) 2025 by ygh, All Rights Reserved. 
+ */
+#include "task.h"
+
+OS_STK START_TASK_STK[START_STK_SIZE];
+OS_STK ONE_TASK_STK[ONE_STK_SIZE];
+OS_STK TWO_TASK_STK[TWO_STK_SIZE];
+OS_STK THREE_TASK_STK[THREE_STK_SIZE];
+
+
+#define MUTEX_PRIO 5 /*定义互斥信号量优先级*/
+OS_EVENT *sem; /*定义互斥信号量指针*/
+void LED(void);                                   
+/**
+ * @description: 启动任务，创建其他任务，并创建信号量
+ * @param {void} *pdata
+ * @return {*}
+ */
+void start_task(void *pdata)
+{
+  OS_CPU_SR cpu_sr=0;
+	pdata = pdata; 
+	printf("start task\r\n");
+  OS_ENTER_CRITICAL();			 
+	OSTaskCreate(task_one,(void *)0,(OS_STK*)&ONE_TASK_STK[ONE_STK_SIZE-1],ONE_TASK_PRIO); 	
+	OSTaskCreate(task_two,(void *)0,(OS_STK*)&TWO_TASK_STK[TWO_STK_SIZE-1],TWO_TASK_PRIO);
+	OSTaskCreate(task_three,(void *)0,(OS_STK*)&THREE_TASK_STK[THREE_STK_SIZE-1],THREE_TASK_PRIO);			   
+	OSTaskSuspend(START_TASK_PRIO);	
+	OS_EXIT_CRITICAL();				
+} 
+
+
+void LED(void)
+{
+	INT8U err;
+	OSMutexPend(sem, 0, &err);
+	LED1 = 0;
+	OSTimeDly(30);
+	LED1 = 1;
+	OSTimeDly(60);
+	OSMutexPost(sem);
+}
+ 
+
+/**
+ * @description: 实验任务一
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_one(void *pdata)
+{	 	
+	INT8U err;
+	sem=OSMutexCreate (MUTEX_PRIO, &err);
+	while (1)
+	{
+		LED();
+		OSTimeDly(1000);
+	}
+}
+
+/**
+ * @description: 实验任务二
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_two(void *pdata)
+{	  
+	pdata = pdata;
+	while (1)
+	{
+		LED();
+		OSTimeDly(2000);
+	}
+}
+
+/**
+ * @description: 实验任务三
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_three(void *pdata)
+{	  
+	INT8U err;
+	u32 time_press = 0;	//按下时间
+
+	while(1)
+	{
+		OSTimeDly(1000);
+	}
+
+}
+
+```
+## task3
+ 
+```c
+/*
+ * @Author: ygh && “ygh2048009576@outlook.com”
+ * @Date: 2025-04-12 20:57:59
+ * @LastEditors: ygh && “ygh2048009576@outlook.com”
+ * @LastEditTime: 2025-04-27 21:15:55
+ * @FilePath: \task3\USER\task.c
+ * @Description: 任务函数具体实现
+ * 
+ * Copyright (c) 2025 by ygh, All Rights Reserved. 
+ */
+#include "task.h"
+
+OS_STK START_TASK_STK[START_STK_SIZE];
+OS_STK ONE_TASK_STK[ONE_STK_SIZE];
+OS_STK TWO_TASK_STK[TWO_STK_SIZE];
+OS_STK THREE_TASK_STK[THREE_STK_SIZE];
+
+
+
+OS_EVENT *sem; 
+                                     
+/**
+ * @description: 启动任务，创建其他任务，并创建信号量
+ * @param {void} *pdata
+ * @return {*}
+ */
+void start_task(void *pdata)
+{
+  OS_CPU_SR cpu_sr=0;
+	pdata = pdata; 
+	printf("start task\r\n");
+  OS_ENTER_CRITICAL();			 
+	OSTaskCreate(task_one,(void *)0,(OS_STK*)&ONE_TASK_STK[ONE_STK_SIZE-1],ONE_TASK_PRIO); 	
+	OSTaskCreate(task_two,(void *)0,(OS_STK*)&TWO_TASK_STK[TWO_STK_SIZE-1],TWO_TASK_PRIO);
+	//OSTaskCreate(task_three,(void *)0,(OS_STK*)&THREE_TASK_STK[THREE_STK_SIZE-1],THREE_TASK_PRIO);			   
+	OSTaskSuspend(START_TASK_PRIO);	
+	OS_EXIT_CRITICAL();				
+} 
+
+ 
+
+/**
+ * @description: 实验任务一
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_one(void *pdata)
+{	 
+	while (1)
+	{
+		while(WK_UP != 1)
+		{
+			OSTimeDly(1);
+		}
+		OSSemPost(sem);
+		while(WK_UP == 1)
+		{
+			OSTimeDly(1);
+		}
+	}
+	
+
+}
+
+/**
+ * @description: 实验任务二
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_two(void *pdata)
+{	  
+	INT8U err;
+	sem = OSSemCreate(0);
+	while (1)
+	{
+		OSSemPend(sem, 0, &err);
+		LED1 = 0;
+		delay_ms(1000);
+		LED1 = 1;
+		delay_ms(1000);
+	}
+}
+
+/**
+ * @description: 实验任务三
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_three(void *pdata)
+{	  
+	INT8U err;
+	u32 time_press = 0;	//按下时间
+
+	while(1)
+	{
+		OSTimeDly(1000);
+	}
+
+}
+```
 ## task4
+```c
+OS_EVENT *sem;
 
+
+void TIM3_IRQHandler(void)
+{
+	if(TIM_GetITStatus(TIM3,TIM_IT_Update)==SET) 
+	{
+		OSSemPost(sem);
+	}
+	TIM_ClearITPendingBit(TIM3,TIM_IT_Update);  
+}
+
+
+/*
+ * @Author: ygh && “ygh2048009576@outlook.com”
+ * @Date: 2025-04-12 20:57:59
+ * @LastEditors: ygh && “ygh2048009576@outlook.com”
+ * @LastEditTime: 2025-04-26 22:56:17
+ * @FilePath: \task4\USER\task.c
+ * @Description: 任务函数具体实现
+ * 
+ * Copyright (c) 2025 by ygh, All Rights Reserved. 
+ */
+#include "task.h"
+
+OS_STK START_TASK_STK[START_STK_SIZE];
+OS_STK ONE_TASK_STK[ONE_STK_SIZE];
+OS_STK TWO_TASK_STK[TWO_STK_SIZE];
+OS_STK THREE_TASK_STK[THREE_STK_SIZE];
+
+
+extern OS_EVENT *sem; /*定义互斥信号量指针*/
+                                     
+/**
+ * @description: 启动任务，创建其他任务，并创建信号量
+ * @param {void} *pdata
+ * @return {*}
+ */
+void start_task(void *pdata)
+{
+  OS_CPU_SR cpu_sr=0;
+	pdata = pdata; 
+	printf("start task\r\n");
+  OS_ENTER_CRITICAL();			 
+	OSTaskCreate(task_one,(void *)0,(OS_STK*)&ONE_TASK_STK[ONE_STK_SIZE-1],ONE_TASK_PRIO); 	
+	OSTaskCreate(task_two,(void *)0,(OS_STK*)&TWO_TASK_STK[TWO_STK_SIZE-1],TWO_TASK_PRIO);
+	OSTaskCreate(task_three,(void *)0,(OS_STK*)&THREE_TASK_STK[THREE_STK_SIZE-1],THREE_TASK_PRIO);			   
+	OSTaskSuspend(START_TASK_PRIO);	
+	OS_EXIT_CRITICAL();				
+} 
+
+ 
+
+/**
+ * @description: 实验任务一
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_one(void *pdata)
+{	 	
+	INT8U err;
+	OS_CPU_SR cpu_sr=0;
+	sem = OSSemCreate(0);
+	while (1)
+	{
+		OSSemPend(sem, 0, &err);
+		BEEP = 1;
+		OSTimeDly(60);
+		BEEP = 0;
+		OSTimeDly(60);
+	}
+}
+
+/**
+ * @description: 实验任务二
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_two(void *pdata)
+{	  
+
+	while(1)
+	{
+		OSTimeDly(1000);
+	}
+}
+
+/**
+ * @description: 实验任务三
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_three(void *pdata)
+{	  
+	INT8U err;
+	u32 time_press = 0;	//按下时间
+
+	while(1)
+	{
+		OSTimeDly(1000);
+	}
+
+}
+
+
+```
 ## task5
+```c
 
+/*
+ * @Author: ygh && “ygh2048009576@outlook.com”
+ * @Date: 2025-04-12 20:57:59
+ * @LastEditors: ygh && “ygh2048009576@outlook.com”
+ * @LastEditTime: 2025-04-27 20:30:48
+ * @FilePath: \task5\USER\task.c
+ * @Description: 任务函数具体实现
+ * 
+ * Copyright (c) 2025 by ygh, All Rights Reserved. 
+ */
+#include "task.h"
+
+OS_STK START_TASK_STK[START_STK_SIZE];
+OS_STK ONE_TASK_STK[ONE_STK_SIZE];
+OS_STK TWO_TASK_STK[TWO_STK_SIZE];
+OS_STK THREE_TASK_STK[THREE_STK_SIZE];
+
+
+
+OS_EVENT * sem; /*定义互斥信号量指针*/
+                                     
+/**
+ * @description: 启动任务，创建其他任务，并创建信号量
+ * @param {void} *pdata
+ * @return {*}
+ */
+void start_task(void *pdata)
+{
+    OS_CPU_SR cpu_sr=0;
+	pdata = pdata; 
+	sem=OSSemCreate(0);		//创建信号量
+	printf("start task\r\n");
+    OS_ENTER_CRITICAL();			 
+	OSTaskCreate(task_one,(void *)0,(OS_STK*)&ONE_TASK_STK[ONE_STK_SIZE-1],ONE_TASK_PRIO); 	
+	//OSTaskCreate(task_two,(void *)0,(OS_STK*)&TWO_TASK_STK[TWO_STK_SIZE-1],TWO_TASK_PRIO);
+	//OSTaskCreate(task_three,(void *)0,(OS_STK*)&THREE_TASK_STK[THREE_STK_SIZE-1],THREE_TASK_PRIO);			   
+	OSTaskSuspend(START_TASK_PRIO);	
+	OS_EXIT_CRITICAL();				
+} 
+
+
+ 
+
+/**
+ * @description: 实验任务一
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_one(void *pdata)
+{	 	
+	while (1)
+	{
+		//OSTimeDly(OS_TICKS_PER_SEC * 5/3);
+		delay_ms(1000 * 5/3);
+		OSSemPost(sem); 
+		delay_ms(1);
+	}
+}
+
+/**
+ * @description: 实验任务二
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_two(void *pdata)
+{	  
+
+	while(1)
+	{
+		OSTimeDly(1000);
+	}
+}
+
+/**
+ * @description: 实验任务三
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_three(void *pdata)
+{	  
+	INT8U err;
+	while(1)
+	{
+		OSTimeDly(1000);
+	}
+
+}
+
+
+
+```
 ## task6
+```c
+OS_EVENT *sem;
 
+void TIM3_IRQHandler(void)
+{
+	if(TIM_GetITStatus(TIM3,TIM_IT_Update)==SET) 
+	{
+		if (OSSemAccept (sem) > 0)
+		{
+			LED1=!LED1;
+		}
+		OSSemPost(sem);
+	}
+	TIM_ClearITPendingBit(TIM3,TIM_IT_Update);  
+}
+
+
+/*
+ * @Author: ygh && “ygh2048009576@outlook.com”
+ * @Date: 2025-04-12 20:57:59
+ * @LastEditors: ygh && “ygh2048009576@outlook.com”
+ * @LastEditTime: 2025-04-27 20:38:18
+ * @FilePath: \task6\USER\task.c
+ * @Description: 任务函数具体实现
+ * 
+ * Copyright (c) 2025 by ygh, All Rights Reserved. 
+ */
+#include "task.h"
+
+OS_STK START_TASK_STK[START_STK_SIZE];
+OS_STK ONE_TASK_STK[ONE_STK_SIZE];
+OS_STK TWO_TASK_STK[TWO_STK_SIZE];
+OS_STK THREE_TASK_STK[THREE_STK_SIZE];
+
+#define KEY1FLAG (1<<0) /*定义按键任务标志*/
+#define DLY1FLAG (1<<1) /*定义定时任务标志*/
+
+OS_FLAG_GRP *flag; /*定义事件标志组指针*/
+extern OS_EVENT *sem; /*定义互斥信号量指针*/
+                                     
+/**
+ * @description: 启动任务，创建其他任务，并创建信号量
+ * @param {void} *pdata
+ * @return {*}
+ */
+void start_task(void *pdata)
+{
+  OS_CPU_SR cpu_sr=0;
+	pdata = pdata; 
+	printf("start task\r\n");
+  OS_ENTER_CRITICAL();			 
+	OSTaskCreate(task_one,(void *)0,(OS_STK*)&ONE_TASK_STK[ONE_STK_SIZE-1],ONE_TASK_PRIO); 	
+	OSTaskCreate(task_two,(void *)0,(OS_STK*)&TWO_TASK_STK[TWO_STK_SIZE-1],TWO_TASK_PRIO);
+	OSTaskCreate(task_three,(void *)0,(OS_STK*)&THREE_TASK_STK[THREE_STK_SIZE-1],THREE_TASK_PRIO);			   
+	OSTaskSuspend(START_TASK_PRIO);	
+	OS_EXIT_CRITICAL();				
+} 
+
+/**
+ * @description: 实验任务一
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_one(void *pdata)
+{	 	
+	INT8U err;
+	
+	flag = OSFlagCreate(0, &err);
+	while (1)
+	{
+		OSFlagPend (flag, KEY1FLAG | DLY1FLAG ,OS_FLAG_WAIT_SET_ALL |OS_FLAG_CONSUME , 0, &err);
+		LED1=0;
+		OSTimeDly(OS_TICKS_PER_SEC);
+		LED1=1;
+		OSTimeDly(OS_TICKS_PER_SEC);
+	}
+}
+
+/**
+ * @description: 实验任务二
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_two(void *pdata)
+{	  
+	INT8U err;
+	while (1)
+	{
+		while(WK_UP != 0)
+		{
+			OSTimeDly(1);
+		}
+		OSFlagPost(flag, KEY1FLAG,OS_FLAG_SET, &err);
+		while(WK_UP == 0)
+		{
+			OSTimeDly(1);
+		}
+	}
+}
+
+/**
+ * @description: 实验任务三
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_three(void *pdata)
+{	  
+	INT8U err;
+	while (1)
+	{
+		OSTimeDly(OS_TICKS_PER_SEC);
+		OSFlagPost(flag, DLY1FLAG,OS_FLAG_SET, &err);
+	}
+}
+
+
+```
 ## task7
+```c
 
+
+/*
+ * @Author: ygh && “ygh2048009576@outlook.com”
+ * @Date: 2025-04-12 20:57:59
+ * @LastEditors: ygh && “ygh2048009576@outlook.com”
+ * @LastEditTime: 2025-04-26 23:08:28
+ * @FilePath: \task7\USER\task.c
+ * @Description: 任务函数具体实现
+ * 
+ * Copyright (c) 2025 by ygh, All Rights Reserved. 
+ */
+#include "task.h"
+
+OS_STK START_TASK_STK[START_STK_SIZE];
+OS_STK ONE_TASK_STK[ONE_STK_SIZE];
+OS_STK TWO_TASK_STK[TWO_STK_SIZE];
+OS_STK THREE_TASK_STK[THREE_STK_SIZE];
+
+#define KEY1FLAG (1<<0) /*定义按键任务标志*/
+#define DLY1FLAG (1<<1) /*定义定时任务标志*/
+
+OS_FLAG_GRP *flag; /*定义事件标志组指针*/
+extern OS_EVENT *sem; /*定义互斥信号量指针*/
+                                     
+/**
+ * @description: 启动任务，创建其他任务，并创建信号量
+ * @param {void} *pdata
+ * @return {*}
+ */
+void start_task(void *pdata)
+{
+  OS_CPU_SR cpu_sr=0;
+	pdata = pdata; 
+	printf("start task\r\n");
+  OS_ENTER_CRITICAL();			 
+	OSTaskCreate(task_one,(void *)0,(OS_STK*)&ONE_TASK_STK[ONE_STK_SIZE-1],ONE_TASK_PRIO); 	
+	OSTaskCreate(task_two,(void *)0,(OS_STK*)&TWO_TASK_STK[TWO_STK_SIZE-1],TWO_TASK_PRIO);
+	OSTaskCreate(task_three,(void *)0,(OS_STK*)&THREE_TASK_STK[THREE_STK_SIZE-1],THREE_TASK_PRIO);			   
+	OSTaskSuspend(START_TASK_PRIO);	
+	OS_EXIT_CRITICAL();				
+} 
+
+
+/**
+ * @description: 实验任务一
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_one(void *pdata)
+{	 	
+	INT8U err;
+	while (1)
+	{
+		while(WK_UP != 0)
+		{
+			OSTimeDly(1);
+		}
+		OSFlagPost(flag, KEY1FLAG,OS_FLAG_SET, &err);
+		while(WK_UP  == 0)
+		{
+			OSTimeDly(1);
+		}
+	}
+}
+
+/**
+ * @description: 实验任务二
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_two(void *pdata)
+{	  
+	INT8U err;
+	
+	flag = OSFlagCreate(0, &err);
+	while (1)
+	{
+		OSFlagPend (flag, KEY1FLAG | DLY1FLAG ,OS_FLAG_WAIT_SET_ANY |OS_FLAG_CONSUME , 0, &err);
+		LED1=0;
+		OSTimeDly(OS_TICKS_PER_SEC);
+		LED1=1;
+		OSTimeDly(OS_TICKS_PER_SEC);
+	}
+}
+
+/**
+ * @description: 实验任务三
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_three(void *pdata)
+{	  
+	INT8U err;
+	while (1)
+	{
+		OSTimeDly(OS_TICKS_PER_SEC);
+		OSFlagPost(flag, DLY1FLAG,OS_FLAG_SET, &err);
+	}
+}
+
+```
 
 ## task8
+```c
 
+/*
+ * @Author: ygh && “ygh2048009576@outlook.com”
+ * @Date: 2025-04-12 20:57:59
+ * @LastEditors: ygh && “ygh2048009576@outlook.com”
+ * @LastEditTime: 2025-04-27 20:57:30
+ * @FilePath: \task8_内存管理\USER\task.c
+ * @Description: 任务函数具体实现
+ * 
+ * Copyright (c) 2025 by ygh, All Rights Reserved. 
+ */
+#include "task.h"
+
+OS_STK START_TASK_STK[START_STK_SIZE];
+OS_STK ONE_TASK_STK[ONE_STK_SIZE];
+OS_STK TWO_TASK_STK[TWO_STK_SIZE];
+OS_STK THREE_TASK_STK[THREE_STK_SIZE];
+
+   
+
+#define QSIZE 16
+OS_MEM *mem;
+OS_EVENT *q;
+INT32U dly[QSIZE];
+void *msg[QSIZE];
+
+
+/**
+ * @description: 启动任务，创建其他任务，并创建信号量
+ * @param {void} *pdata
+ * @return {*}
+ */
+void start_task(void *pdata)
+{
+  OS_CPU_SR cpu_sr=0;
+	pdata = pdata; 
+	printf("start task\r\n");
+  OS_ENTER_CRITICAL();			 
+	OSTaskCreate(task_one,(void *)0,(OS_STK*)&ONE_TASK_STK[ONE_STK_SIZE-1],ONE_TASK_PRIO); 	
+	OSTaskCreate(task_two,(void *)0,(OS_STK*)&TWO_TASK_STK[TWO_STK_SIZE-1],TWO_TASK_PRIO);
+	OSTaskCreate(task_three,(void *)0,(OS_STK*)&THREE_TASK_STK[THREE_STK_SIZE-1],THREE_TASK_PRIO);			   
+	OSTaskSuspend(START_TASK_PRIO);	
+	OS_EXIT_CRITICAL();				
+} 
+
+
+/**
+ * @description: 实验任务一
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_one(void *pdata)
+{	 	
+	INT8U err;	 
+	uint32_t *pd;
+	q=OSQCreate(msg,QSIZE);
+	mem = OSMemCreate(dly,QSIZE,sizeof(INT32U),&err);
+	while (1)
+	{
+		pd = (INT32U *) OSQPend (q, 0, &err);
+		LED1 = 1;
+		OSTimeDly(*pd);
+		OSMemPut(mem, pd);
+		LED1 = 0;
+		OSTimeDly(10);
+	}
+}
+
+/**s
+ * @description: 实验任务二
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_two(void *pdata)
+{	  
+	INT8U err;	 
+	uint32_t *tp;
+	int i;
+	pdata = pdata;
+	while (1) {
+		for (i = 0; i < QSIZE; i++) {
+		tp = OSMemGet(mem, &err);
+		*tp = i * 20;
+		OSQPost (q, (void *)tp); 
+		} 
+		OSTimeDly(QSIZE * QSIZE * 20); 
+		}
+}
+
+/**
+ * @description: 实验任务三
+ * @param {void} *pdata
+ * @return {*}
+ */
+void task_three(void *pdata)
+{	  
+	INT8U err;
+	u32 time_press = 0;	//按下时间
+	while(1)
+	{
+		OSTimeDly(1000);
+	}
+
+}
+
+
+```
 
 
 
