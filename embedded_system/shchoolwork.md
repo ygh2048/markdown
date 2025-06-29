@@ -1176,3 +1176,20 @@ void KEY_task(void * pdata)
 
 
 ```
+
+
+# 例题
+遥控小车分析
+1 数据流图
+
+遥控信号->串口->task_bluetooth_data_process()->电机控制信号
+
+2 划分任务
+task_Bluetooth_connect()//接收控制信息
+task_bluetooth_data_process()//从通信协议中获取数据，并且处理出需要的控制信息，如电机的方向速度等
+task_motor_control()//根据控制信息，控制电机
+
+3 任务间通信
+
+task_bluetooth_data_process()->task_motor_control()//信号量同步
+task_Bluetooth_connect()->task_bluetooth_data_process()//消息队列
