@@ -11,7 +11,11 @@ cout
 cin		
 endl:插入一个换行符\n      刷新输出缓冲区		
 
+```
+    cin >> input;
+    cout << "You entered: " << input << endl;
 
+```
 
 # STL
 标准模板库，是C++标准库中的核心组成部分，提供了一套通用的，模板化的数据结构和算法       
