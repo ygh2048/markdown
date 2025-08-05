@@ -69,7 +69,7 @@ void myselectsort(vector<int>& arr){
     }
 }
 
-// 单函数快速排序（重载版本处理边界）
+// 单函数快速排序
 void quickSort(vector<int>& arr, int low, int high) {
     if (low >= high) return;  // 递归终止条件
     
@@ -105,9 +105,30 @@ void quickSort(vector<int>& arr) {
     quickSort(arr, 0, arr.size() - 1);
 }
 
-void myquicksort(vector<int>& arr,int low,int high)
+void myquicksort(vector<int>& arr,int low,int high)//
 {
+    if(low >= high)
+    {
+        return;
+    } 
+    int i = low;
 
+    int pivotIndex = low + rand() % (high - low + 1);
+    swap(arr[pivotIndex], arr[high]);
+    int pivot = arr[high];
+
+
+    for(int j = low;j < high; j ++)
+    {
+        if(arr[j] <= pivot)
+        {
+            swap(arr[i],arr[j]);
+            i++;
+        }
+    }
+    swap(arr[i],arr[high]);
+    myquicksort(arr,low,i - 1);
+    myquicksort(arr,i + 1,high);
 }
 void myquicksort(vector<int>& arr)
 {
@@ -119,8 +140,46 @@ void myquicksort(vector<int>& arr)
     myquicksort(arr, 0, arr.size() - 1);
 }
 
+// 调整堆（大顶堆）的函数
+// 参数：
+//   arr: 待排序数组
+//   n: 当前堆的大小
+//   i: 当前需要调整的节点索引
+void heapify(vector<int>& arr, int n, int i) {
+    int largest = i;       // 初始化最大元素为当前节点
+    int left = 2 * i + 1;  // 左子节点索引
+    int right = 2 * i + 2; // 右子节点索引
 
+    // 如果左子节点存在且大于当前最大节点
+    if (left < n && arr[left] > arr[largest])
+        largest = left;
 
+    // 如果右子节点存在且大于当前最大节点
+    if (right < n && arr[right] > arr[largest])
+        largest = right;
+
+    // 如果最大值不是当前节点，则交换并递归调整
+    if (largest != i) {
+        swap(arr[i], arr[largest]);
+        heapify(arr, n, largest); // 递归调整受影响的子树
+    }
+}
+// 堆排序主函数
+void heapSort(vector<int>& arr) {
+    int n = arr.size();
+
+    // 构建大顶堆（从最后一个非叶子节点开始）
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(arr, n, i);
+
+    // 逐个提取堆顶元素（最大值）并调整堆
+    for (int i = n - 1; i > 0; i--) {
+        // 将当前堆顶（最大值）移到数组末尾
+        swap(arr[0], arr[i]);
+        // 调整剩余元素使其满足堆性质
+        heapify(arr, i, 0);
+    }
+}
 int main() {
     // 测试数据
     std::vector<int> arr = {64, 34, 25, 12, 22, 11, 90,2,3,12};
@@ -136,8 +195,9 @@ int main() {
     //mybubblesort(arr);
     //selectionSort(arr);
     //myselectsort(arr);
-    quickSort(arr);
-
+    //quickSort(arr);
+    //myquicksort(arr);
+    heapSort(arr);
 
     std::cout << "排序后: ";
     for (int num : arr) {

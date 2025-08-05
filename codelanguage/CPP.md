@@ -329,7 +329,14 @@ array的容器的大小是固定的，无法动态的扩展或收缩，这就意
    ```cpp
    array<int, 3> arr = {1, 2, 3};
    int* ptr = arr.data();  // ptr 指向 arr[0]
+ 
    ```
+
+
+# 异常处理机制
+
+
+
 # code
 
 
