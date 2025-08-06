@@ -180,6 +180,97 @@ void heapSort(vector<int>& arr) {
         heapify(arr, i, 0);
     }
 }
+
+
+
+void myheapsort_low(vector<int>& arr,int size,int index)
+{
+    int largest = index;
+    int left = 2 * index + 1;
+    int right = 2 * index + 2;
+
+    if(left < size && arr[left] > arr[largest])
+    {
+        largest = left;
+    }
+    if(right < size && arr[right] > arr[largest])
+    {
+        largest = right;
+    }
+    if(largest != index)
+    {
+    swap(arr[index], arr[largest]);
+    myheapsort_low(arr,size,largest);
+    }
+
+}
+void myheapsort_low_build(vector<int>& arr,int index)
+{
+    int size = arr.size();
+    if(index >= size)
+    {
+        return;
+    }
+    int left = 2 * index + 1;
+    int right = 2 * index + 2; 
+    if(left < size)
+    {
+        myheapsort_low_build(arr,left);
+    }
+    if(right < size)
+    {
+        myheapsort_low_build(arr,right);
+    }
+    myheapsort_low(arr,size,index);
+}
+
+void myheapsort_low(vector<int>& arr)
+{
+    int size = arr.size();
+    myheapsort_low_build(arr,0);
+    for(int i = size - 1; i > 0;i--)
+    {
+        swap(arr[0],arr[i]);
+        heapify(arr,i,0);//从根往上面排，所以可以逐步缩小范围，最大的踢出去就不在二叉树范围了
+    }
+}
+
+
+
+void myheapsort_high(vector<int>& arr, int size,int index)
+{
+    int largest = index;
+    int left = 2 * index + 1;
+    int right = 2 * index + 2;
+    
+    if(left < size && arr[left] > arr[largest])
+    {
+        largest = left;
+    }
+    if(right < size && arr[right] > arr[largest])
+    {
+        largest = right;
+    }
+    if(largest != index)
+    {
+        swap(arr[index],arr[largest]);
+        myheapsort_high(arr,size,largest);
+    }
+}
+
+void myheapsort_high(vector<int>& arr)
+{
+     int size = arr.size();
+     for(int index = size /2 -1 ;index >= 0;index -- )
+     {
+            myheapsort_high(arr,size,index);
+     }
+     for(int i = size -1 ; i > 0 ;i--)
+     {
+            swap(arr[0],arr[i]);
+            myheapsort_high(arr,i,0);
+     }
+}
 int main() {
     // 测试数据
     std::vector<int> arr = {64, 34, 25, 12, 22, 11, 90,2,3,12};
@@ -197,8 +288,9 @@ int main() {
     //myselectsort(arr);
     //quickSort(arr);
     //myquicksort(arr);
-    heapSort(arr);
-
+    //heapSort(arr);
+    //myheapsort_low(arr);
+    myheapsort_high(arr);
     std::cout << "排序后: ";
     for (int num : arr) {
         std::cout << num << " ";
