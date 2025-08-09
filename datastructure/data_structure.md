@@ -315,7 +315,6 @@ void bubbleSort(std::vector<int>& arr) {
 }
 
 ```
-
 #### 时间复杂度
 - 最好情况 (已有序): O(n)
 - 最坏情况 (完全逆序): O(n²)
@@ -350,16 +349,47 @@ void myselectsort(vector<int>& arr){
 
 ### 插入排序
 #### 原理 
-#### 实现
-
-
+#### 实现 
 #### 时间复杂度
-
 ### 快速排序
 #### 原理
 分而治之，选择一个基准数据，然后比基准小的元素放左边，比基准大的元素放右边，然后同样的方法递归排序这两部分，直到所有序列有序。
 #### 实现
 ```cpp
+void myquicksort(vector<int>& arr,int low,int high)//
+{
+    if(low >= high)
+    {
+        return;
+    } 
+    int i = low;
+
+    int pivotIndex = low + rand() % (high - low + 1);
+    swap(arr[pivotIndex], arr[high]);
+    int pivot = arr[high];
+
+
+    for(int j = low;j < high; j ++)
+    {
+        if(arr[j] <= pivot)
+        {
+            swap(arr[i],arr[j]);
+            i++;
+        }
+    }
+    swap(arr[i],arr[high]);
+    myquicksort(arr,low,i - 1);
+    myquicksort(arr,i + 1,high);
+}
+void myquicksort(vector<int>& arr)
+{
+   if (arr.size() <= 1) return;  // 处理空数组或单元素
+    
+    // 初始化随机种子
+    srand(time(nullptr));
+    // 调用完整版快速排序
+    myquicksort(arr, 0, arr.size() - 1);
+}
 
 ```
 #### 时间复杂度
@@ -370,6 +400,7 @@ void myselectsort(vector<int>& arr){
 #### 空间复杂度
 - 最坏情况O(n)
 - 平均情况O(logn)
+
 ### 归并排序
 #### 原理
 #### 实现
@@ -387,12 +418,56 @@ void myselectsort(vector<int>& arr){
 - 重复上面步骤，知道堆的尺寸为1
 
 #### 实现
+```cpp
+void myheapsort_low(vector<int>& arr,int size,int index)
+{
+    int largest = index;
+    int left = 2 * index + 1;
+    int right = 2 * index + 2;
+
+    if(left < size && arr[left] > arr[largest])
+    {
+        largest = left;
+    }
+    if(right < size && arr[right] > arr[largest])
+    {
+        largest = right;
+    }
+    if(largest != index)
+    {
+    swap(arr[index], arr[largest]);
+    myheapsort_low(arr,size,largest);
+    }
+
+}
+void myheapsort_low_build(vector<int>& arr,int index)
+{
+    int size = arr.size();
+    if(index >= size)
+    {
+        return;
+    }
+    int left = 2 * index + 1;
+    int right = 2 * index + 2; 
+    if(left < size)
+    {
+        myheapsort_low_build(arr,left);
+    }
+    if(right < size)
+    {
+        myheapsort_low_build(arr,right);
+    }
+    myheapsort_low(arr,size,index);
+}
+
+```
 #### 时间复杂度
 - 构建最大堆O(n)
 - 每次调整堆O(logn),需要调整n-1次
 - 总时间复杂度O(nlogn)
 #### 空间复杂度
 O(1) 原地排序，不需要额外存储空间
+
 
 # 跳转
 [跳转链接list点这里](../list.md)
