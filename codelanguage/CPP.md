@@ -336,6 +336,48 @@ array的容器的大小是固定的，无法动态的扩展或收缩，这就意
 # 异常处理机制
 
 
+# 字符串函数
+
+#### 一、C++ `string` 类（推荐使用）
+**头文件**：`#include <string>`
+
+| 类别       | 函数/操作符                     | 用法示例                              | 说明                                |
+|------------|---------------------------------|---------------------------------------|-------------------------------------|
+| **构造**   | `string()`                      | `string s1;`                          | 创建空字符串                        |
+|            | `string(const char* s)`         | `string s2 = "Hello";`                | 从C字符串构造                       |
+|            | `string(size_t n, char c)`      | `string s3(5, 'A');`                  | 创建含5个'A'的字符串                |
+| **赋值**   | `=`                             | `s1 = "World";`                       | 赋值操作                            |
+|            | `assign()`                      | `s1.assign("C++", 2);`                | 赋值前2个字符（"C+"）               |
+| **拼接**   | `+` / `+=`                      | `s1 += "!";`                          | 追加字符串                          |
+|            | `append()`                      | `s1.append("2023", 2);`               | 追加"20"                            |
+| **访问**   | `[]`                            | `char c = s1[0];`                     | 访问字符（不检查边界）              |
+|            | `at()`                          | `char c = s1.at(1);`                  | 访问字符（边界检查，越界抛异常）    |
+|            | `front()` / `back()`            | `s1.front() = 'h';`                   | 访问首/尾字符（C++11）              |
+| **容量**   | `size()` / `length()`           | `int len = s1.size();`                | 获取字符串长度                      |
+|            | `empty()`                       | `if (s1.empty()) {...}`               | 判断是否为空                        |
+|            | `capacity()`                    | `int cap = s1.capacity();`            | 获取当前分配的内存大小              |
+|            | `reserve(size_t n)`             | `s1.reserve(100);`                    | 预分配内存                          |
+| **修改**   | `clear()`                       | `s1.clear();`                         | 清空字符串内容                      |
+|            | `insert()`                      | `s1.insert(3, "###");`                | 在位置3插入字符串                   |
+|            | `erase()`                       | `s1.erase(2, 3);`                     | 从位置2删除3个字符                  |
+|            | `replace()`                     | `s1.replace(0, 5, "Hi");`             | 替换位置0开始的5个字符              |
+|            | `push_back()` / `pop_back()`    | `s1.push_back('!');`                  | 末尾添加/删除字符                   |
+| **子串**   | `substr()`                      | `string sub = s1.substr(2, 4);`       | 从位置2取4个字符的子串              |
+| **查找**   | `find()`                        | `pos = s1.find("ll");`                | 查找子串（返回位置或`npos`）        |
+|            | `rfind()`                       | `pos = s1.rfind('o');`                | 反向查找                            |
+|            | `find_first_of()`               | `pos = s1.find_first_of("aeiou");`    | 查找首次出现的元音字母              |
+|            | `find_last_not_of()`            | `pos = s1.find_last_not_of(" ");`     | 查找最后一个非空格字符              |
+| **比较**   | `compare()`                     | `if (s1.compare(s2) == 0) {...}`      | 比较字符串（返回0表示相等）         |
+|            | `==`, `!=`, `<`, `>` 等         | `if (s1 == s2) {...}`                 | 运算符比较                          |
+| **转换**   | `c_str()`                       | `const char* p = s1.c_str();`         | 转换为C风格字符串（以`\0`结尾）     |
+|            | `data()`                        | `const char* p = s1.data();`          | 获取字符数组（C++17后以`\0`结尾）   |
+|            | `stoi()`, `stol()`, `stof()` 等 | `int num = stoi("123");`              | 字符串转数值                        |
+|            | `to_string()`                   | `string s = to_string(3.14);`         | 数值转字符串                        |
+| **迭代器** | `begin()` / `end()`             | `for (auto it = s1.begin(); ...)`     | 正向迭代器                          |
+|            | `rbegin()` / `rend()`           | `for (auto rit = s1.rbegin(); ...)`   | 反向迭代器                          |
+
+---
+
 
 # code
 

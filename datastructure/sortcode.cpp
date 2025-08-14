@@ -271,6 +271,131 @@ void myheapsort_high(vector<int>& arr)
             myheapsort_high(arr,i,0);
      }
 }
+void insertionSort(vector<int>& arr) {
+    int n = arr.size();
+    
+    // 从第二个元素开始遍历（索引1）
+    for (int i = 1; i < n; i++) {
+        int key = arr[i];  // 当前待插入元素
+        int j = i - 1;    // 已排序序列的末尾索引
+        
+        // 将比key大的元素后移
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        
+        // 插入key到正确位置
+        arr[j + 1] = key;
+    }
+}
+
+void myinsertionsort(vector<int> & arr)
+{
+    int size = arr.size();
+    for(int i = 1;i < size;i++)
+    {
+        int key = arr[i];
+        int j = i - 1;
+        
+        while( j >= 0 && arr[j] > key)
+        {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+        
+    }
+}
+
+// 合并两个有序数组
+void merge(vector<int>& arr, int left, int mid, int right) {
+    // 创建临时数组
+    vector<int> temp(right - left + 1);
+    int i = left;       // 左数组起始索引
+    int j = mid + 1;    // 右数组起始索引
+    int k = 0;          // 临时数组索引
+
+    // 合并两个有序数组
+    while (i <= mid && j <= right) {
+        if (arr[i] <= arr[j]) {
+            temp[k++] = arr[i++];
+        } else {
+            temp[k++] = arr[j++];
+        }
+    }
+
+    // 处理剩余元素
+    while (i <= mid) temp[k++] = arr[i++];
+    while (j <= right) temp[k++] = arr[j++];
+
+    // 将临时数组拷贝回原数组
+    for (int p = 0; p < k; p++) {
+        arr[left + p] = temp[p];
+    }
+}
+
+// 归并排序主函数
+void mergeSort(vector<int>& arr, int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;  // 防止整数溢出
+        
+        // 递归分解
+        mergeSort(arr, left, mid);      // 排序左半部
+        mergeSort(arr, mid + 1, right); // 排序右半部
+        
+        // 合并结果
+        merge(arr, left, mid, right);
+    }
+}
+
+void mymerge(vector<int>& arr,int left,int right)//合并两个有序数组
+{
+    if(left < right)
+    {
+        int mid = left + (right - left)/ 2;
+        vector<int> temp(right - left + 1);
+
+        int i = left;
+        int j = mid + 1;
+        int k = 0;
+        while(i <= mid && j <= right )
+        {
+            if (arr[i] > arr[j])
+            {
+                temp[k++] = arr[j++];
+            }
+            else{
+                temp[k++] = arr[i++];
+            }
+        }
+        while (i <= mid)
+        {
+            temp[k++] = arr[i++];
+        }
+        while( j <= right)
+        {
+            temp[k++] = arr[j++];
+        }
+        
+        for(int z = 0; z<k;z++)
+        {
+            arr[z + left] = temp[z];
+        }
+    }    
+}
+
+void mymergesort(vector<int>& arr,int left, int right)
+{
+    if(left < right)
+    {
+        int mid = left + (right - left)/ 2;
+        mymergesort(arr,left,mid);
+        mymergesort(arr,mid+1,right);
+        mymerge(arr,left,right);
+    }
+}
+
 int main() {
     // 测试数据
     std::vector<int> arr = {64, 34, 25, 12, 22, 11, 90,2,3,12};
@@ -280,8 +405,6 @@ int main() {
         std::cout << num << " ";
     }
     std::cout << "\n";
-    
-
     //bubbleSort(arr);
     //mybubblesort(arr);
     //selectionSort(arr);
@@ -290,7 +413,11 @@ int main() {
     //myquicksort(arr);
     //heapSort(arr);
     //myheapsort_low(arr);
-    myheapsort_high(arr);
+    //myheapsort_high(arr);
+    //insertionSort(arr);
+    //myinsertionsort(arr);
+    //mergeSort(arr,0,arr.size() - 1);
+    mymergesort(arr,0,arr.size() - 1 );
     std::cout << "排序后: ";
     for (int num : arr) {
         std::cout << num << " ";

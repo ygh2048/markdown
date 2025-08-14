@@ -77,7 +77,16 @@ volatite const 修饰：
 7.  从栈中恢复A的状态
 8.  调回A中当初调用B之后的位置开始执行
 
-# knowledge     
+# knowledge
+## 引用和指针
+### 引用
+引用是已存在变量的别名
+引用本身不占用额外的存储空间，它只是绑定在目标对象身上；
+`int& ref = var;ref = 10;等价于var = 10;`
+### 指针
+本质是一个变量，存储了另一个变量或对象的内存地址
+
+`int * ptr; ptr = &var;int x = *ptr;`
 ## 详解函数
 程序运行中，函数主要存在两个内存区域：
 - 代码段
@@ -198,5 +207,25 @@ if (*p == 0x78) {
 - 确定递归终止条件
 - 确定单层递归的逻辑
 
+
+## 字符串函数及其用法
+**头文件**：`#include <cstring>`  
+**注意**：操作以`\0`结尾的`char`数组，需手动管理内存
+
+| 函数        | 用法示例                          | 说明                                |
+|-------------|-----------------------------------|-------------------------------------|
+| `strlen`    | `int len = strlen(str);`          | 获取字符串长度                      |
+| `strcpy`    | `strcpy(dest, src);`              | 复制字符串（需确保`dest`足够大）    |
+| `strncpy`   | `strncpy(dest, src, n);`          | 复制最多`n`个字符                   |
+| `strcat`    | `strcat(dest, src);`              | 字符串拼接（需确保`dest`足够大）    |
+| `strncat`   | `strncat(dest, src, n);`          | 拼接最多`n`个字符                   |
+| `strcmp`    | `if (strcmp(s1, s2) == 0) {...}`  | 字符串比较（返回0表示相等）         |
+| `strncmp`   | `strncmp(s1, s2, n);`             | 比较前`n`个字符                     |
+| `strchr`    | `char* p = strchr(s, 'a');`       | 查找字符首次出现位置                |
+| `strrchr`   | `char* p = strrchr(s, 'a');`      | 查找字符最后出现位置                |
+| `strstr`    | `char* p = strstr(s, "sub");`     | 查找子串位置                        |
+| `strtok`    | `char* tok = strtok(s, ",");`     | 分割字符串（非线程安全）            |
+
+---
 # 跳转链接
 [点这里跳转list](../list.md)
