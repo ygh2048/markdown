@@ -19,7 +19,7 @@
 - 
 ### TCP/IP的体系结构
 
-- 应用层 各种应用层协议（DNS,HTTP,SMTP）
+- 应用层 各种应用层协议(DNS,HTTP,SMTP,MODEBUS)
 - 运输层 （TCP或UDP）
 - 网际层 IP
 - 链路层 （网络接口层）

@@ -34,7 +34,27 @@ void printVector(const vector<int>& vec) {
     cout << endl;
 }
 
+
+typedef struct test_mem
+{
+   int a;
+   long long b;
+   double c;
+   int d;
+   char e;
+   float f;
+}TEST_MEM;
+
+
+typedef struct test_sec
+{
+   int a;
+    TEST_MEM b;
+}TEST_SEC;
+
 int main() {
+    /*
+
     vector<int> originalVec = {1, 2, 3, 4, 5};
     
     cout << "原始vector: ";
@@ -74,5 +94,17 @@ int main() {
     duration = duration_cast<microseconds>(stop - start);
     cout << "传引用操作耗时: " << duration.count() << " 微秒" << endl;
     
+    */
+    TEST_MEM mine;
+    TEST_SEC sec;
+    printf("sizeof(mine.a) int %d\r\n",sizeof(mine.a));
+    printf("sizeof(mine.b) long %d\r\n",sizeof(mine.b));
+    printf("sizeof(mine.c) double %d\r\n",sizeof(mine.c));
+    printf("sizeof(mine.d) int %d\r\n",sizeof(mine.d));
+    printf("sizeof(mine.e) char %d\r\n",sizeof(mine.e));
+    printf("sizeof(mine.f) float %d\r\n",sizeof(mine.f));
+    printf("sizeof(mine) %d\r\n",sizeof(mine));
+    printf("sizeof(sec) %d\r\n",sizeof(sec));
+    printf("sizeof(sec.b) %d\r\n",sizeof(sec.b));
     return 0;
 }
