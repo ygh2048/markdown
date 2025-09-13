@@ -1,3 +1,25 @@
+# 基础知识
+
+## 数据结构
+
+### 结构体
+
+
+### 联合体
+
+
+## 语法语句
+
+### switch
+
+
+### 优先级
+
+
+### 指针
+
+
+
 # 一些面试问题
 
 ## volitate,const，static和extern
@@ -175,6 +197,9 @@ void func(int arr[]) 完全等价于 void func(int *arr)。
 
 
 就是malloc()/new() 后要记得free(),delete()
+
+
+
 ## NULL / nullptr的使用
 在C语言中 NULL本质上是一个整形常量0 ，又是被强制类型转换为void*类型
 (void*)0
@@ -334,6 +359,22 @@ double:八个字节
 ### 数组名，和数组值
 - 数组名  ： 是一个编译器符号，运行时不占用存储空间来存储一个地址值，会直接被编译器解析为数组首元素的地址
 
+
+#### 数组名的使用
+`arr[SIZE]` 
+- 获取数组元素`arr[i]`
+- 获取数组首元素`*arr`
+- 获取数组首地址`arr`
+- 获取数组大小`sizeof(arr)`
+
+## strlen 对比 sizeof
+
+对于正常初始化的字符串，sizeof比strlen多 1 。 
+### strlen
+函数，返回字符串长度，不包括'\0'
+
+### sizeof
+运算符，返回内存字节数
 
 
 
