@@ -393,13 +393,25 @@ real time operatorion system实时操作系统
 # 外设
 
 ## 使用到的一些存储装置
-
-flash
-
-
-eeprom
-
-ROM
-
 RAM
+- SRAM
+  - 一般用来作为cache
+  - 读取快
+  - 容量小
+  - 成本高
+- DRAM
+  - 主内存
+  - 读取慢
+  - 容量大
+  - 成本高
 
+## 读写速度
+
+1. 寄存器
+2. cache(缓存)
+   1. L1
+   2. L2
+   3. L3
+3. RAM   闪存
+   1. 一般是DRAM
+4. Flash/ROM
