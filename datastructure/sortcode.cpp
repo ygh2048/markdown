@@ -145,6 +145,32 @@ void myquicksort(vector<int>& arr)
 //   arr: 待排序数组
 //   n: 当前堆的大小
 //   i: 当前需要调整的节点索引
+
+//完全二叉树
+
+/*
+              0
+          1        2
+    3       4     5      6(非叶子结点)
+  7   8   9  10 11 12  13 14
+  
+  n = 9/2 -1 4
+*/
+
+/*
+              7 
+        0            6
+    3     4         2      3
+   1  10
+*/
+
+
+
+/*
+
+
+*/
+
 void heapify(vector<int>& arr, int n, int i) {
     int largest = i;       // 初始化最大元素为当前节点
     int left = 2 * i + 1;  // 左子节点索引
@@ -180,7 +206,46 @@ void heapSort(vector<int>& arr) {
         heapify(arr, i, 0);
     }
 }
+// 调整堆（小顶堆）的函数
+// 参数：
+//   arr: 待排序数组
+//   n: 当前堆的大小
+//   i: 当前需要调整的节点索引
+void heapify_l(vector<int>& arr, int n, int i) {
+    int smallest = i;       // 初始化最大元素为当前节点
+    int left = 2 * i + 1;  // 左子节点索引
+    int right = 2 * i + 2; // 右子节点索引
 
+    // 如果左子节点存在且小于当前最大节点
+    if (left < n && arr[left] < arr[smallest])
+        smallest = left;
+
+    // 如果右子节点存在且小于当前最大节点
+    if (right < n && arr[right] < arr[smallest])
+        smallest = right;
+
+    // 如果最大值不是当前节点，则交换并递归调整
+    if (smallest != i) {
+        swap(arr[i], arr[smallest]);
+        heapify_l(arr, n, smallest); // 递归调整受影响的子树
+    }
+}
+// 堆排序主函数
+void heapSort_l(vector<int>& arr) {
+    int n = arr.size();
+
+    // 构建下坡顶堆（从最后一个非叶子节点开始）
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify_l(arr, n, i);
+
+    // 逐个提取堆顶元素（最大值）并调整堆
+    for (int i = n - 1; i > 0; i--) {
+        // 将当前堆顶（最小值）移到数组末尾
+        swap(arr[0], arr[i]);
+        // 调整剩余元素使其满足堆性质
+        heapify_l(arr, i, 0);
+    }
+}
 
 
 void myheapsort_low(vector<int>& arr,int size,int index)
@@ -417,7 +482,8 @@ int main() {
     //insertionSort(arr);
     //myinsertionsort(arr);
     //mergeSort(arr,0,arr.size() - 1);
-    mymergesort(arr,0,arr.size() - 1 );
+    //mymergesort(arr,0,arr.size() - 1 );
+    heapSort_l(arr);
     std::cout << "排序后: ";
     for (int num : arr) {
         std::cout << num << " ";
