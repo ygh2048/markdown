@@ -448,3 +448,545 @@ ADB 部署 = adb push 上传 + adb shell 执行命令
 ```text
 传程序 → 解压 → 设置权限 → 配环境变量 → 停旧进程 → 启新进程 → 健康检查
 ```
+
+
+你说的应该是 **`dmesg`**，不是 `dmsg`。
+
+一句话理解：
+
+> **`dmesg` 是用来查看 Linux 内核日志的命令，主要用于排查驱动、设备识别、硬件初始化、内核报错等问题。**
+
+在嵌入式 Linux 面试和板端调试里，`dmesg` 非常重要。
+
+---
+
+# 1. `dmesg` 看的是谁的日志？
+
+Linux 系统里大致有两类日志：
+
+```text
+应用日志：你的程序自己打印的日志
+内核日志：Kernel 和驱动打印的日志
+```
+
+`dmesg` 看的是 **内核日志**。
+
+比如这些信息通常会出现在 `dmesg` 里：
+
+```text
+内核启动日志
+驱动加载日志
+设备 probe 成功/失败
+USB 插拔日志
+网卡初始化日志
+摄像头识别日志
+I2C/SPI/UART 错误
+文件系统挂载错误
+内核 panic / oops
+```
+
+你项目里如果调 **RV1126 + IMX307 摄像头**，`dmesg` 就可以用来查看：
+
+```text
+IMX307 有没有识别
+I2C 通信有没有失败
+MIPI CSI 有没有报错
+V4L2 设备有没有注册
+/dev/video* 设备节点为什么没出来
+```
+
+---
+
+# 2. 最常用命令
+
+## 查看全部内核日志
+
+```bash
+dmesg
+```
+
+输出会很多。
+
+---
+
+## 看最后几十行
+
+```bash
+dmesg | tail
+```
+
+或者：
+
+```bash
+dmesg | tail -n 50
+```
+
+常用于刚插设备、刚启动服务、刚加载驱动后看最新日志。
+
+---
+
+## 按关键词筛选
+
+比如查摄像头：
+
+```bash
+dmesg | grep -i imx307
+```
+
+查视频相关：
+
+```bash
+dmesg | grep -i video
+```
+
+查 V4L2：
+
+```bash
+dmesg | grep -i v4l2
+```
+
+查 I2C：
+
+```bash
+dmesg | grep -i i2c
+```
+
+查 MIPI / CSI：
+
+```bash
+dmesg | grep -i csi
+dmesg | grep -i mipi
+```
+
+`-i` 表示忽略大小写。
+
+---
+
+# 3. `dmesg -w` 是什么？
+
+```bash
+dmesg -w
+```
+
+表示实时跟踪内核日志，类似：
+
+```bash
+tail -f
+```
+
+比如你插入 USB 设备、加载驱动、启动摄像头采集时，可以开一个终端：
+
+```bash
+dmesg -w
+```
+
+然后再执行你的操作，观察内核有没有新的日志输出。
+
+如果板端支持，也可以用：
+
+```bash
+dmesg -wH
+```
+
+`-H` 会让输出更适合人看。
+
+---
+
+# 4. `dmesg` 和应用日志有什么区别？
+
+比如你的程序日志可能在：
+
+```bash
+tail -f /userdata/control_and_video/logs/app.log
+```
+
+这个日志是你的 **应用程序** 打印的，比如：
+
+```text
+Modbus connected
+RTMP push failed
+Web server started
+```
+
+而 `dmesg` 是 **内核/驱动** 打印的，比如：
+
+```text
+imx307 probe failed
+i2c transfer timeout
+video device registered as /dev/video0
+eth0: link up
+```
+
+区别可以这样记：
+
+```text
+应用日志：看你的程序逻辑有没有问题
+dmesg：看内核、驱动、硬件识别有没有问题
+```
+
+---
+
+# 5. 典型场景 1：摄像头没有 `/dev/video*`
+
+你执行：
+
+```bash
+ls /dev/video*
+```
+
+发现没有任何设备节点。
+
+这时候就要看 `dmesg`：
+
+```bash
+dmesg | grep -i imx307
+dmesg | grep -i video
+dmesg | grep -i csi
+dmesg | grep -i i2c
+```
+
+你重点看有没有类似信息：
+
+```text
+imx307 probe failed
+i2c read failed
+sensor not found
+mipi csi error
+video device registered
+```
+
+如果看到：
+
+```text
+imx307 probe failed
+```
+
+说明驱动加载或 sensor 初始化失败。
+
+如果看到：
+
+```text
+i2c transfer timeout
+```
+
+可能是 I2C 地址、供电、复位、设备树配置有问题。
+
+如果看到：
+
+```text
+video device registered as /dev/video0
+```
+
+说明内核已经注册了视频设备，接下来可以去看 `/dev/video0` 和 V4L2/GStreamer 层。
+
+---
+
+# 6. 典型场景 2：网口不通
+
+比如 RV1126 访问不了 PC，或者 PC 访问不了板子。
+
+可以看：
+
+```bash
+dmesg | grep -i eth
+dmesg | grep -i link
+```
+
+可能看到：
+
+```text
+eth0: link up
+eth0: link down
+```
+
+如果一直 `link down`，可能是：
+
+```text
+网线没插好
+交换机问题
+PHY 没初始化
+网卡驱动问题
+设备树网口配置问题
+```
+
+然后配合：
+
+```bash
+ip addr
+ip route
+ping <PC_IP>
+ss -lntp
+```
+
+一起查。
+
+---
+
+# 7. 典型场景 3：USB / 串口设备识别
+
+插 USB 转串口后，可以实时看：
+
+```bash
+dmesg -w
+```
+
+正常可能出现：
+
+```text
+usb 1-1: new full-speed USB device
+ch341-uart converter now attached to ttyUSB0
+```
+
+这说明系统生成了：
+
+```text
+/dev/ttyUSB0
+```
+
+如果没出现，就可能是：
+
+```text
+USB 没识别
+驱动没编译
+供电问题
+设备损坏
+```
+
+---
+
+# 8. 典型场景 4：驱动模块加载失败
+
+如果你加载一个 `.ko`：
+
+```bash
+insmod xxx.ko
+```
+
+失败后不要只看终端报错，要马上看：
+
+```bash
+dmesg | tail -n 50
+```
+
+因为很多详细错误只会出现在内核日志里。
+
+可能看到：
+
+```text
+Unknown symbol xxx
+module verification failed
+probe failed
+invalid module format
+```
+
+含义大概是：
+
+```text
+Unknown symbol：依赖的内核符号不存在
+invalid module format：模块和当前内核版本/架构不匹配
+probe failed：驱动匹配到了设备，但初始化失败
+```
+
+---
+
+# 9. `dmesg` 日志级别
+
+内核日志有不同级别，比如：
+
+```text
+emerg
+alert
+crit
+err
+warn
+notice
+info
+debug
+```
+
+你可以只看错误和警告：
+
+```bash
+dmesg --level=err,warn
+```
+
+如果系统支持的话，这个命令很好用。
+
+或者用 grep：
+
+```bash
+dmesg | grep -i "error"
+dmesg | grep -i "fail"
+dmesg | grep -i "timeout"
+dmesg | grep -i "warn"
+```
+
+---
+
+# 10. `dmesg -c` 要小心
+
+有个命令：
+
+```bash
+dmesg -c
+```
+
+它会显示日志后清空内核环形缓冲区。
+
+初学者不要随便用。
+
+你平时只用：
+
+```bash
+dmesg
+dmesg | tail
+dmesg -w
+```
+
+就够了。
+
+---
+
+# 11. 为什么有些旧日志没了？
+
+`dmesg` 读取的是内核的 **ring buffer，环形缓冲区**。
+
+环形缓冲区大小有限。
+
+如果系统运行很久，日志很多，旧日志会被新日志覆盖。
+
+所以排查问题时最好：
+
+```text
+问题发生后马上 dmesg | tail
+或者提前 dmesg -w 实时观察
+```
+
+---
+
+# 12. `dmesg` 和 `journalctl -k`
+
+有些 Linux 系统使用 systemd，可以用：
+
+```bash
+journalctl -k
+```
+
+它也是看内核日志。
+
+实时看：
+
+```bash
+journalctl -kf
+```
+
+但很多嵌入式 BusyBox 系统可能没有 systemd，所以最通用还是：
+
+```bash
+dmesg
+```
+
+---
+
+# 13. 结合你的项目怎么用？
+
+你的项目中可以这样分层排查。
+
+## 应用服务起不来
+
+先看应用日志：
+
+```bash
+tail -f app.log
+```
+
+如果怀疑底层设备问题，再看：
+
+```bash
+dmesg | tail -n 50
+```
+
+---
+
+## IMX307 没画面
+
+```bash
+ls /dev/video*
+dmesg | grep -i imx307
+dmesg | grep -i video
+dmesg | grep -i csi
+```
+
+判断是：
+
+```text
+摄像头没被内核识别
+还是设备节点有了但 GStreamer 管道失败
+```
+
+---
+
+## GStreamer 报 `no element`
+
+这个通常不是 `dmesg` 主查对象，而是用户态插件问题。
+
+应该查：
+
+```bash
+gst-inspect-1.0 x264enc
+echo $GST_PLUGIN_PATH
+```
+
+但如果是 `v4l2src` 打不开 `/dev/video0`，就要结合：
+
+```bash
+dmesg | grep -i video
+```
+
+---
+
+## 网络推流不通
+
+先看应用日志和端口：
+
+```bash
+ss -lntp
+ping <PC_IP>
+```
+
+再看内核网卡日志：
+
+```bash
+dmesg | grep -i eth
+dmesg | grep -i link
+```
+
+---
+
+# 14. 面试怎么回答：`dmesg` 是什么？
+
+可以这样答：
+
+> `dmesg` 用来查看 Linux 内核日志，主要用于排查内核启动、驱动加载、硬件识别、设备节点注册、文件系统挂载等问题。在嵌入式 Linux 中，比如摄像头、网卡、串口、I2C、MIPI CSI 等外设异常时，我会结合 `dmesg` 查看驱动 probe 是否成功、是否有 timeout、failed、error 等日志。
+
+---
+
+# 15. 面试追问：摄像头没有 `/dev/video*`，你怎么用 `dmesg` 排查？
+
+可以这样答：
+
+> 我会先 `ls /dev/video*` 确认设备节点是否存在。如果没有，就用 `dmesg | grep -i imx307`、`dmesg | grep -i i2c`、`dmesg | grep -i csi`、`dmesg | grep -i video` 查看 sensor、I2C、MIPI CSI 和 V4L2 相关日志。重点关注 probe failed、i2c read failed、clock/gpio/regulator error 等信息，再结合设备树和驱动匹配情况继续定位。
+
+---
+
+# 16. 面试追问：`dmesg` 和应用日志区别？
+
+可以答：
+
+> 应用日志是用户态程序自己打印的日志，主要反映业务逻辑和程序运行状态；`dmesg` 是内核日志，主要反映 Kernel 和驱动层状态，比如设备识别、驱动加载、硬件错误和内核异常。排查问题时，如果应用打不开设备或硬件不工作，我会同时看应用日志和 `dmesg`，判断问题是在应用层还是内核/驱动层。
+
+---
+
+# 17. 你需要背熟的一句话
+
+> **`dmesg` 是查看内核日志的工具，嵌入式调试中主要用来排查驱动加载、硬件识别、设备节点生成、I2C/SPI/UART/网卡/摄像头等底层问题。**

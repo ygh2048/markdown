@@ -1067,3 +1067,620 @@ MIPI lane 配置错
 [1]: https://docs.kernel.org/translations/zh_CN/devicetree/usage-model.html?utm_source=chatgpt.com "Linux 和 Devicetree — The Linux Kernel documentation"
 [2]: https://docs.kernel.org/devicetree/kernel-api.html?utm_source=chatgpt.com "DeviceTree Kernel API — The Linux Kernel documentation"
 [3]: https://docs.kernel.org/devicetree/bindings/writing-bindings.html?utm_source=chatgpt.com "DOs and DON’Ts for designing and writing Devicetree bindings"
+
+
+好，接着复习下一块：**动态库、静态库、运行时依赖、`LD_LIBRARY_PATH`、`readelf`、`ldd`**。
+
+这块和你的 RV1126 项目非常相关，因为你的项目里有 **交叉编译、运行库打包、GStreamer 插件路径、libmodbus、板端部署后程序启动失败排查** 这些内容。你的修改记录里也多次出现过 “运行库路径”“GStreamer 运行时搜索路径”“libmodbus 依赖”“板端启动失败”等问题。
+
+---
+
+# 1. 库是什么？
+
+程序开发时，经常会用别人已经写好的功能，比如：
+
+```text
+网络库
+线程库
+数学库
+视频库
+modbus库
+gstreamer库
+```
+
+这些功能会被打包成“库”。
+
+Linux 下常见两种库：
+
+```text
+静态库：.a
+动态库：.so
+```
+
+比如：
+
+```text
+libmodbus.a
+libmodbus.so
+
+libgstreamer-1.0.a
+libgstreamer-1.0.so
+```
+
+---
+
+# 2. 静态库是什么？
+
+静态库后缀一般是：
+
+```text
+.a
+```
+
+例如：
+
+```text
+libmodbus.a
+```
+
+静态库的特点是：
+
+> **编译链接时，库里的代码会被打进最终可执行程序里。**
+
+比如：
+
+```bash
+g++ main.cpp libmodbus.a -o app
+```
+
+生成的 `app` 里面已经包含了 libmodbus 相关代码。
+
+优点：
+
+```text
+部署简单，板端不容易缺库
+运行时不依赖外部 .so
+```
+
+缺点：
+
+```text
+可执行文件体积更大
+多个程序使用同一个库时会重复占空间
+库更新后需要重新编译程序
+```
+
+---
+
+# 3. 动态库是什么？
+
+动态库后缀一般是：
+
+```text
+.so
+```
+
+例如：
+
+```text
+libmodbus.so
+libgstreamer-1.0.so
+libpthread.so
+```
+
+动态库的特点是：
+
+> **编译时只记录依赖关系，真正运行时再加载 `.so` 文件。**
+
+比如：
+
+```bash
+g++ main.cpp -lmodbus -o app
+```
+
+编译时告诉程序：
+
+```text
+我运行时需要 libmodbus.so
+```
+
+但是 `libmodbus.so` 不一定被打进 `app` 里。
+
+运行时，系统会去找这个库。
+
+优点：
+
+```text
+程序体积小
+多个程序可以共享同一个库
+库升级方便
+```
+
+缺点：
+
+```text
+部署时容易缺库
+版本不匹配会导致运行失败
+```
+
+---
+
+# 4. 静态库和动态库区别
+
+| 对比   | 静态库 `.a`  | 动态库 `.so`   |
+| ---- | --------- | ----------- |
+| 链接时机 | 编译链接时打进程序 | 运行时加载       |
+| 程序体积 | 较大        | 较小          |
+| 部署难度 | 简单        | 需要带上 `.so`  |
+| 更新库  | 需要重新编译程序  | 替换 `.so` 即可 |
+| 常见问题 | 体积大       | 运行时报缺库      |
+
+面试回答可以这样说：
+
+> 静态库在链接阶段会被打包进可执行文件，运行时不再依赖外部库；动态库在运行时由动态链接器加载，可执行文件只记录依赖关系。静态库部署简单但体积较大，动态库节省空间、便于升级，但部署时需要保证目标系统能找到对应 `.so` 文件。
+
+---
+
+# 5. 为什么板端会报缺库？
+
+你在 PC 上交叉编译成功后，把程序传到 RV1126 板端运行，可能报：
+
+```text
+error while loading shared libraries: libmodbus.so.5: cannot open shared object file
+```
+
+这句话意思是：
+
+```text
+程序启动时需要 libmodbus.so.5
+但是系统找不到这个动态库
+```
+
+注意：
+
+> **编译成功不代表运行成功。**
+
+编译成功说明：
+
+```text
+编译阶段找到了头文件和库
+```
+
+运行失败说明：
+
+```text
+板端 rootfs 或运行目录里找不到运行时需要的 .so
+```
+
+---
+
+# 6. 动态库搜索路径是什么？
+
+程序运行时，Linux 会按一定顺序找动态库。
+
+常见搜索位置：
+
+```text
+/lib
+/usr/lib
+/usr/local/lib
+/etc/ld.so.conf 配置的路径
+LD_LIBRARY_PATH 指定的路径
+程序自身 rpath/runpath
+```
+
+嵌入式部署时，如果你把库放在：
+
+```text
+/userdata/control_and_video/runtime/usr/lib
+```
+
+系统默认不一定会去这里找。
+
+所以你需要设置：
+
+```bash
+export LD_LIBRARY_PATH=/userdata/control_and_video/runtime/usr/lib:$LD_LIBRARY_PATH
+```
+
+这句话意思是：
+
+> 让系统运行程序时，也去这个目录找动态库。
+
+---
+
+# 7. `LD_LIBRARY_PATH` 是什么？
+
+`LD_LIBRARY_PATH` 是一个环境变量。
+
+作用是：
+
+> **告诉 Linux 动态链接器额外去哪些目录找 `.so` 动态库。**
+
+比如：
+
+```bash
+export LD_LIBRARY_PATH=/userdata/control_and_video/runtime/usr/lib:$LD_LIBRARY_PATH
+./control_and_video
+```
+
+意思是：
+
+```text
+运行 control_and_video 前，先把 runtime/usr/lib 加入动态库搜索路径
+```
+
+你的 RV1126 项目部署时设置 `LD_LIBRARY_PATH`，就是为了解决板端动态库找不到的问题。
+
+---
+
+# 8. `file` 命令看什么？
+
+`file` 用来看文件类型和架构。
+
+比如：
+
+```bash
+file control_and_video
+```
+
+如果输出：
+
+```text
+ELF 64-bit LSB executable, ARM aarch64
+```
+
+说明这是 ARM64 / AArch64 程序，适合 RV1126 这类 ARM64 平台。
+
+如果输出：
+
+```text
+ELF 64-bit LSB executable, x86-64
+```
+
+说明你编译成了 PC 程序，放到 RV1126 上肯定不能跑。
+
+所以板端运行失败时，第一步可以看：
+
+```bash
+file control_and_video
+```
+
+---
+
+# 9. `readelf` 看什么？
+
+`readelf` 可以查看 ELF 文件内部信息。
+
+ELF 是 Linux 下可执行文件、目标文件、动态库的常见格式。
+
+## 查看架构
+
+```bash
+readelf -h control_and_video
+```
+
+重点看：
+
+```text
+Machine: AArch64
+```
+
+如果是：
+
+```text
+Machine: Advanced Micro Devices X86-64
+```
+
+那就是 x86 程序。
+
+---
+
+## 查看依赖哪些动态库
+
+```bash
+readelf -d control_and_video
+```
+
+重点看 `NEEDED`：
+
+```text
+0x0000000000000001 (NEEDED) Shared library: [libmodbus.so.5]
+0x0000000000000001 (NEEDED) Shared library: [libstdc++.so.6]
+0x0000000000000001 (NEEDED) Shared library: [libpthread.so.0]
+```
+
+这表示程序运行时需要这些动态库。
+
+---
+
+# 10. `ldd` 是什么？
+
+`ldd` 用来查看一个可执行程序运行时依赖哪些动态库，以及这些库能不能找到。
+
+例如：
+
+```bash
+ldd ./control_and_video
+```
+
+可能输出：
+
+```text
+libmodbus.so.5 => /usr/lib/libmodbus.so.5
+libstdc++.so.6 => /usr/lib/libstdc++.so.6
+libpthread.so.0 => /lib/libpthread.so.0
+```
+
+如果缺库，会看到：
+
+```text
+libmodbus.so.5 => not found
+```
+
+这就说明运行时找不到这个库。
+
+注意：交叉编译出来的 ARM 程序，在 x86 PC 上直接 `ldd` 可能不能正常用。更稳妥的是：
+
+```bash
+readelf -d control_and_video
+```
+
+或者把程序放到板端后在板端执行 `ldd`。
+
+---
+
+# 11. `readelf` 和 `ldd` 区别
+
+| 命令           | 作用              | 是否真的加载程序    |
+| ------------ | --------------- | ----------- |
+| `readelf -d` | 静态查看 ELF 里记录的依赖 | 不运行程序       |
+| `ldd`        | 查看运行时依赖解析结果     | 可能实际调用动态链接器 |
+
+简单记：
+
+```text
+readelf：看程序“声明需要什么”
+ldd：看系统“实际能不能找到”
+```
+
+交叉编译场景下，优先记住：
+
+```bash
+readelf -h app
+readelf -d app
+```
+
+---
+
+# 12. GStreamer 插件路径是什么？
+
+GStreamer 不只是依赖 `.so` 动态库，它还依赖插件。
+
+比如：
+
+```text
+v4l2src
+x264enc
+mpph264enc
+flvmux
+rtmpsink
+```
+
+这些插件本质上也通常是 `.so` 文件，放在类似目录：
+
+```text
+/usr/lib/gstreamer-1.0/
+```
+
+如果板端找不到插件，日志可能报：
+
+```text
+no element "v4l2src"
+no element "x264enc"
+no element "mpph264enc"
+```
+
+这不是 C++ 编译错误，而是运行时 GStreamer 没找到对应插件。
+
+所以除了设置：
+
+```bash
+LD_LIBRARY_PATH
+```
+
+有时还要设置：
+
+```bash
+export GST_PLUGIN_PATH=/userdata/control_and_video/runtime/usr/lib/gstreamer-1.0
+export GST_PLUGIN_SCANNER=/userdata/control_and_video/runtime/usr/libexec/gstreamer-1.0/gst-plugin-scanner
+```
+
+你的项目记录里就有类似 GStreamer 运行时搜索路径和插件缺失问题。
+
+---
+
+# 13. 实际场景：程序启动报缺库怎么排查？
+
+比如板端执行：
+
+```bash
+./control_and_video
+```
+
+报：
+
+```text
+error while loading shared libraries: libmodbus.so.5: cannot open shared object file
+```
+
+排查步骤：
+
+## 第一步：确认程序架构
+
+```bash
+file control_and_video
+```
+
+要确认是：
+
+```text
+ARM aarch64
+```
+
+---
+
+## 第二步：查看程序依赖
+
+```bash
+readelf -d control_and_video | grep NEEDED
+```
+
+看它需要哪些库。
+
+---
+
+## 第三步：在板端找库
+
+```bash
+find / -name "libmodbus*"
+```
+
+如果找不到，说明库没部署。
+
+---
+
+## 第四步：设置库路径
+
+如果库在：
+
+```text
+/userdata/control_and_video/runtime/usr/lib/libmodbus.so.5
+```
+
+设置：
+
+```bash
+export LD_LIBRARY_PATH=/userdata/control_and_video/runtime/usr/lib:$LD_LIBRARY_PATH
+```
+
+再运行：
+
+```bash
+./control_and_video
+```
+
+---
+
+# 14. 实际场景：GStreamer 报 `no element`
+
+比如日志：
+
+```text
+no element "x264enc"
+```
+
+意思是：
+
+```text
+GStreamer 当前插件路径里找不到 x264enc 插件
+```
+
+排查：
+
+```bash
+gst-inspect-1.0 x264enc
+```
+
+如果不存在，就说明插件没装或插件路径没配。
+
+再看：
+
+```bash
+echo $GST_PLUGIN_PATH
+```
+
+如果插件在你自己打包的 runtime 目录，要设置：
+
+```bash
+export GST_PLUGIN_PATH=/userdata/control_and_video/runtime/usr/lib/gstreamer-1.0
+```
+
+然后再测：
+
+```bash
+gst-inspect-1.0 x264enc
+```
+
+---
+
+# 15. 实际场景：编译时能找到库，运行时找不到库
+
+这是交叉编译常见坑。
+
+原因是：
+
+```text
+编译时找的是 sysroot 里的库
+运行时找的是板端 rootfs 里的库
+```
+
+比如 PC 交叉编译时：
+
+```text
+$RV1126_SYSROOT/usr/lib/libmodbus.so
+```
+
+编译能通过。
+
+但板端运行时，系统找的是：
+
+```text
+/lib
+/usr/lib
+LD_LIBRARY_PATH 指定目录
+```
+
+如果板端没有 `libmodbus.so`，就会运行失败。
+
+所以你要记住：
+
+> **sysroot 解决编译链接问题，rootfs/runtime 解决板端运行问题。**
+
+---
+
+# 16. 面试题：动态库和静态库区别？
+
+回答：
+
+> 静态库是 `.a` 文件，链接时会被打包进最终可执行程序，运行时不依赖外部库；动态库是 `.so` 文件，链接时只记录依赖关系，程序运行时由动态链接器加载。静态库部署简单但程序体积大，动态库便于共享和升级，但需要保证目标系统能找到对应 `.so` 文件。
+
+---
+
+# 17. 面试题：板端运行提示缺 `.so` 怎么办？
+
+回答：
+
+> 我会先用 `file` 或 `readelf -h` 确认可执行文件架构是否正确，然后用 `readelf -d` 查看程序依赖哪些动态库。如果提示某个库 not found，就在板端 rootfs 或部署目录中查找对应 `.so`。如果库已经打包到自定义目录，需要设置 `LD_LIBRARY_PATH`，或者把库放到系统库目录并更新动态链接器缓存。
+
+---
+
+# 18. 面试题：为什么交叉编译成功，板端运行还会失败？
+
+回答：
+
+> 交叉编译成功只说明编译阶段能找到目标平台的头文件和库，生成了目标架构的可执行文件。但运行时还依赖板端 rootfs 中的动态库、动态链接器、配置文件和设备节点。如果板端缺少对应 `.so`、库版本不匹配、`LD_LIBRARY_PATH` 没设置，或者设备节点不存在，程序仍然可能启动失败。
+
+---
+
+# 19. 结合你项目的回答
+
+你可以这样说：
+
+> 在 RV1126 项目中，我的程序依赖 libmodbus、GStreamer 等库。交叉编译时通过 sysroot 提供目标平台头文件和库，部署时会把可执行文件、配置文件和 runtime 依赖库一起下发到板端。启动脚本中会设置 `LD_LIBRARY_PATH` 和 `GST_PLUGIN_PATH`，确保程序能找到动态库和 GStreamer 插件。遇到启动失败时，我会结合 `file`、`readelf -d`、板端日志和 `find` 命令排查架构、依赖库和插件路径问题。
+
+---
+
+# 20. 一句话总结
+
+> **`.a` 是静态库，链接时打进程序；`.so` 是动态库，运行时加载。交叉编译时用 sysroot 找库，板端运行时靠 rootfs/runtime 和 `LD_LIBRARY_PATH` 找库。**
