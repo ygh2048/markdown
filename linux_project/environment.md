@@ -44,4 +44,82 @@ GCC/G++ 是真正负责 C/C++ 编译和链接的编译器。Make 和 Ninja 是�
 
 
 
+## 交叉编译时 CMake 怎么配置？
 
+通常通过 CMake toolchain 文件配置目标系统、交叉编译器、sysroot、查找库路径等信息。比如在 PC 上编译 RV1126 程序时，需要指定 AArch64 交叉编译器和目标板 sysroot，确保链接的是 ARM 平台的头文件和库，而不是主机 x86 的库。
+
+## toolchain 
+3. 什么是 toolchain？
+
+toolchain = 工具链。
+
+你可以把它理解成一套编译工具包。
+
+它通常包括：
+
+gcc/g++      编译器
+as           汇编器
+ld           链接器
+ar           静态库打包工具
+strip        去符号工具，减小程序体积
+readelf      查看 ELF 文件信息
+objdump      反汇编和查看目标文件
+libc         C 标准库，比如 glibc、musl、uclibc
+
+在交叉编译场景下，toolchain 的名字通常带目标架构前缀。
+
+比如：
+
+aarch64-buildroot-linux-gnu-gcc
+aarch64-buildroot-linux-gnu-g++
+aarch64-buildroot-linux-gnu-ld
+aarch64-buildroot-linux-gnu-readelf
+
+这里的前缀：
+
+aarch64-buildroot-linux-gnu-
+
+说明这是给 AArch64 Linux 平台用的交叉编译工具链。
+
+## 什么是 sysroot？
+
+sysroot 是目标板系统环境的一部分。
+
+你可以理解为：
+
+sysroot 是一份“给编译器看的目标板根文件系统”。
+
+它里面通常有目标板的：
+
+头文件
+库文件
+pkg-config 文件
+运行时依赖
+
+比如：
+
+sysroot/
+├── usr/
+│   ├── include/
+│   │   ├── stdio.h
+│   │   ├── pthread.h
+│   │   └── modbus/
+│   │       └── modbus.h
+│   └── lib/
+│       ├── libc.so
+│       ├── libpthread.so
+│       └── libmodbus.so
+
+你写代码：
+
+#include <modbus/modbus.h>
+
+编译器需要找到 modbus.h。
+
+你链接：
+
+-lmodbus
+
+链接器需要找到 libmodbus.so。
+
+但是注意：这些头文件和库必须是 目标板 ARM/AArch64 环境的，不能是你 PC 上 x86 的
